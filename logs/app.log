@@ -1,8 +1,6 @@
-2024-06-25 17:17:56,383 INFO c.e.a.g.l.LoginGui [main] LOG4J2!
-2024-06-25 17:17:56,386 INFO c.e.a.g.m.MainGui [main] STARTED MAIN WINDOW!
-2024-06-25 17:17:56,503 INFO c.e.a.g.l.LoggerPanel [main] CREATED MAIN LOGGER PANEL!
+2024-06-25 18:10:03,086 INFO c.e.a.g.l.LoginGui [main] LOG4J2!
+2024-06-25 18:10:03,089 INFO c.e.a.g.m.MainGui [main] STARTED MAIN WINDOW!
+2024-06-25 18:10:03,214 INFO c.e.a.g.l.LoggerPanel [main] CREATED MAIN LOGGER PANEL!
 
-2024-06-25 17:17:58,163 INFO c.e.a.c.f.ConnectionManager [AWT-EventQueue-0] TRYING TO CONNECT INTO DATABASE...
-2024-06-25 17:17:58,596 INFO c.e.a.c.f.ConnectionManager [AWT-EventQueue-0] FAILED TO CONNECT INTO DATABASE!
-2024-06-25 17:18:04,603 INFO c.e.a.c.f.ConnectionManager [AWT-EventQueue-0] TRYING TO CONNECT INTO DATABASE...
-2024-06-25 17:18:04,654 INFO c.e.a.c.f.ConnectionManager [AWT-EventQueue-0] SUCCESS!
+2024-06-25 18:10:04,989 INFO c.e.a.c.f.ConnectionManager [AWT-EventQueue-0] TRYING TO CONNECT INTO DATABASE...
+2024-06-25 18:10:05,467 INFO c.e.a.c.f.ConnectionManager [AWT-EventQueue-0] SUCCESS!
