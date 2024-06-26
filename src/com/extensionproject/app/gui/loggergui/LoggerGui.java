@@ -5,7 +5,7 @@ import javax.swing.*;
 
 public class LoggerGui extends JFrame {
 
-    private JPanel logpanel;
+    private final JPanel logpanel;
     public LoggerGui() {
 
         logpanel = new LoggerPanel();

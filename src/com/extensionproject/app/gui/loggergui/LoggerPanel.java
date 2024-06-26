@@ -2,6 +2,7 @@ package com.extensionproject.app.gui.loggergui;
 
 import com.extensionproject.app.gui.login.LoginGui;
 import com.extensionproject.app.logger.LoggerManager;
+import org.apache.logging.log4j.core.Logger;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
@@ -16,10 +17,12 @@ public class LoggerPanel extends JPanel implements Runnable {
     private RandomAccessFile logtemp, logsaved;
     private File file;
     private Thread logthread;
+    private Logger log;
     private long lastModified = -1;
     public LoggerPanel(){
+        log = LoggerManager.getClassLog(LoggerPanel.class);
         this.setLayout(new GridLayout(1,0));
-        LoggerManager.getClassLog(LoggerPanel.class).info("CREATED MAIN LOGGER PANEL!\n");
+        log.info("CREATED MAIN LOGGER PANEL!\n");
         this.size = new Dimension(LoginGui.WIDTH + 100, LoginGui.HEIGHT + 20);
         this.iniFile();
         this.iniTxtArea();
@@ -62,7 +65,7 @@ public class LoggerPanel extends JPanel implements Runnable {
                 }
                 //this.logsaved.write(this.logtemp.readByte());
             } catch (NullPointerException e){
-                e.getMessage();
+                log.info(e.getMessage());
             }
             this.lastModified = this.file.lastModified();
         }
@@ -76,7 +79,7 @@ public class LoggerPanel extends JPanel implements Runnable {
             this.logtemp = new RandomAccessFile("./logs/app.log", "rw");
             this.logsaved = new RandomAccessFile("./logs/app_all.log", "rw");
         } catch (IOException e) {
-            e.getMessage();
+            log.info(e.getMessage());
         }
 
     }
@@ -101,7 +104,7 @@ public class LoggerPanel extends JPanel implements Runnable {
                 this.updateLog();
             } while (true);
         } catch (IOException e) {
-            e.getMessage();
+            log.info(e.getMessage());
         }
 
     }

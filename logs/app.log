@@ -1,6 +1,9 @@
-2024-06-25 18:10:03,086 INFO c.e.a.g.l.LoginGui [main] LOG4J2!
-2024-06-25 18:10:03,089 INFO c.e.a.g.m.MainGui [main] STARTED MAIN WINDOW!
-2024-06-25 18:10:03,214 INFO c.e.a.g.l.LoggerPanel [main] CREATED MAIN LOGGER PANEL!
+2024-06-26 00:28:44,689 INFO c.e.a.g.l.LoginGui [main] LOG4J2!
+2024-06-26 00:28:44,692 INFO c.e.a.g.m.MainGui [main] STARTED MAIN WINDOW!
+2024-06-26 00:28:44,817 INFO c.e.a.g.l.LoggerPanel [main] CREATED MAIN LOGGER PANEL!
 
-2024-06-25 18:10:04,989 INFO c.e.a.c.f.ConnectionManager [AWT-EventQueue-0] TRYING TO CONNECT INTO DATABASE...
-2024-06-25 18:10:05,467 INFO c.e.a.c.f.ConnectionManager [AWT-EventQueue-0] SUCCESS!
+2024-06-26 00:28:44,908 INFO c.e.a.g.l.LoggerPanel [Thread-0] Cannot invoke "String.equals(Object)" because the return value of "java.io.RandomAccessFile.readLine()" is null
+2024-06-26 00:28:45,907 INFO c.e.a.c.f.ConnectionManager [AWT-EventQueue-0] TRYING TO CONNECT INTO DATABASE...
+2024-06-26 00:28:45,913 INFO c.e.a.g.l.LoggerPanel [Thread-0] Cannot invoke "String.equals(Object)" because the return value of "java.io.RandomAccessFile.readLine()" is null
+2024-06-26 00:28:46,346 INFO c.e.a.c.f.ConnectionManager [AWT-EventQueue-0] SUCCESS!
+2024-06-26 00:28:46,409 INFO c.e.a.g.l.LoggerPanel [Thread-0] null

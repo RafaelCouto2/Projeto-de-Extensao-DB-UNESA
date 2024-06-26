@@ -14,16 +14,17 @@ public class LoginGui extends JFrame {
     private JButton btnLogin;
     private JTextField txtLogin;
     private JPasswordField txtSenha;
-    private LoginEventsPanel evtpanel;
+    private JLabel spacementLabel;
+    private final LoginEventsPanel evtpanel;
 
-    public static final int WIDTH = 400;
-    public static final int HEIGHT = 280;
+    public static final int WIDTH = 425;
+    public static final int HEIGHT = 190;
 
     public LoginGui() {
         this.clearLog();
         this.setContentPane(panel);
         this.evtpanel = new LoginEventsPanel(this);
-
+        this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setSize(WIDTH,HEIGHT);
