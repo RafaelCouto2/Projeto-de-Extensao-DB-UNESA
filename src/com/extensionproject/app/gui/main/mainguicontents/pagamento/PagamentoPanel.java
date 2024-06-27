@@ -29,8 +29,8 @@ public class PagamentoPanel {
 
     private void startDefaultGridBagConstraints(){
         this.grid = new GridBagConstraints();
-        grid.fill = GridBagConstraints.BOTH;
-        grid.insets = new Insets(5,5,200,100);
+        this.grid.fill = GridBagConstraints.BOTH;
+        this.grid.insets = new Insets(5,5,200,100);
     }
     private void setLoyout(){
         this.mainpanel.setLayout(new GridBagLayout());
@@ -53,17 +53,17 @@ public class PagamentoPanel {
     }
 
     private void iniPn(){
-        grid.gridx = 0; // coluna 0
-        grid.gridy = 0; // linha 0
-        grid.gridwidth = 1; // 1 célula de largura
-        grid.gridheight = 1; // 1 célula de altura
-        grid.weightx = 1.0; // expansão horizontal
-        grid.weighty = 1.0; // expansão vertical
+        this.grid.gridx = 0; // coluna 0
+        this.grid.gridy = 0; // linha 0
+        this.grid.gridwidth = 1; // 1 célula de largura
+        this.grid.gridheight = 1; // 1 célula de altura
+        this.grid.weightx = 1.0; // expansão horizontal
+        this.grid.weighty = 1.0; // expansão vertical
         this.scrollPane = new JScrollPane();
         this.scrollPane.add(this.pagamentoTable);
         this.scrollPane.setVisible(true);
         this.scrollPane.setViewportView(this.pagamentoTable);
-        this.scrollPane.setBackground(new Color(190,50,100));
+        this.scrollPane.setBackground(new Color(217, 126, 158));
         this.mainpanel.add(this.scrollPane, grid);
     }
 
