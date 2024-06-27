@@ -10,8 +10,6 @@ import java.sql.SQLException;
 public class ConnectionManager {
     public static Connection getConnection(String user, String password) throws SQLException {
 
-        //user = "jdbcuser"
-        //pass = "jdbcuser__8000"
         String url = "jdbc:mysql://localhost:3306/extpj";
 
         return DriverManager.getConnection(url, user, password);

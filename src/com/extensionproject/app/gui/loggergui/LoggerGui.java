@@ -9,8 +9,8 @@ public class LoggerGui extends JFrame {
     public LoggerGui() {
 
         logpanel = new LoggerPanel();
-        logpanel.setFocusable(true);
-        logpanel.requestFocus();
+        //logpanel.setFocusable(true);
+        //logpanel.requestFocus();
         this.setTitle("LOG");
         this.add(logpanel);
         this.pack();

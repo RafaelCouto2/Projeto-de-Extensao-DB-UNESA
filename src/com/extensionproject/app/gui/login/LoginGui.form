@@ -32,7 +32,7 @@
         </constraints>
         <properties>
           <font name="JetBrains Mono" size="16"/>
-          <text value="jdbcuser"/>
+          <text value="professora"/>
         </properties>
       </component>
       <component id="121e6" class="javax.swing.JPasswordField" binding="txtSenha">
@@ -44,7 +44,7 @@
         <properties>
           <editable value="true"/>
           <font size="16"/>
-          <text value="jdbcuser8000"/>
+          <text value="celeusa1969"/>
         </properties>
       </component>
       <hspacer id="afa6b">

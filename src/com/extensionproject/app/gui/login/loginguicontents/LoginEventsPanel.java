@@ -1,7 +1,8 @@
-package com.extensionproject.app.gui.login;
+package com.extensionproject.app.gui.login.loginguicontents;
 
 import com.extensionproject.app.GuiLinker;
 import com.extensionproject.app.connect.factoryconnection.FactoryConnection;
+import com.extensionproject.app.gui.login.LoginGui;
 
 public class LoginEventsPanel {
     private final LoginGui gui;

@@ -23,7 +23,7 @@ public class LoggerPanel extends JPanel implements Runnable {
         log = LoggerManager.getClassLog(LoggerPanel.class);
         this.setLayout(new GridLayout(1,0));
         log.info("CREATED MAIN LOGGER PANEL!\n");
-        this.size = new Dimension(LoginGui.WIDTH + 100, LoginGui.HEIGHT + 20);
+        this.size = new Dimension(LoginGui.WIDTH + 100, LoginGui.HEIGHT + 100);
         this.iniFile();
         this.iniTxtArea();
         this.iniPnArea();

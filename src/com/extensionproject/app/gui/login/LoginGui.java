@@ -1,5 +1,6 @@
 package com.extensionproject.app.gui.login;
 
+import com.extensionproject.app.gui.login.loginguicontents.LoginEventsPanel;
 import com.extensionproject.app.gui.main.MainGui;
 import com.extensionproject.app.gui.loggergui.LoggerGui;
 import com.extensionproject.app.logger.LoggerManager;
@@ -31,6 +32,7 @@ public class LoginGui extends JFrame {
         this.setVisible(true);
         this.evtsCall();
         new LoggerGui();
+        this.requestFocus();
     }
     public void evtsCall(){
         this.evtpanel.clickEvents();

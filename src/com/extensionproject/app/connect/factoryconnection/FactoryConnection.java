@@ -28,10 +28,10 @@ public class FactoryConnection {
                 try {
                     conn.close();
                 } catch (SQLException ex) {
-                    ex.getCause();
+                    logfactoryconnection.info(ex.getCause());
                 }
             }
-            e.getCause();
+            logfactoryconnection.info(e.getCause());
             throw new RuntimeException(e);
         }
 
@@ -49,9 +49,10 @@ public class FactoryConnection {
                 try {
                     statement.close();
                 } catch (SQLException ex) {
-                    ex.getCause();
+                    logfactoryconnection.info(ex.getCause());
                 }
             }
+            logfactoryconnection.info(e.getCause());
             throw new RuntimeException(e);
         }
     }
