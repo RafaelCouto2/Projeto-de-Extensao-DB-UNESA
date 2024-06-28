@@ -6,8 +6,8 @@ import java.awt.event.MouseListener;
 
 public class PagamentoTableActionEvents implements MouseListener {
 
-    private JTable pgtable;
-    private JTextField[] txtfields;
+    private final JTable pgtable;
+    private final JTextField[] txtfields;
     public PagamentoTableActionEvents(JTable pgtable, JTextField[] txtfields){
         this.pgtable = pgtable;
         this.txtfields = txtfields;

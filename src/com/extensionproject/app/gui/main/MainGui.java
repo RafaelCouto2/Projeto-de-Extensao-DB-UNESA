@@ -1,12 +1,9 @@
 package com.extensionproject.app.gui.main;
 
 import com.extensionproject.app.GuiLinker;
-import com.extensionproject.app.general.Utils;
 import com.extensionproject.app.gui.main.mainguicontents.pagamento.PagamentoPanel;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.Calendar;
 
 public class MainGui extends JFrame {
     private JPanel mainGui;
@@ -17,7 +14,6 @@ public class MainGui extends JFrame {
     private JButton btnPagamento;
     private JLabel lblMenu;
     private JButton btnAluno;
-    //private JButton btnAlunos;
 
     private static final int WIDTH = 800, HEIGHT = 600;
 
@@ -56,9 +52,9 @@ public class MainGui extends JFrame {
         });
     }
 
-
     @Override
     public void paint(Graphics g) {
+
         super.paint(g);
         this.drawRects(g);
         this.drawTexts(g);
@@ -67,15 +63,27 @@ public class MainGui extends JFrame {
         this.btnPagamento.repaint();
         this.btnAluno.repaint();
         this.lblMenu.repaint();
+
     }
 
     public void drawRects(Graphics g){
+
         g.setColor(new Color(166, 166, 166));
         g.fillRect(10, 30, this.lblMenu.getWidth() + 60, this.getHeight() - 40);
         g.setColor(new Color(75, 75, 75));
         g.fillRect(11, 30, this.getWidth() - 20, this.lblMenu.getHeight() + 10);
         g.setColor(new Color(1, 1, 1));
         g.fillRect(this.lblMenu.getX() + 125, 30, 1, this.getHeight() - 40);
+
+        switch (panelid){
+            case -1:
+
+                break;
+            case 1:
+                this.pagamentoPanel.drawTableRect();
+                this.pagamentoPanel.drawFieldsRect();
+                break;
+        }
 
     }
 
@@ -84,13 +92,18 @@ public class MainGui extends JFrame {
         g.setFont(new Font("Arial",Font.BOLD,12));
 
         switch (this.panelid){
+            case -1:
+                g.drawString("<-- SELECIONE ALGUMA INTERFACE NO MENU",this.getWidth() - 550, 50);
+                break;
             case 1:
-                g.drawString("LISA DE PAGAMENTOS DOS RESPONSÁVEIS DE CADA ALUNO",this.getWidth() - 550, 50);
+                g.drawString("TABELA DE PAGAMENTOS DOS RESPONSÁVEIS DE CADA ALUNO",this.getWidth() - 550, 50);
                 break;
             case 2:
 
                 break;
         }
+
+
 
     }
 }
