@@ -2,7 +2,6 @@ package com.extensionproject.app.gui.main.mainguicontents.pagamento;
 
 import com.extensionproject.app.connect.factoryconnection.FactoryConnection;
 import com.extensionproject.app.general.Utils;
-import com.extensionproject.app.gui.main.MainGui;
 import com.extensionproject.app.logger.LoggerManager;
 
 import javax.swing.*;
@@ -22,10 +21,8 @@ public class PagamentoPanel {
     private JTable pagamentoTable;
     private JScrollPane scrollPane;
     public JPanel mainpanel;
-    private MainGui maingui;
     private GridBagConstraints tableGrid;
     private GridBagConstraints[] componentsGrid;
-
 
     private void iniComponents() {
         this.setLoyout();
@@ -38,15 +35,11 @@ public class PagamentoPanel {
         this.tableMouseListener();
     }
 
-
-    public PagamentoPanel(JPanel panel, MainGui maingui) {
-        this.maingui = maingui;
+    public PagamentoPanel(JPanel panel) {
         this.mainpanel = panel;
         this.iniComponents();
         this.mainpanel.setVisible(true);
-        System.out.println(this.mainpanel);
     }
-
 
     private void startDefaultGridBagConstraints() {
         this.tableGrid = new GridBagConstraints();
@@ -74,11 +67,9 @@ public class PagamentoPanel {
         this.componentsGrid[12].insets = new Insets(20,375, 15, 130); // BTNDELETAR GRID
     }
 
-
     private void setLoyout() {
         this.mainpanel.setLayout(new GridBagLayout());
     }
-
 
     private void startTable() {
 
@@ -117,7 +108,6 @@ public class PagamentoPanel {
         };
         addfields.accept(1);
     }
-
 
     private void startBtns() {
         this.btnRegistrar = new JButton() {{
@@ -164,7 +154,6 @@ public class PagamentoPanel {
         addbtns.accept(1);
     }
 
-
     private void startLbls() {
         this.lblInfo = new JLabel[5];
         for(int i = 0; i < 5; i++){
@@ -195,9 +184,10 @@ public class PagamentoPanel {
     }
 
     private void updateTable() {
-
+        this.startTable();
+        this.scrollPane.add(this.pagamentoTable);
+        this.scrollPane.setViewportView(this.pagamentoTable);
     }
-
 
     private void iniPn() {
         this.tableGrid.gridx = 0; // coluna 0
@@ -214,7 +204,6 @@ public class PagamentoPanel {
         this.mainpanel.add(this.scrollPane, tableGrid);
     }
 
-
     public void drawTableRect() {
         this.mainpanel.getGraphics().drawRect(this.scrollPane.getX(), this.scrollPane.getY(),
                 this.scrollPane.getWidth(), this.scrollPane.getHeight());
@@ -224,7 +213,6 @@ public class PagamentoPanel {
     public void drawFieldsRect() {
         this.mainpanel.getGraphics().drawRect(this.lblInfo[0].getX() - 2, this.lblInfo[0].getY() - 2, 600,110);
     }
-
 
     private void tableMouseListener() {
         this.pagamentoTable.addMouseListener(new TableMouseListenerEvents(this.pagamentoTable, this.txtFields));
@@ -236,17 +224,11 @@ public class PagamentoPanel {
 
             FactoryConnection.createStatement().executeUpdate("insert into `extpj`.`pagamento` values (DEFAULT, 2, 1, 105.45, '2024-06-29');");
             FactoryConnection.closeStatement();
-            //this.pagamentoTable.setVisible(false);
-            //this.pagamentoTable = null;
-            this.startTable();
-            this.maingui.canUpdate = true;
-            this.maingui.updateScreen();
-
-            //updateTable();
+            LoggerManager.getClassLog(PagamentoPanel.class).info(evt.getWhen() + ": NOVO PAGAMENTO REGRISTRADO!");
+            this.updateTable();
         } catch (SQLException e) {
+            LoggerManager.getClassLog(PagamentoPanel.class).info(evt.getWhen() + ": NÃO FOI POSSÍVEL REGISTRAR UM NOVO PAGAMENTO.");
             LoggerManager.getClassLog(PagamentoPanel.class).info(e.getCause());
         }
     }
-
-
 }

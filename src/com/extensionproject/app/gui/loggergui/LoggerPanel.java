@@ -61,7 +61,7 @@ public class LoggerPanel extends JPanel implements Runnable {
             this.txtLog.setText("\n");
             try{
                 while (!this.logtemp.readLine().equals("\0")) {
-                    this.txtLog.append(this.logtemp.readLine().toUpperCase() + "\n");
+                    this.txtLog.append("\n" + this.logtemp.readLine().toUpperCase() + "");
                 }
                 //this.logsaved.write(this.logtemp.readByte());
             } catch (NullPointerException e){

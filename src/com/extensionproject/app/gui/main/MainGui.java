@@ -15,7 +15,6 @@ public class MainGui extends JFrame {
     private JLabel lblMenu;
     private JButton btnAluno;
     public boolean canUpdate;
-    private final double timeUpdate = 1000000000.0 / 30;
 
     private static final int WIDTH = 800, HEIGHT = 600;
 
@@ -37,7 +36,7 @@ public class MainGui extends JFrame {
         this.initComponents();
     }
 
-    public void btnEvnts() {
+    private void btnEvnts() {
         this.tempButton.addActionListener(e -> {
             GuiLinker.getMainGui().setVisible(false);
             GuiLinker.getLoginGui().setVisible(true);
@@ -47,29 +46,28 @@ public class MainGui extends JFrame {
             if (panelid != 1) {
                 panelid = 1;
                 canUpdate = true;
+                pagamentoPanel = new PagamentoPanel(this.windowField);
                 updateScreen();
-                //this.repaint();
             }
         });
+
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-
         this.updateScreen();
         this.drawRects(g);
         this.drawTexts(g);
         this.lblMenu.setOpaque(true);
         this.lblMenu.setBackground(new Color(75, 75, 75));
-        this.btnPagamento.repaint();
-        this.btnAluno.repaint();
-        this.lblMenu.repaint();
-        //System.out.println(this.windowField);
+        this.btnPagamento.repaint(10);
+        this.btnAluno.repaint(10);
+        this.lblMenu.repaint(10);
 
     }
 
-    public void drawRects(Graphics g){
+    private void drawRects(Graphics g){
 
         g.setColor(new Color(166, 166, 166));
         g.fillRect(10, 30, this.lblMenu.getWidth() + 60, this.getHeight() - 40);
@@ -83,14 +81,14 @@ public class MainGui extends JFrame {
 
                 break;
             case 1:
-                //this.pagamentoPanel.drawTableRect();
-                //this.pagamentoPanel.drawFieldsRect();
+                this.pagamentoPanel.drawTableRect();
+                this.pagamentoPanel.drawFieldsRect();
                 break;
         }
 
     }
 
-    public void drawTexts(Graphics g){
+    private void drawTexts(Graphics g){
         g.setColor(new Color(255,255,255));
         g.setFont(new Font("Arial",Font.BOLD,12));
 
@@ -108,32 +106,27 @@ public class MainGui extends JFrame {
     }
 
     public void updateScreen () {
-
         double timeUpdate = 1000000000.0 / 24;
         long pt = System.nanoTime();
         double deltaU = 0;
         while(canUpdate){
             long at = System.nanoTime();
             deltaU += (at - pt) / timeUpdate;
-
             if (deltaU > 1) {
-
                 switch (panelid){
                     case 1:
-                        //this.windowField.setVisible(true);
-                        pagamentoPanel = new PagamentoPanel(this.windowField ,this);
-                        this.repaint();
+                        this.repaint(50);
                         break;
-
+                    case 2:
+                        System.out.println("NOTHING HERE FOR WHILE... '-'");
+                        break;
+                    case 3:
+                        System.out.println("NOTHING HERE FOR WHILE... :)");
+                        break;
                 }
-
-                //this.windowField.repaint();
-                //this.mainGui.repaint();
-                //this.repaint();
                 deltaU--;
                 canUpdate = false;
             }
         }
-
     }
 }
