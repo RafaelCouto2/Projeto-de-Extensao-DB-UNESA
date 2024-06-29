@@ -6,8 +6,8 @@ import java.awt.event.MouseListener;
 
 public class TableMouseListenerEvents implements MouseListener {
 
-    private final JTable pgtable;
-    private final JTextField[] txtfields;
+    private JTable pgtable;
+    private JTextField[] txtfields;
     public TableMouseListenerEvents(JTable pgtable, JTextField[] txtfields){
         this.pgtable = pgtable;
         this.txtfields = txtfields;

@@ -20,7 +20,7 @@ public class PagamentoPanel {
     private JLabel[] lblInfo;
     private JTable pagamentoTable;
     private JScrollPane scrollPane;
-    public JPanel mainpanel;
+    public  JPanel mainpanel;
     private GridBagConstraints tableGrid;
     private GridBagConstraints[] componentsGrid;
 
@@ -185,6 +185,7 @@ public class PagamentoPanel {
 
     private void updateTable() {
         this.startTable();
+        this.tableMouseListener();
         this.scrollPane.add(this.pagamentoTable);
         this.scrollPane.setViewportView(this.pagamentoTable);
     }
