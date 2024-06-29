@@ -5,6 +5,7 @@ import org.apache.logging.log4j.core.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLTimeoutException;
 import java.sql.Statement;
 
 public class FactoryConnection {
@@ -27,17 +28,17 @@ public class FactoryConnection {
             return conn;
         } catch (SQLException e) {
             logconnectionmanager.info("FAILED TO CONNECT INTO DATABASE!");
-            if (conn != null) {
-                try {
+            try {
+                if (!conn.isClosed()) {
                     conn.close();
-                } catch (SQLException ex) {
-                    logfactoryconnection.info(ex.getCause());
+                    logconnectionmanager.info("CONNECTION CLOSED.");
                 }
+            } catch (SQLException ex) {
+                logfactoryconnection.info(ex.getCause() + ": FAILED TO CLOSE CONNECTION.");
             }
             logfactoryconnection.info(e.getCause());
             throw new RuntimeException(e);
         }
-
     }
 
     public static Connection connect(){
@@ -49,20 +50,20 @@ public class FactoryConnection {
         }
     }
 
-    public static Statement createStatement(Connection conn)  {
+    public static Statement createStatement()  {
         try {
-            logfactoryconnection.info("Tyring to create a new statement.");
             statement = conn.createStatement();
-            logfactoryconnection.info("Statement created and ready.");
+            logfactoryconnection.info("Statement created..");
             return statement;
         } catch (SQLException e) {
             logfactoryconnection.info("Failed to create statement!");
-            if (statement != null) {
-                try {
+            try {
+                if (!statement.isClosed()) {
                     statement.close();
-                } catch (SQLException ex) {
-                    logfactoryconnection.info(ex.getCause());
+                    logfactoryconnection.info(FactoryConnection.class + ": " + "STATEMENT CLOSED.");
                 }
+                } catch (SQLException ex) {
+                logfactoryconnection.info(ex.getCause() + ": FAILED TO CLOSE STATEMENT.");
             }
             logfactoryconnection.info(e.getCause());
             throw new RuntimeException(e);
@@ -73,7 +74,7 @@ public class FactoryConnection {
         return conn;
     }
 
-    public static Statement getStatement() throws NullPointerException {
+    public static Statement getStatement() throws NullPointerException, SQLException {
         return statement;
     }
 }

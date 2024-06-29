@@ -78,7 +78,7 @@ public class PagamentoPanel {
 
         TableRequests.pagamentoTableRequest(new String[] {"select `id_responsavel`,`id_alunoreferente`,`valor_mensal`,DATE_FORMAT(`data_pagamento`, '%d-%m-%Y') as `data_pagamento` from `extpj`.`pagamento`;",
                 "select `id_responsavel`,`nome` from `extpj`.`responsavel`;", "select * from `extpj`.`aluno`;"});
-        this.pagamentoTable = new JTable(TableRequests.getTempData(),
+        this.pagamentoTable = new JTable(TableRequests.getResultsSetData(),
                 new Vector<>(Arrays.asList("ID RESPONSÁVEL", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO")));
         //this.pagamentoTable = new JTable(TableRequests.getRowsData(), new Object[]{"ID RESPONSÁVEL", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO"});
 
@@ -190,6 +190,7 @@ public class PagamentoPanel {
 
     private void updateTable() {
 
+
     }
 
 
@@ -228,9 +229,7 @@ public class PagamentoPanel {
     private void btnRegistrarActionEvent(ActionEvent evt) {
         try {
             TableRequests.requestTableInfo("select * from `extpj`.`pagamento`;");
-
-
-
+            updateTable();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -13,17 +13,17 @@ public class LoggerPanel extends JPanel implements Runnable {
 
     private JTextArea txtLog;
     private JScrollPane pnLog;
-    private final Dimension size;
     private RandomAccessFile logtemp, logsaved;
     private File file;
     private Thread logthread;
     private Logger log;
     private long lastModified = -1;
+    private final int UPS = 30;
     public LoggerPanel(){
+        Dimension size = new Dimension(LoginGui.WIDTH + 100, LoginGui.HEIGHT + 100);
         log = LoggerManager.getClassLog(LoggerPanel.class);
         this.setLayout(new GridLayout(1,0));
         log.info("CREATED MAIN LOGGER PANEL!\n");
-        this.size = new Dimension(LoginGui.WIDTH + 100, LoginGui.HEIGHT + 100);
         this.iniFile();
         this.iniTxtArea();
         this.iniPnArea();
@@ -104,7 +104,7 @@ public class LoggerPanel extends JPanel implements Runnable {
                 this.updateLog();
             } while (true);
         } catch (IOException e) {
-            log.info(e.getMessage());
+            //log.info(e.getMessage());
         }
 
     }

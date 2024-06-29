@@ -3,51 +3,43 @@ package com.extensionproject.app.gui.main.mainguicontents.pagamento;
 import com.extensionproject.app.connect.factoryconnection.FactoryConnection;
 import com.extensionproject.app.logger.LoggerManager;
 
-import java.sql.*;
+//import java.sql.*;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+
 import java.util.Vector;
 
 public class TableRequests {
 
-    private static Connection conn;
-    private static Statement stm;
-    private static Object[][] rowsData;
-    private static Vector<Vector<Object>> tempData;
-    private static Vector<ResultSet> resultSets;
+    private static Vector<Vector<Object>>[] resultsSetData;
     private static Vector<ResultSetMetaData> resultSetsMetaData;
-
 
     private static void tableRequest(String[] sqls){
 
         try {
-            conn = FactoryConnection.getConn();
-            resultSets = new Vector<>();
+            Vector<ResultSet> resultSets = new Vector<>();
             resultSetsMetaData = new Vector<>();
-            tempData = new Vector<>();
+            resultsSetData = new Vector[sqls.length];
 
             //RESULT SETS DOS SQL[], PRINCIPAL.
             for (int i = 0; i < sqls.length; i++) {
-                resultSets.add(conn.createStatement().executeQuery(sqls[i]));
+                resultSets.add(FactoryConnection.createStatement().executeQuery(sqls[i]));
                 resultSetsMetaData.add(resultSets.get(i).getMetaData());
+                LoggerManager.getClassLog(TableRequests.class).info("CREATING RESULT SETS FOR: " + resultSetsMetaData.get(i).getTableName(1));
             }
 
-            //TOTAL DE LINHAS E COLUNAS DOS RESULTS SET SQL[]
-            int totColumns = resultSetsMetaData.get(0).getColumnCount();
-            int rows = 0;
-            while (resultSets.get(0).next()) {
-                Vector<Object> row = new Vector<>();
-                for (int i = 0; i < totColumns; i++) {
-                    row.add(resultSets.get(0).getObject(i+1));
+            for (int i = 0; i < sqls.length; i++) {
+                int totColumns = resultSetsMetaData.get(i).getColumnCount();
+                resultsSetData[i] = new Vector<>();
+                while (resultSets.get(i).next()){
+                    Vector<Object> row = new Vector<>();
+                    for (int r = 0; r < totColumns; r++){
+                        row.add(resultSets.get(i).getObject(r+1));
+                    }
+                    resultsSetData[i].add(row);
                 }
-                tempData.add(row);
-                rows++;
             }
-//            rowsData = new Object[rows][totColumns];
-//            for (int l = 0; l < tempData.size(); l++) {
-//                for (int c = 0; c < tempData.get(l).size(); c++) {
-//                    rowsData[l][c] = tempData.get(0).get(c);
-//                }
-//            }
-
         } catch (SQLException e) {
             LoggerManager.getClassLog(TableRequests.class).info(e.getMessage());
             throw new RuntimeException(e);
@@ -56,8 +48,6 @@ public class TableRequests {
 
     public static void pagamentoTableRequest(String[] sql) {
         tableRequest(sql);
-        rowsData = new Object[tempData.size()][5];
-
         try {
             int[] nomesIndex = {0,0};
             for(int resultindex = 0; resultindex < 2; resultindex++) {
@@ -67,56 +57,102 @@ public class TableRequests {
                     }
                 }
             }
-            for (int l = 0; l < tempData.size(); l++) {
+            int resNext = 0;
+            int aluNext = 0;
+            for (int l = 0; l < resultsSetData[0].size(); l++) {
                 Object responsavel, aluno;
-                resultSets.get(1).next();
-                resultSets.get(2).next();
-                for (int c = 0; c < tempData.get(l).size(); c++) {
-                    switch(c){
-                        case 0:
-                            tempData.get(l).set(c, resultSets.get(1).getObject(1));
-                            break;
-                        case 1:
-                            responsavel = resultSets.get(1).getObject(nomesIndex[0]+1);
-                            tempData.get(l).set(c, responsavel);
-                            break;
-                        case 2:
-                            aluno = resultSets.get(2).getObject(nomesIndex[1]+1);
-                            tempData.get(l).add(tempData.get(l).size(), tempData.get(l).elementAt(c+1));
-                            tempData.get(l).set(c+1, tempData.get(l).elementAt(c));
-                            tempData.get(l).set(c, aluno);
-                            break;
+                while (resultsSetData[1].get(resNext).get(0) != resultsSetData[0].get(l).get(0)) {
+                    resNext++;
+                    if(resNext >= resultsSetData[1].size()){
+                        resNext = 0;
                     }
-
-                    rowsData[l][c] = tempData.get(l).get(c);
                 }
+                while (resultsSetData[2].get(aluNext).get(1) != resultsSetData[0].get(l).get(1)) {
+                    aluNext++;
+                    if(aluNext >= resultsSetData[2].size()){
+                        aluNext = 0;
+                    }
+                }
+                for (int c = 0; c < resultsSetData[0].get(l).size(); c++) {
+                      switch (c) {
+                          case 1:
+                              responsavel = resultsSetData[1].get(resNext).get(nomesIndex[0]);
+                              resultsSetData[0].get(l).set(c, responsavel);
+                              break;
+                          case 2:
+                              aluno = resultsSetData[2].get(resNext).get(nomesIndex[1]);
+                              resultsSetData[0].get(l).add(resultsSetData[0].get(l).size(), resultsSetData[0].get(l).get(c+1));
+                              resultsSetData[0].get(l).set(c+1, resultsSetData[0].get(l).get(c));
+                              resultsSetData[0].get(l).set(c, aluno);
+                              break;
+                      }
+                  }
+                    // FUNCIONAL, PORÉM CAUSA UM SOBREPESO DE CONSULTAS NO SERVIDOR PELO RESULTSET SCROLLABLE.
+//                while(resultSets.get(1).getObject(1) != resultsetsdata[0].get(l).get(0) /*tempData.get(l).get(0)*/) {
+//                        if (nextcontroller) {
+//                            resultSets.get(1).beforeFirst();
+//                            nextcontroller = false;
+//                        }
+//                    if (!resultSets.get(1).next()) {
+//                        resultSets.get(1).first();
+//                    }
+//                }
+//
+//                    //while (resultSets.get(2).getObject(1) != )
+//
+//                  while(resultSets.get(2).getObject(2) != tempData.get(l).get(3)) {
+//                      if(!resultSets.get(2).next()) {
+//                          resultSets.get(2).first();
+//                      }
+//                  }
+//
+//                //}
+//
+//                  for (int c = 0; c < tempData.get(l).size(); c++) {
+//                      switch (c) {
+//                          case 0:
+//                              //tempData.get(l).set(c, resultSets.get(1).getObject(1));
+//                              break;
+//                          case 1:
+//                              responsavel = resultSets.get(1).getObject(nomesIndex[0] + 1);
+//                              tempData.get(l).set(c, responsavel);
+//                              break;
+//                          case 2:
+//                              //aluno = resultSets.get(2).getObject(nomesIndex[1] + 1);
+//                              //tempData.get(l).add(tempData.get(l).size(), tempData.get(l).elementAt(c + 1));
+//                              //tempData.get(l).set(c + 1, tempData.get(l).elementAt(c));
+//                              //tempData.get(l).set(c, aluno);
+//                              break;
+//                      }
+//                      rowsData[l][c] = tempData.get(l).get(c);
+//                  }
             }
-
         } catch(SQLException e){
             LoggerManager.getClassLog(TableRequests.class).info(e.getMessage());
             throw new RuntimeException(e);
         } catch (ArrayIndexOutOfBoundsException e){
             LoggerManager.getClassLog(TableRequests.class).info(e.getMessage());
 
+        } finally {
+            try {
+                if (!FactoryConnection.getStatement().isClosed()){
+                    FactoryConnection.getStatement().close();
+                }
+            } catch (SQLException e) {
+                LoggerManager.getClassLog(TableRequests.class).info(e.getMessage() + " -> THERES NO CONNECTION BETWEEN THIS APP AND DB!");
+                throw new RuntimeException(e);
+            }
         }
 
     }
 
     public static void requestTableInfo(String sql) throws SQLException { //USANDO NO BOTAO
 
-        Connection conn = FactoryConnection.getConn();
-        stm = conn.createStatement();
-        ResultSet resultSet = stm.executeQuery(sql);
-        resultSet.next();
-        System.out.println(resultSet.getString(3));
-
+        FactoryConnection.createStatement().executeUpdate("insert into `extpj`.`pagamento` values (DEFAULT, 1, 1, 321.50, '2024-06-29');");
+        System.out.println(FactoryConnection.getStatement().isClosed());
     }
 
-    public static Object[][] getRowsData() {
-        return rowsData;
-    }
-
-    public static Vector<Vector<Object>> getTempData() {
-        return tempData;
+    public static Vector<Vector<Object>> getResultsSetData() {
+        return resultsSetData[0];
     }
 }
