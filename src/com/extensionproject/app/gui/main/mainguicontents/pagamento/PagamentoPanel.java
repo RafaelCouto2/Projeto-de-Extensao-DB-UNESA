@@ -1,8 +1,13 @@
 package com.extensionproject.app.gui.main.mainguicontents.pagamento;
 
 import com.extensionproject.app.general.Utils;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Vector;
 import java.util.function.Consumer;
 
 public class PagamentoPanel {
@@ -26,7 +31,7 @@ public class PagamentoPanel {
         this.startTxtFields();
         this.startBtns();
         this.startLbls();
-        this.actionEvents();
+        this.tableMouseListener();
     }
 
 
@@ -70,14 +75,19 @@ public class PagamentoPanel {
 
 
     private void startTable() {
-        TableRequests.pagamentoTableRequest();
-        this.pagamentoTable = new JTable(TableRequests.getRowsData(), TableRequests.getColumnsName());
+
+        TableRequests.pagamentoTableRequest(new String[] {"select `id_responsavel`,`id_alunoreferente`,`valor_mensal`,DATE_FORMAT(`data_pagamento`, '%d-%m-%Y') as `data_pagamento` from `extpj`.`pagamento`;",
+                "select `id_responsavel`,`nome` from `extpj`.`responsavel`;", "select * from `extpj`.`aluno`;"});
+        this.pagamentoTable = new JTable(TableRequests.getTempData(),
+                new Vector<>(Arrays.asList("ID RESPONSÁVEL", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO")));
+        //this.pagamentoTable = new JTable(TableRequests.getRowsData(), new Object[]{"ID RESPONSÁVEL", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO"});
+
         this.pagamentoTable.setDragEnabled(false);
         this.pagamentoTable.setBackground(new Color(227, 227, 227));
         this.pagamentoTable.setFont(Utils.jetmono);
         this.pagamentoTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        this.pagamentoTable.getColumn("ID").setMaxWidth(50);
-        this.pagamentoTable.getColumn("VALOR MENSAL").setMaxWidth(65);
+        this.pagamentoTable.getColumn("ID RESPONSÁVEL").setMaxWidth(50);
+        this.pagamentoTable.getColumn("VALOR").setMaxWidth(65);
         this.pagamentoTable.getColumn("DATA DO PAGAMENTO").setMaxWidth(100);
         this.pagamentoTable.getColumn("RESPONSÁVEL").setMaxWidth(180);
         this.pagamentoTable.getColumn("ALUNO REFERENTE").setMaxWidth(180);
@@ -95,8 +105,6 @@ public class PagamentoPanel {
             this.txtFields[i].setBackground(Color.gray.brighter());
         }
         Consumer<Integer> addfields = f -> {
-
-
             for(int i = 0; i < this.txtFields.length; i++){
                 this.mainpanel.add(this.txtFields[i], this.componentsGrid[ ((i == 4) ? 5 : i)]);
             }
@@ -111,6 +119,10 @@ public class PagamentoPanel {
             setText("<html>Registrar <br>pagamento</html>".toUpperCase());
             setEnabled(false);
             setVisible(false);
+            addActionListener(e -> {
+                btnRegistrarActionEvent(e);
+            });
+
         }};
         this.btnDeletar = new JButton(){{
             setFont(new Font("Unispace", Font.BOLD, 11));
@@ -130,7 +142,6 @@ public class PagamentoPanel {
                         } else txtFields[i].setBackground(Color.LIGHT_GRAY.brighter());
                         txtFields[i].setEditable(bool);
                     }
-
                 };
                 if (switchMode.isSelected()) {
                     b.accept(true);
@@ -209,9 +220,21 @@ public class PagamentoPanel {
     }
 
 
-    private void actionEvents() {
-        this.pagamentoTable.addMouseListener(new PagamentoTableActionEvents(this.pagamentoTable, this.txtFields));
+    private void tableMouseListener() {
+        this.pagamentoTable.addMouseListener(new TableMouseListenerEvents(this.pagamentoTable, this.txtFields));
 
     }
+
+    private void btnRegistrarActionEvent(ActionEvent evt) {
+        try {
+            TableRequests.requestTableInfo("select * from `extpj`.`pagamento`;");
+
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

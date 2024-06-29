@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class PagamentoTableActionEvents implements MouseListener {
+public class TableMouseListenerEvents implements MouseListener {
 
     private final JTable pgtable;
     private final JTextField[] txtfields;
-    public PagamentoTableActionEvents(JTable pgtable, JTextField[] txtfields){
+    public TableMouseListenerEvents(JTable pgtable, JTextField[] txtfields){
         this.pgtable = pgtable;
         this.txtfields = txtfields;
     }
@@ -19,10 +19,10 @@ public class PagamentoTableActionEvents implements MouseListener {
         for(int r = 0; r < 4; r++){
             if (r == 3) {
                 rsValue = this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString().substring(0,
-                        this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString().indexOf(","));
+                        this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString().indexOf("."));
 
                 cnValue = this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString().substring(
-                        this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString().indexOf(",") + 1);
+                        this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString().indexOf(".") + 1);
 
                 this.txtfields[r].setText(rsValue);
                 this.txtfields[r+1].setText(cnValue);

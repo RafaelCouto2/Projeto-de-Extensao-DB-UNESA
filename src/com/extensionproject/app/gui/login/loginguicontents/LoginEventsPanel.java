@@ -15,7 +15,7 @@ public class LoginEventsPanel {
 
         this.gui.getBtnLogin().addActionListener(e -> {
             //JOptionPane.showInputDialog("HEHEHE!");
-            FactoryConnection.connect(gui.getTxtLogin(), gui.getTxtSenha());
+            FactoryConnection.createConnection(gui.getTxtLogin(), gui.getTxtSenha());
             GuiLinker.getMainGui().setVisible(true);
             GuiLinker.getLoginGui().setVisible(false);
         });
