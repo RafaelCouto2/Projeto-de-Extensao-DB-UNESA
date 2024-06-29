@@ -14,12 +14,12 @@ public class MainGui extends JFrame {
     private JButton btnPagamento;
     private JLabel lblMenu;
     private JButton btnAluno;
+    public boolean canUpdate;
+    private final double timeUpdate = 1000000000.0 / 30;
 
     private static final int WIDTH = 800, HEIGHT = 600;
 
     public void initComponents(){
-
-
         this.btnEvnts();
         this.setContentPane(mainGui);
         this.mainGui.setBackground(Color.lightGray);
@@ -45,17 +45,19 @@ public class MainGui extends JFrame {
 
         this.btnPagamento.addActionListener(e -> {
             if (panelid != 1) {
-                pagamentoPanel = new PagamentoPanel(this.windowField);
                 panelid = 1;
-                this.repaint();
+                canUpdate = true;
+                updateScreen();
+                //this.repaint();
             }
         });
     }
 
     @Override
     public void paint(Graphics g) {
-
         super.paint(g);
+
+        this.updateScreen();
         this.drawRects(g);
         this.drawTexts(g);
         this.lblMenu.setOpaque(true);
@@ -63,6 +65,7 @@ public class MainGui extends JFrame {
         this.btnPagamento.repaint();
         this.btnAluno.repaint();
         this.lblMenu.repaint();
+        //System.out.println(this.windowField);
 
     }
 
@@ -80,8 +83,8 @@ public class MainGui extends JFrame {
 
                 break;
             case 1:
-                this.pagamentoPanel.drawTableRect();
-                this.pagamentoPanel.drawFieldsRect();
+                //this.pagamentoPanel.drawTableRect();
+                //this.pagamentoPanel.drawFieldsRect();
                 break;
         }
 
@@ -102,8 +105,35 @@ public class MainGui extends JFrame {
 
                 break;
         }
+    }
 
+    public void updateScreen () {
 
+        double timeUpdate = 1000000000.0 / 24;
+        long pt = System.nanoTime();
+        double deltaU = 0;
+        while(canUpdate){
+            long at = System.nanoTime();
+            deltaU += (at - pt) / timeUpdate;
+
+            if (deltaU > 1) {
+
+                switch (panelid){
+                    case 1:
+                        //this.windowField.setVisible(true);
+                        pagamentoPanel = new PagamentoPanel(this.windowField ,this);
+                        this.repaint();
+                        break;
+
+                }
+
+                //this.windowField.repaint();
+                //this.mainGui.repaint();
+                //this.repaint();
+                deltaU--;
+                canUpdate = false;
+            }
+        }
 
     }
 }

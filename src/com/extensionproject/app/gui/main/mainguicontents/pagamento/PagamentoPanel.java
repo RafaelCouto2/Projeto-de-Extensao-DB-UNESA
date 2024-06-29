@@ -1,6 +1,9 @@
 package com.extensionproject.app.gui.main.mainguicontents.pagamento;
 
+import com.extensionproject.app.connect.factoryconnection.FactoryConnection;
 import com.extensionproject.app.general.Utils;
+import com.extensionproject.app.gui.main.MainGui;
+import com.extensionproject.app.logger.LoggerManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +21,8 @@ public class PagamentoPanel {
     private JLabel[] lblInfo;
     private JTable pagamentoTable;
     private JScrollPane scrollPane;
-    private final JPanel mainpanel;
+    public JPanel mainpanel;
+    private MainGui maingui;
     private GridBagConstraints tableGrid;
     private GridBagConstraints[] componentsGrid;
 
@@ -35,10 +39,12 @@ public class PagamentoPanel {
     }
 
 
-    public PagamentoPanel(JPanel panel) {
+    public PagamentoPanel(JPanel panel, MainGui maingui) {
+        this.maingui = maingui;
         this.mainpanel = panel;
         this.iniComponents();
         this.mainpanel.setVisible(true);
+        System.out.println(this.mainpanel);
     }
 
 
@@ -119,9 +125,9 @@ public class PagamentoPanel {
             setText("<html>Registrar <br>pagamento</html>".toUpperCase());
             setEnabled(false);
             setVisible(false);
-            addActionListener(e -> {
-                btnRegistrarActionEvent(e);
-            });
+            addActionListener(e ->
+                btnRegistrarActionEvent(e)
+            );
 
         }};
         this.btnDeletar = new JButton(){{
@@ -190,7 +196,6 @@ public class PagamentoPanel {
 
     private void updateTable() {
 
-
     }
 
 
@@ -228,10 +233,18 @@ public class PagamentoPanel {
 
     private void btnRegistrarActionEvent(ActionEvent evt) {
         try {
-            TableRequests.requestTableInfo("select * from `extpj`.`pagamento`;");
-            updateTable();
+
+            FactoryConnection.createStatement().executeUpdate("insert into `extpj`.`pagamento` values (DEFAULT, 2, 1, 105.45, '2024-06-29');");
+            FactoryConnection.closeStatement();
+            //this.pagamentoTable.setVisible(false);
+            //this.pagamentoTable = null;
+            this.startTable();
+            this.maingui.canUpdate = true;
+            this.maingui.updateScreen();
+
+            //updateTable();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LoggerManager.getClassLog(PagamentoPanel.class).info(e.getCause());
         }
     }
 

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 
+import java.util.Objects;
 import java.util.Vector;
 
 public class TableRequests {
@@ -24,9 +25,9 @@ public class TableRequests {
 
             //RESULT SETS DOS SQL[], PRINCIPAL.
             for (int i = 0; i < sqls.length; i++) {
-                resultSets.add(FactoryConnection.createStatement().executeQuery(sqls[i]));
+                resultSets.add(Objects.requireNonNull(FactoryConnection.createStatement().executeQuery(sqls[i])));
                 resultSetsMetaData.add(resultSets.get(i).getMetaData());
-                LoggerManager.getClassLog(TableRequests.class).info("CREATING RESULT SETS FOR: " + resultSetsMetaData.get(i).getTableName(1));
+                LoggerManager.getClassLog(TableRequests.class).info(": CREATING RESULT SETS FOR: " + resultSetsMetaData.get(i).getTableName(1));
             }
 
             for (int i = 0; i < sqls.length; i++) {
@@ -42,7 +43,9 @@ public class TableRequests {
             }
         } catch (SQLException e) {
             LoggerManager.getClassLog(TableRequests.class).info(e.getMessage());
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage()){{LoggerManager.getClassLog(TableRequests.class).info(": RUNTIME EXCEPTION!");}};
+        } catch (NullPointerException e){
+            LoggerManager.getClassLog(TableRequests.class).info(e.getMessage() + ": STATEMENT IS NULL.");
         }
     }
 
@@ -140,7 +143,6 @@ public class TableRequests {
                 }
             } catch (SQLException e) {
                 LoggerManager.getClassLog(TableRequests.class).info(e.getMessage() + " -> THERES NO CONNECTION BETWEEN THIS APP AND DB!");
-                throw new RuntimeException(e);
             }
         }
 
@@ -148,11 +150,16 @@ public class TableRequests {
 
     public static void requestTableInfo(String sql) throws SQLException { //USANDO NO BOTAO
 
-        FactoryConnection.createStatement().executeUpdate("insert into `extpj`.`pagamento` values (DEFAULT, 1, 1, 321.50, '2024-06-29');");
-        System.out.println(FactoryConnection.getStatement().isClosed());
+        try {
+            FactoryConnection.createStatement().executeUpdate(sql);
+        } catch (NullPointerException e){
+            LoggerManager.getClassLog(TableRequests.class).info(": STATEMENT IS NULL.");
+        }
+        FactoryConnection.closeStatement();
     }
 
     public static Vector<Vector<Object>> getResultsSetData() {
         return resultsSetData[0];
     }
+
 }
