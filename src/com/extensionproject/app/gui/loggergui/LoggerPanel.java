@@ -20,7 +20,7 @@ public class LoggerPanel extends JPanel implements Runnable {
     private long lastModified = -1;
     private final int UPS = 30;
     public LoggerPanel(){
-        Dimension size = new Dimension(LoginGui.WIDTH + 100, LoginGui.HEIGHT + 100);
+        Dimension size = new Dimension(LoginGui.WIDTH + 200, LoginGui.HEIGHT + 150);
         log = LoggerManager.getClassLog(LoggerPanel.class);
         this.setLayout(new GridLayout(1,0));
         log.info("CREATED MAIN LOGGER PANEL!\n");
@@ -38,10 +38,12 @@ public class LoggerPanel extends JPanel implements Runnable {
         this.txtLog.setVisible(true);
         DefaultCaret caret = (DefaultCaret) this.txtLog.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        this.txtLog.setBackground(Color.DARK_GRAY);
+        this.txtLog.setBackground(new Color(30,31,34));
         this.txtLog.setFont(new Font("JetBrains Mono", Font.BOLD, 11));
         this.txtLog.setForeground(Color.lightGray);
         this.txtLog.setLineWrap(true);
+        this.txtLog.setEditable(false);
+        this.txtLog.setEditable(false);
 
     }
 
@@ -99,7 +101,6 @@ public class LoggerPanel extends JPanel implements Runnable {
     public void run() {
 
         try {
-            String linha = this.logtemp.readLine();
             do {
                 this.updateLog();
             } while (true);

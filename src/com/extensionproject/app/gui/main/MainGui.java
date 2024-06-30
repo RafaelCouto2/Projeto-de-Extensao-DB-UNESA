@@ -1,9 +1,13 @@
 package com.extensionproject.app.gui.main;
 
 import com.extensionproject.app.GuiLinker;
+import com.extensionproject.app.connect.factoryconnection.FactoryConnection;
 import com.extensionproject.app.gui.main.mainguicontents.pagamento.PagamentoPanel;
+import com.extensionproject.app.logger.LoggerManager;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
 public class MainGui extends JFrame {
     private JPanel mainGui;
@@ -21,7 +25,7 @@ public class MainGui extends JFrame {
     public void initComponents(){
         this.btnEvnts();
         this.setContentPane(mainGui);
-        this.mainGui.setBackground(Color.lightGray);
+        this.mainGui.setBackground(new Color(241, 239, 249));
         this.setSize(WIDTH, HEIGHT);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -37,20 +41,21 @@ public class MainGui extends JFrame {
     }
 
     private void btnEvnts() {
-        this.tempButton.addActionListener(e -> {
-            GuiLinker.getMainGui().setVisible(false);
-            GuiLinker.getLoginGui().setVisible(true);
-        });
+        //if(this.hasConnection()) {
+            this.tempButton.addActionListener(e -> {
+                GuiLinker.getMainGui().setVisible(false);
+                GuiLinker.getLoginGui().setVisible(true);
+            });
 
-        this.btnPagamento.addActionListener(e -> {
-            if (panelid != 1) {
-                panelid = 1;
-                canUpdate = true;
-                pagamentoPanel = new PagamentoPanel(this.windowField);
-                updateScreen();
-            }
-        });
-
+            this.btnPagamento.addActionListener(e -> {
+                if (panelid != 1 && this.hasConnection()) {
+                    panelid = 1;
+                    canUpdate = true;
+                    pagamentoPanel = new PagamentoPanel(this.windowField);
+                    updateScreen();
+                }
+            });
+        //}
     }
 
     @Override
@@ -60,7 +65,8 @@ public class MainGui extends JFrame {
         this.drawRects(g);
         this.drawTexts(g);
         this.lblMenu.setOpaque(true);
-        this.lblMenu.setBackground(new Color(75, 75, 75));
+        this.lblMenu.setBackground(new Color(255, 255, 255));
+        this.lblMenu.setForeground(new Color(30, 31, 34));
         this.btnPagamento.repaint(10);
         this.btnAluno.repaint(10);
         this.lblMenu.repaint(10);
@@ -68,13 +74,21 @@ public class MainGui extends JFrame {
     }
 
     private void drawRects(Graphics g){
-
-        g.setColor(new Color(166, 166, 166));
+//19, 19, 35
+        g.setColor(new Color(255, 255, 255));
         g.fillRect(10, 30, this.lblMenu.getWidth() + 60, this.getHeight() - 40);
-        g.setColor(new Color(75, 75, 75));
+        g.setColor(new Color(255, 255, 255));
         g.fillRect(11, 30, this.getWidth() - 20, this.lblMenu.getHeight() + 10);
-        g.setColor(new Color(1, 1, 1));
-        g.fillRect(this.lblMenu.getX() + 125, 30, 1, this.getHeight() - 40);
+        g.setColor(new Color(229, 229, 233));
+        g.fillRect(this.lblMenu.getX() + 125, 60 , 2, this.getHeight() - 40);
+        g.fillRect(this.lblMenu.getX() + 125,60,this.getWidth(),2);
+
+//        g.setColor(new Color(166, 166, 166));
+//        g.fillRect(10, 30, this.lblMenu.getWidth() + 60, this.getHeight() - 40);
+//        g.setColor(new Color(102, 196, 83));
+//        g.fillRect(11, 30, this.getWidth() - 20, this.lblMenu.getHeight() + 10);
+//        g.setColor(new Color(1, 1, 1));
+//        g.fillRect(this.lblMenu.getX() + 125, 30, 1, this.getHeight() - 40);
 
         switch (panelid){
             case -1:
@@ -89,7 +103,7 @@ public class MainGui extends JFrame {
     }
 
     private void drawTexts(Graphics g){
-        g.setColor(new Color(255,255,255));
+        g.setColor(new Color(66,66,66));
         g.setFont(new Font("Arial",Font.BOLD,12));
 
         switch (this.panelid){
@@ -126,6 +140,20 @@ public class MainGui extends JFrame {
                 }
                 deltaU--;
                 canUpdate = false;
+            }
+        }
+    }
+
+    private boolean hasConnection() {
+        if (FactoryConnection.getConn() == null) {
+            LoggerManager.getClassLog(FactoryConnection.class).info(": THERES NO CONNECTION BETWEEN APP AND DB.");
+            return false;
+        } else {
+            try {
+                return !FactoryConnection.getConn().isClosed();
+            } catch (SQLException e) {
+                LoggerManager.getClassLog(MainGui.class).info(": THERES NO CONNECTION BETWEEN APP AND DB.");
+                return false;
             }
         }
     }

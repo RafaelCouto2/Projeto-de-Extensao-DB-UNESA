@@ -20,7 +20,7 @@ public class PagamentoPanel {
     private JLabel[] lblInfo;
     private JTable pagamentoTable;
     private JScrollPane scrollPane;
-    public  JPanel mainpanel;
+    private  JPanel mainpanel;
     private GridBagConstraints tableGrid;
     private GridBagConstraints[] componentsGrid;
 
@@ -33,18 +33,20 @@ public class PagamentoPanel {
         this.startBtns();
         this.startLbls();
         this.tableMouseListener();
+        this.mainpanel.setBackground(new Color(241, 239, 249));
+
+        this.mainpanel.setVisible(true);
     }
 
     public PagamentoPanel(JPanel panel) {
         this.mainpanel = panel;
         this.iniComponents();
-        this.mainpanel.setVisible(true);
     }
 
     private void startDefaultGridBagConstraints() {
         this.tableGrid = new GridBagConstraints();
         this.tableGrid.fill = GridBagConstraints.BOTH;
-        this.tableGrid.insets = new Insets(5,5,10,52);
+        this.tableGrid.insets = new Insets(5,5,10,2);
         this.componentsGrid = new GridBagConstraints[13];
         for (int i = 0; i < 13; i++){
             this.componentsGrid[i] = new GridBagConstraints();
@@ -80,14 +82,20 @@ public class PagamentoPanel {
         //this.pagamentoTable = new JTable(TableRequests.getRowsData(), new Object[]{"ID RESPONSÁVEL", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO"});
 
         this.pagamentoTable.setDragEnabled(false);
-        this.pagamentoTable.setBackground(new Color(227, 227, 227));
+        this.pagamentoTable.setBackground(Color.white);
         this.pagamentoTable.setFont(Utils.jetmono);
         this.pagamentoTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        this.pagamentoTable.getColumn("ID RESPONSÁVEL").setMaxWidth(50);
-        this.pagamentoTable.getColumn("VALOR").setMaxWidth(65);
-        this.pagamentoTable.getColumn("DATA DO PAGAMENTO").setMaxWidth(100);
+        this.pagamentoTable.getColumn("ID RESPONSÁVEL").setMaxWidth(55);
+        this.pagamentoTable.getColumn("VALOR").setMaxWidth(60);
+        this.pagamentoTable.getColumn("DATA DO PAGAMENTO").setMaxWidth(140);
         this.pagamentoTable.getColumn("RESPONSÁVEL").setMaxWidth(180);
         this.pagamentoTable.getColumn("ALUNO REFERENTE").setMaxWidth(180);
+        this.pagamentoTable.setForeground(new Color(66,66,66));
+        this.pagamentoTable.setGridColor(new Color(210,208,216));
+        this.pagamentoTable.setRowHeight(20);
+        this.pagamentoTable.getTableHeader().setFont(Utils.jetmono);
+        this.pagamentoTable.getTableHeader().setForeground(Color.white);
+        this.pagamentoTable.getTableHeader().setBackground(new Color(16, 124, 65));
         this.pagamentoTable.setVisible(true);
     }
 
@@ -135,8 +143,11 @@ public class PagamentoPanel {
                     for (int i = 0; i < 5; i++) {
                         if(!bool) {
                             txtFields[i].setBackground(Color.gray.brighter());
-                        } else txtFields[i].setBackground(Color.LIGHT_GRAY.brighter());
+                        } else {
+                            txtFields[i].setBackground(Color.LIGHT_GRAY.brighter());
+                        }
                         txtFields[i].setEditable(bool);
+                        pagamentoTable.setEnabled(!bool);
                     }
                 };
                 if (switchMode.isSelected()) {
@@ -201,7 +212,7 @@ public class PagamentoPanel {
         this.scrollPane.add(this.pagamentoTable);
         this.scrollPane.setVisible(true);
         this.scrollPane.setViewportView(this.pagamentoTable);
-        this.scrollPane.setBackground(new Color(217, 126, 158));
+        this.scrollPane.setBackground(new Color(245, 245, 245));
         this.mainpanel.add(this.scrollPane, tableGrid);
     }
 
