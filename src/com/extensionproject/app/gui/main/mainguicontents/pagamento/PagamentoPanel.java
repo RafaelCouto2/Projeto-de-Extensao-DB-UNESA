@@ -234,7 +234,7 @@ public class PagamentoPanel {
     private void btnRegistrarActionEvent(ActionEvent evt) {
         try {
 
-            FactoryConnection.createStatement().executeUpdate("insert into `extpj`.`pagamento` values (DEFAULT, 2, 1, 105.45, '2024-06-29');");
+            FactoryConnection.createStatement().executeUpdate("insert into `extpj`.`pagamento` values (DEFAULT, 1, 2, 155.45, '2024-06-29');");
             FactoryConnection.closeStatement();
             LoggerManager.getClassLog(PagamentoPanel.class).info(evt.getWhen() + ": NOVO PAGAMENTO REGRISTRADO!");
             this.updateTable();

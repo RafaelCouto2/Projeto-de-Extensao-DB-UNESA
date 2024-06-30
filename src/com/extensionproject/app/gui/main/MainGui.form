@@ -82,12 +82,12 @@
       </component>
       <component id="72f33" class="javax.swing.JButton" binding="btnAluno">
         <constraints>
-          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-13881808"/>
           <borderPainted value="false"/>
-          <font name="Unispace" size="12" style="1"/>
+          <font name="Franklin Gothic Demi Cond" size="12" style="1"/>
           <foreground color="-2038299"/>
           <hideActionText value="false"/>
           <horizontalAlignment value="2"/>
@@ -114,7 +114,7 @@
           <background color="-13684688"/>
           <borderPainted value="false"/>
           <contentAreaFilled value="true"/>
-          <font name="Gill Sans MT Condensed" size="14" style="1"/>
+          <font name="Franklin Gothic Demi Cond" size="11" style="1"/>
           <foreground color="-2038301"/>
           <horizontalAlignment value="0"/>
           <horizontalTextPosition value="4"/>
