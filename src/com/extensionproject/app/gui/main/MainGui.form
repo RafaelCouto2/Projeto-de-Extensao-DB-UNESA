@@ -85,7 +85,7 @@
           <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <background color="-13881808"/>
+          <background color="-13332139"/>
           <borderPainted value="false"/>
           <font name="Franklin Gothic Demi Cond" size="12" style="1"/>
           <foreground color="-2038299"/>
@@ -111,14 +111,14 @@
           <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="1" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <background color="-13684688"/>
+          <background color="-13332139"/>
           <borderPainted value="false"/>
           <contentAreaFilled value="true"/>
           <font name="Franklin Gothic Demi Cond" size="11" style="1"/>
           <foreground color="-2038301"/>
           <horizontalAlignment value="0"/>
           <horizontalTextPosition value="4"/>
-          <icon value="imgs/money_table14x12.png"/>
+          <icon value="imgs/money_tableT313x.png"/>
           <iconTextGap value="0"/>
           <inheritsPopupMenu value="false"/>
           <selected value="false"/>

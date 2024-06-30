@@ -41,21 +41,20 @@ public class MainGui extends JFrame {
     }
 
     private void btnEvnts() {
-        //if(this.hasConnection()) {
-            this.tempButton.addActionListener(e -> {
-                GuiLinker.getMainGui().setVisible(false);
-                GuiLinker.getLoginGui().setVisible(true);
-            });
 
-            this.btnPagamento.addActionListener(e -> {
-                if (panelid != 1 && this.hasConnection()) {
-                    panelid = 1;
-                    canUpdate = true;
-                    pagamentoPanel = new PagamentoPanel(this.windowField);
-                    updateScreen();
-                }
-            });
-        //}
+        this.tempButton.addActionListener(e -> {
+            GuiLinker.getMainGui().setVisible(false);
+            GuiLinker.getLoginGui().setVisible(true);
+        });
+
+        this.btnPagamento.addActionListener(e -> {
+            if (panelid != 1 && this.hasConnection()) {
+                panelid = 1;
+                canUpdate = true;
+                pagamentoPanel = new PagamentoPanel(this.windowField);
+                updateScreen();
+            }
+        });
     }
 
     @Override
@@ -74,7 +73,7 @@ public class MainGui extends JFrame {
     }
 
     private void drawRects(Graphics g){
-//19, 19, 35
+
         g.setColor(new Color(255, 255, 255));
         g.fillRect(10, 30, this.lblMenu.getWidth() + 60, this.getHeight() - 40);
         g.setColor(new Color(255, 255, 255));
@@ -83,20 +82,14 @@ public class MainGui extends JFrame {
         g.fillRect(this.lblMenu.getX() + 125, 60 , 2, this.getHeight() - 40);
         g.fillRect(this.lblMenu.getX() + 125,60,this.getWidth(),2);
 
-//        g.setColor(new Color(166, 166, 166));
-//        g.fillRect(10, 30, this.lblMenu.getWidth() + 60, this.getHeight() - 40);
-//        g.setColor(new Color(102, 196, 83));
-//        g.fillRect(11, 30, this.getWidth() - 20, this.lblMenu.getHeight() + 10);
-//        g.setColor(new Color(1, 1, 1));
-//        g.fillRect(this.lblMenu.getX() + 125, 30, 1, this.getHeight() - 40);
-
         switch (panelid){
             case -1:
 
                 break;
             case 1:
-                this.pagamentoPanel.drawTableRect();
-                this.pagamentoPanel.drawFieldsRect();
+//                this.pagamentoPanel.drawTableRect();
+//                this.pagamentoPanel.drawFieldsRect();
+//                this.windowField.repaint();
                 break;
         }
 
