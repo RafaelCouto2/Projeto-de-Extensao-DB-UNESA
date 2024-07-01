@@ -1,6 +1,5 @@
 package com.extensionproject.app.connect.factoryconnection;
 
-import com.extensionproject.app.gui.main.mainguicontents.pagamento.TableRequests;
 import com.extensionproject.app.logger.LoggerManager;
 import org.apache.logging.log4j.core.Logger;
 
@@ -66,7 +65,7 @@ public class FactoryConnection {
                 logfactoryconnection.error(ex.getCause() + ": FAILED TO CLOSE STATEMENT.");
             }
             logfactoryconnection.error(e.getCause());
-            throw new RuntimeException(e){{LoggerManager.getClassLog(TableRequests.class).error(": RUNTIME EXCEPTION!");}};
+            throw new RuntimeException(e){{LoggerManager.getClassLog(FactoryConnection.class).error(": RUNTIME EXCEPTION!");}};
         }
     }
 

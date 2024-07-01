@@ -1,15 +1,20 @@
 package com.extensionproject.app.gui.main.mainguicontents.pagamento;
 
 import com.extensionproject.app.connect.factoryconnection.FactoryConnection;
+import com.extensionproject.app.domain.pagamento.Pagamentos;
+import com.extensionproject.app.general.TableRequests;
 import com.extensionproject.app.general.Utils;
 import com.extensionproject.app.logger.LoggerManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Vector;
 import java.util.function.Consumer;
 
@@ -18,12 +23,15 @@ public class PagamentoPanel {
     private JButton btnRegistrar, btnDeletar;
     private JCheckBox switchMode;
     private JTextField[] txtFields;
+    private JComboBox<String>[] cmbFields;
     private JLabel[] lblInfo;
     private JTable pagamentoTable;
     private JScrollPane scrollPane;
     private  JPanel mainpanel;
     private GridBagConstraints tableGrid;
     private GridBagConstraints[] componentsGrid;
+    private Consumer<Integer> resetcmbField;
+    private Pagamentos pagamento;
 
     private void iniComponents() {
         this.setLoyout();
@@ -31,9 +39,11 @@ public class PagamentoPanel {
         this.startTable();
         this.iniPn();
         this.startTxtFields();
+        this.startCmbFields();
         this.startBtns();
         this.startLbls();
         this.tableMouseListener();
+        this.pagamento = new Pagamentos();
         this.mainpanel.setBackground(new Color(241, 239, 249));
 
         this.mainpanel.setVisible(true);
@@ -78,7 +88,7 @@ public class PagamentoPanel {
 
         TableRequests.pagamentoTableRequest(new String[] {"select `id_pagamento`,`id_responsavel`,`id_alunoreferente`,`valor_mensal`,DATE_FORMAT(`data_pagamento`, '%d-%m-%Y') as `data_pagamento` from `extpj`.`pagamento`;",
                 "select `id_responsavel`,`nome` from `extpj`.`responsavel`;", "select * from `extpj`.`aluno`;"});
-        this.pagamentoTable = new JTable(TableRequests.getResultsSetData(),
+        this.pagamentoTable = new JTable(TableRequests.getResultsSetData(0),
                 new Vector<>(Arrays.asList("ID RESPONSÁVEL", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO")));
         //this.pagamentoTable = new JTable(TableRequests.getRowsData(), new Object[]{"ID RESPONSÁVEL", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO"});
 
@@ -114,6 +124,8 @@ public class PagamentoPanel {
             for(int i = 0; i < this.txtFields.length; i++){
                 this.mainpanel.add(this.txtFields[i], this.componentsGrid[ ((i == 4) ? 5 : i)]);
             }
+            txtFields[1].setVisible(false);
+            txtFields[2].setVisible(false);
         };
         addfields.accept(1);
     }
@@ -124,15 +136,14 @@ public class PagamentoPanel {
             setText("<html>Registrar <br>pagamento</html>".toUpperCase());
             setEnabled(false);
             setVisible(false);
-            addActionListener(e ->
-                btnRegistrarActionEvent(e)
-            );
-
+            setCursor(new Cursor(Cursor.HAND_CURSOR));
+            addActionListener(e -> btnRegistrarActionEvent(e));
         }};
         this.btnDeletar = new JButton(){{
             setFont(new Font("Unispace", Font.BOLD, 11));
             setText("<html>Deletar registro <br>de pagamento</html>\"".toUpperCase());
             addActionListener(e-> btnDeletarActionEvent(e));
+            setCursor(new Cursor(Cursor.HAND_CURSOR));
         }};
         this.switchMode = new JCheckBox(){{
             setText("<html>REGISTRAR<br>PAGAMENTOS?</html>");
@@ -143,14 +154,30 @@ public class PagamentoPanel {
                     btnDeletar.setEnabled(!bool);
                     btnDeletar.setVisible(!bool);
                     for (int i = 0; i < 5; i++) {
-                        if(!bool) {
-                            txtFields[i].setBackground(Color.gray.brighter());
+                        txtFields[i].setBackground( (!bool)? Color.gray.brighter(): Color.LIGHT_GRAY.brighter());
+                        txtFields[i].setText((bool && i >= 3)?"00":"");
+                        if(bool){
+                            if (i == 0) {
+                                txtFields[i].setText(String.valueOf(Integer.parseInt(pagamentoTable.getValueAt(
+                                        pagamentoTable.getRowCount() - 1, 0).toString()) + 1));
+                                cmbFields[i].setSelectedItem(null);
+                                cmbFields[i+1].setSelectedItem(null);
+                            }
+                            if (i < 2){
+                                cmbFields[i].setBackground(Color.LIGHT_GRAY.brighter());
+                            }
+                        } else if (i < 2) {
+                            cmbFields[i].setBackground(Color.gray.brighter());
                         } else {
-                            txtFields[i].setBackground(Color.LIGHT_GRAY.brighter());
+                            txtFields[0].setText("");
+                        }
+                        if(i < 2){
+                            cmbFields[i].setEditable(bool);
+                            cmbFields[i].setEnabled(bool);
                         }
                         txtFields[i].setEditable(bool);
-                        pagamentoTable.setEnabled(!bool);
                     }
+                    pagamentoTable.setEnabled(!bool);
                 };
                 if (switchMode.isSelected()) {
                     b.accept(true);
@@ -158,6 +185,7 @@ public class PagamentoPanel {
                     b.accept(false);
                 }
             });
+            setCursor(new Cursor(Cursor.HAND_CURSOR));
         }};
         Consumer<Integer> addbtns = lamb -> {
             this.mainpanel.add(this.btnRegistrar, this.componentsGrid[4]);
@@ -196,11 +224,39 @@ public class PagamentoPanel {
         addlbls.accept(1);
     }
 
-    private void updateTable() {
-        this.startTable();
-        this.tableMouseListener();
-        this.scrollPane.add(this.pagamentoTable);
-        this.scrollPane.setViewportView(this.pagamentoTable);
+    private void startCmbFields(){
+        this.cmbFields = new JComboBox[2];
+        for (int l = 0; l < 2; l++) {
+            int cmbIndx = l;
+            this.cmbFields[l] = new JComboBox<>(){{
+                for (int i = 0; i < TableRequests.getResultsSetData(cmbIndx+1).size(); i++){
+                    //if(!getItemAt(i))
+                    addItem((String) TableRequests.getResultsSetData(cmbIndx+1).get(i).get( (cmbIndx == 0? 1:2)));
+                    setSelectedItem(null);
+                    setEditable(false);
+                    setEnabled(false);
+                    setBackground(Color.gray.brighter());
+                    setCursor(new Cursor(Cursor.HAND_CURSOR));
+                }
+            }};
+            this.resetcmbField = (reset) -> {
+                switch (reset){
+                    case 0:
+
+                        break;
+                    case 1:
+                        this.cmbFields[1].removeAllItems();
+                        for(int i = 0; i < TableRequests.getResultsSetData(2).size(); i++){
+                            this.cmbFields[1].addItem((String) TableRequests.getResultsSetData(2).get(i).get(2));
+                        }
+                        this.cmbFields[1].setSelectedItem(null);
+                        break;
+                }
+            };
+        this.mainpanel.add(this.cmbFields[cmbIndx], this.componentsGrid[cmbIndx+1]);
+        }
+        this.cmbFields[0].addItemListener(this::cmbResponsavelItemListener);
+        this.cmbFields[1].addItemListener(this::cmbAlunoItemListener);
     }
 
     private void iniPn() {
@@ -218,6 +274,14 @@ public class PagamentoPanel {
         this.mainpanel.add(this.scrollPane, tableGrid);
     }
 
+    private void updateTable() {
+        this.startTable();
+        this.tableMouseListener();
+        //this.startCmbFields();
+        this.scrollPane.add(this.pagamentoTable);
+        this.scrollPane.setViewportView(this.pagamentoTable);
+    }
+
     public void drawTableRect() {
         this.mainpanel.getGraphics().drawRect(this.scrollPane.getX(), this.scrollPane.getY(),
                 this.scrollPane.getWidth(), this.scrollPane.getHeight());
@@ -229,29 +293,83 @@ public class PagamentoPanel {
     }
 
     private void tableMouseListener() {
-        this.pagamentoTable.addMouseListener(new TableMouseListenerEvents(this.pagamentoTable, this.txtFields));
+        this.pagamentoTable.addMouseListener(new TableMouseListenerEvents(this.pagamentoTable, this.txtFields, this.cmbFields));
+
+    }
+
+    private boolean ignoreFireEvent;
+    private void cmbResponsavelItemListener(ItemEvent e){
+        this.ignoreFireEvent = true;
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            if (e.getSource() == (this.cmbFields[0])) {
+                this.resetcmbField.accept(1);
+                for (int i = 0; i < TableRequests.getResultsSetData(1).size(); i++) {
+                    if (Objects.equals(this.cmbFields[0].getSelectedItem(), TableRequests.getResultsSetData(1).get(i).get(1))) {
+                        for (int c = 0; c < TableRequests.getResultsSetData(2).size(); c++) {
+                            if (!TableRequests.getResultsSetData(2).get(c).get(0).equals(
+                                    TableRequests.getResultsSetData(1).get(i).get(0))) {
+                                this.cmbFields[1].removeItem(TableRequests.getResultsSetData(2).get(c).get(2));
+
+                            }
+                        }
+                        this.pagamento.setId_responsavel(TableRequests.getResultsSetData(1).get(i).get(0).toString());
+                    }
+                }
+            }
+        }
+        this.cmbFields[1].dispatchEvent(e);
+        this.ignoreFireEvent = false;
+    }
+
+    private void cmbAlunoItemListener(ItemEvent i){
+        if(!ignoreFireEvent) {
+            if (i.getStateChange() == ItemEvent.SELECTED) {
+                if (i.getSource() == this.cmbFields[1]) {
+                    for(int l = 0; l < TableRequests.getResultsSetData(1).size(); l++) {
+                        for (int c = 0; c < TableRequests.getResultsSetData(2).size(); c++) {
+                            if (TableRequests.getResultsSetData(2).get(c).get(2) == this.cmbFields[1].getSelectedItem() &&
+                                    TableRequests.getResultsSetData(2).get(c).get(0) == TableRequests.getResultsSetData(1).get(l).get(0)) {
+                                System.out.println(TableRequests.getResultsSetData(2).get(c).get(2));
+                                this.pagamento.setId_alunoreferente(TableRequests.getResultsSetData(2).get(c));
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
     }
 
     private void btnRegistrarActionEvent(ActionEvent evt) {
-        try (Statement statement = FactoryConnection.createStatement()) {
+        boolean txtFilled = false;
+        for (JTextField txtField : txtFields) {
+            txtFilled = !txtField.getText().isBlank();
+        }
+        if(txtFilled) {
+            try (Statement statement = FactoryConnection.createStatement()) {
 
-            statement.executeUpdate("insert into `extpj`.`pagamento` values (DEFAULT, 1, 2, 155.45, '2024-06-29');");
-            //FactoryConnection.closeStatement();
-            LoggerManager.getClassLog(PagamentoPanel.class).info(evt.getWhen() + ": NOVO PAGAMENTO REGRISTRADO!");
-            this.updateTable();
-        } catch (SQLException e) {
-            LoggerManager.getClassLog(PagamentoPanel.class).info(evt.getWhen() + ": NÃO FOI POSSÍVEL REGISTRAR UM NOVO PAGAMENTO.");
-            LoggerManager.getClassLog(PagamentoPanel.class).info(e.getCause());
+
+                statement.executeUpdate("insert into `extpj`.`pagamento` values (DEFAULT, 1, 2, 155.45, '2024-06-29');");
+                //FactoryConnection.closeStatement();
+                LoggerManager.getClassLog(PagamentoPanel.class).info(": NOVO PAGAMENTO REGRISTRADO!");
+                this.updateTable();
+            } catch (SQLException e) {
+                LoggerManager.getClassLog(PagamentoPanel.class).info(": NÃO FOI POSSÍVEL REGISTRAR UM NOVO PAGAMENTO.");
+            }
         }
     }
 
     private void btnDeletarActionEvent(ActionEvent evt){
-        try (Statement statement = FactoryConnection.createStatement()) {
 
+        if (TableMouseListenerEvents.hasSelected()) {
+            try (Statement statement = FactoryConnection.createStatement()) {
+                statement.executeUpdate("delete from `extpj`.`pagamento` where `id_pagamento` = " + this.txtFields[0].getText() + ";");
+                this.updateTable();
+                LoggerManager.getClassLog(PagamentoPanel.class).info(": REGISTRO DE PAGAMENTO DELETADO COM SUCESSO!");
+            } catch (SQLException e) {
+                LoggerManager.getClassLog(PagamentoPanel.class).error(e.getMessage());
+            }
+        } else LoggerManager.getClassLog(PagamentoPanel.class).error(": NÃO FOI POSSÍVEL DELETAR O REGISTRO DE PAGAMENTO.");
 
-        } catch (SQLException e){
-
-        }
     }
 }
