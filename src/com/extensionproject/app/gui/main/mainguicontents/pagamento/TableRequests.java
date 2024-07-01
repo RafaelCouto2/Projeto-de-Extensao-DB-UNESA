@@ -64,13 +64,14 @@ public class TableRequests {
             int aluNext = 0;
             for (int l = 0; l < resultsSetData[0].size(); l++) {
                 Object responsavel, aluno;
-                while (resultsSetData[1].get(resNext).get(0) != resultsSetData[0].get(l).get(0)) {
+                while (resultsSetData[1].get(resNext).get(0) != resultsSetData[0].get(l).get(1)) {
                     resNext++;
                     if(resNext >= resultsSetData[1].size()){
                         resNext = 0;
                     }
                 }
-                while (resultsSetData[2].get(aluNext).get(1) != resultsSetData[0].get(l).get(1)) {
+                while (resultsSetData[2].get(aluNext).get(1) != resultsSetData[0].get(l).get(2) || resultsSetData[2].get(aluNext).get(0) != resultsSetData[0].get(l).get(1)) {
+                    //resultsSetData[1].get(resNext).get(0) <- Mesmo que resultsSetData[0].get(l).get(1)
                     aluNext++;
                     if(aluNext >= resultsSetData[2].size()){
                         aluNext = 0;
@@ -83,9 +84,10 @@ public class TableRequests {
                               resultsSetData[0].get(l).set(c, responsavel);
                               break;
                           case 2:
-                              aluno = resultsSetData[2].get(resNext).get(nomesIndex[1]);
-                              resultsSetData[0].get(l).add(resultsSetData[0].get(l).size(), resultsSetData[0].get(l).get(c+1));
-                              resultsSetData[0].get(l).set(c+1, resultsSetData[0].get(l).get(c));
+                              aluno = resultsSetData[2].get(aluNext).get(nomesIndex[1]);
+                              //resultsSetData[0].get(l).add(resultsSetData[0].get(l).size(), resultsSetData[0].get(l).get(c+1));
+                              //System.out.println(resultsSetData[0].get(l).get(c+1));
+                              //resultsSetData[0].get(l).set(c+1, resultsSetData[0].get(l).get(c+1));
                               resultsSetData[0].get(l).set(c, aluno);
                               break;
                       }

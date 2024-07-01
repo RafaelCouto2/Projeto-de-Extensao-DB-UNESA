@@ -76,7 +76,7 @@ public class PagamentoPanel {
 
     private void startTable() {
 
-        TableRequests.pagamentoTableRequest(new String[] {"select `id_responsavel`,`id_alunoreferente`,`valor_mensal`,DATE_FORMAT(`data_pagamento`, '%d-%m-%Y') as `data_pagamento` from `extpj`.`pagamento`;",
+        TableRequests.pagamentoTableRequest(new String[] {"select `id_pagamento`,`id_responsavel`,`id_alunoreferente`,`valor_mensal`,DATE_FORMAT(`data_pagamento`, '%d-%m-%Y') as `data_pagamento` from `extpj`.`pagamento`;",
                 "select `id_responsavel`,`nome` from `extpj`.`responsavel`;", "select * from `extpj`.`aluno`;"});
         this.pagamentoTable = new JTable(TableRequests.getResultsSetData(),
                 new Vector<>(Arrays.asList("ID RESPONSÁVEL", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO")));
