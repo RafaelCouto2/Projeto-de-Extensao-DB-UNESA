@@ -327,17 +327,17 @@ public class PagamentoPanel {
                 if (i.getSource() == this.cmbFields[1]) {
                     for(int l = 0; l < TableRequests.getResultsSetData(1).size(); l++) {
                         for (int c = 0; c < TableRequests.getResultsSetData(2).size(); c++) {
-                            if (TableRequests.getResultsSetData(2).get(c).get(2) == this.cmbFields[1].getSelectedItem() &&
+                            if (TableRequests.getResultsSetData(2).get(c).get(2).equals(this.cmbFields[1].getSelectedItem()) &&
                                     TableRequests.getResultsSetData(2).get(c).get(0) == TableRequests.getResultsSetData(1).get(l).get(0)) {
-                                System.out.println(TableRequests.getResultsSetData(2).get(c).get(2));
-                                this.pagamento.setId_alunoreferente(TableRequests.getResultsSetData(2).get(c));
+
+                                this.pagamento.setId_alunoreferente(TableRequests.getResultsSetData(2).get(c).get(1).toString());
                             }
                         }
                     }
+
                 }
             }
         }
-
     }
 
     private void btnRegistrarActionEvent(ActionEvent evt) {
