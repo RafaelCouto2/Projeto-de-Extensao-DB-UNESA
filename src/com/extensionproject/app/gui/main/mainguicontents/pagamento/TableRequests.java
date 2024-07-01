@@ -42,10 +42,10 @@ public class TableRequests {
                 }
             }
         } catch (SQLException e) {
-            LoggerManager.getClassLog(TableRequests.class).info(e.getMessage());
-            throw new RuntimeException(e.getMessage()){{LoggerManager.getClassLog(TableRequests.class).info(": RUNTIME EXCEPTION!");}};
+            LoggerManager.getClassLog(TableRequests.class).error(e.getMessage());
+            throw new RuntimeException(e.getMessage()){{LoggerManager.getClassLog(TableRequests.class).error(": RUNTIME EXCEPTION!");}};
         } catch (NullPointerException e){
-            LoggerManager.getClassLog(TableRequests.class).info(e.getMessage() + ": STATEMENT IS NULL.");
+            LoggerManager.getClassLog(TableRequests.class).error(e.getMessage() + ": STATEMENT IS NULL.");
         }
     }
 
@@ -131,10 +131,10 @@ public class TableRequests {
 //                  }
             }
         } catch(SQLException e){
-            LoggerManager.getClassLog(TableRequests.class).info(e.getMessage());
+            LoggerManager.getClassLog(TableRequests.class).error(e.getMessage());
             throw new RuntimeException(e);
         } catch (ArrayIndexOutOfBoundsException e){
-            LoggerManager.getClassLog(TableRequests.class).info(e.getMessage());
+            LoggerManager.getClassLog(TableRequests.class).error(e.getMessage());
 
         } finally {
             try {
@@ -142,7 +142,7 @@ public class TableRequests {
                     FactoryConnection.getStatement().close();
                 }
             } catch (SQLException e) {
-                LoggerManager.getClassLog(TableRequests.class).info(e.getMessage() + " -> THERES NO CONNECTION BETWEEN THIS APP AND DB!");
+                LoggerManager.getClassLog(TableRequests.class).error(e.getMessage() + " -> THERES NO CONNECTION BETWEEN THIS APP AND DB!");
             }
         }
 
@@ -153,7 +153,7 @@ public class TableRequests {
         try {
             FactoryConnection.createStatement().executeUpdate(sql);
         } catch (NullPointerException e){
-            LoggerManager.getClassLog(TableRequests.class).info(": STATEMENT IS NULL.");
+            LoggerManager.getClassLog(TableRequests.class).error(": STATEMENT IS NULL.");
         }
         FactoryConnection.closeStatement();
     }

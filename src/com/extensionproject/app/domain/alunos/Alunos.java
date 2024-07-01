@@ -6,7 +6,7 @@ public class Alunos {
     private String nome, dt_nascimento, telefone;
     private char sexo;
 
-    public Alunos(){
+    public Alunos(String nome, int id_aluno){
 
 
 
