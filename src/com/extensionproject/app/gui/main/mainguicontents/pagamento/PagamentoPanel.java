@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Vector;
 import java.util.function.Consumer;
@@ -131,6 +132,7 @@ public class PagamentoPanel {
         this.btnDeletar = new JButton(){{
             setFont(new Font("Unispace", Font.BOLD, 11));
             setText("<html>Deletar registro <br>de pagamento</html>\"".toUpperCase());
+            addActionListener(e-> btnDeletarActionEvent(e));
         }};
         this.switchMode = new JCheckBox(){{
             setText("<html>REGISTRAR<br>PAGAMENTOS?</html>");
@@ -232,15 +234,24 @@ public class PagamentoPanel {
     }
 
     private void btnRegistrarActionEvent(ActionEvent evt) {
-        try {
+        try (Statement statement = FactoryConnection.createStatement()) {
 
-            FactoryConnection.createStatement().executeUpdate("insert into `extpj`.`pagamento` values (DEFAULT, 1, 2, 155.45, '2024-06-29');");
-            FactoryConnection.closeStatement();
+            statement.executeUpdate("insert into `extpj`.`pagamento` values (DEFAULT, 1, 2, 155.45, '2024-06-29');");
+            //FactoryConnection.closeStatement();
             LoggerManager.getClassLog(PagamentoPanel.class).info(evt.getWhen() + ": NOVO PAGAMENTO REGRISTRADO!");
             this.updateTable();
         } catch (SQLException e) {
             LoggerManager.getClassLog(PagamentoPanel.class).info(evt.getWhen() + ": NÃO FOI POSSÍVEL REGISTRAR UM NOVO PAGAMENTO.");
             LoggerManager.getClassLog(PagamentoPanel.class).info(e.getCause());
+        }
+    }
+
+    private void btnDeletarActionEvent(ActionEvent evt){
+        try (Statement statement = FactoryConnection.createStatement()) {
+
+
+        } catch (SQLException e){
+
         }
     }
 }

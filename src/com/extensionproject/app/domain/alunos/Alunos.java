@@ -6,9 +6,9 @@ public class Alunos {
     private String nome, dt_nascimento, telefone;
     private char sexo;
 
-    public Alunos(String nome, int id_aluno){
-
-
+    public Alunos (int id_responsavel, int id_aluno, String nome, String telefone, char sexo, String data) {
+        this.id_aluno = id_aluno;
+        this.nome = nome;
 
     }
 

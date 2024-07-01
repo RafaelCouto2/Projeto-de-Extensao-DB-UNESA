@@ -6,7 +6,6 @@ import org.apache.logging.log4j.core.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.SQLTimeoutException;
 import java.sql.Statement;
 
 public class FactoryConnection {
@@ -35,9 +34,9 @@ public class FactoryConnection {
                     logconnectionmanager.info(": CONNECTION CLOSED.");
                 }
             } catch (SQLException ex) {
-                logfactoryconnection.info(ex.getCause() + ": FAILED TO CLOSE CONNECTION.");
+                logfactoryconnection.error(ex.getCause() + ": FAILED TO CLOSE CONNECTION.");
             }
-            logfactoryconnection.info(e.getCause());
+            logfactoryconnection.error(e.getCause());
             throw new RuntimeException(e);
         }
     }
@@ -46,7 +45,7 @@ public class FactoryConnection {
         try {
             return ConnectionManager.getConnection(usern, passw);
         } catch (SQLException e) {
-            logconnectionmanager.info(e.getMessage());
+            logconnectionmanager.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -57,17 +56,17 @@ public class FactoryConnection {
             logfactoryconnection.info(": STATEMENT READY.");
             return statement;
         } catch (SQLException e) {
-            logfactoryconnection.info(": FAILED TO CREATE STATEMENT!");
+            logfactoryconnection.error(": FAILED TO CREATE STATEMENT!");
             try {
                 if (!statement.isClosed()) {
                     statement.close();
                     logfactoryconnection.info(FactoryConnection.class + ": STATEMENT CLOSED.");
                 }
                 } catch (SQLException ex) {
-                logfactoryconnection.info(ex.getCause() + ": FAILED TO CLOSE STATEMENT.");
+                logfactoryconnection.error(ex.getCause() + ": FAILED TO CLOSE STATEMENT.");
             }
-            logfactoryconnection.info(e.getCause());
-            throw new RuntimeException(e){{LoggerManager.getClassLog(TableRequests.class).info(": RUNTIME EXCEPTION!");}};
+            logfactoryconnection.error(e.getCause());
+            throw new RuntimeException(e){{LoggerManager.getClassLog(TableRequests.class).error(": RUNTIME EXCEPTION!");}};
         }
     }
 
@@ -83,7 +82,7 @@ public class FactoryConnection {
         try {
             if(!statement.isClosed()) statement.close();
         } catch (SQLException e) {
-            logfactoryconnection.info(e.getCause() + ": FAILED TO CLOSE STATEMENT!");
+            logfactoryconnection.error(e.getCause() + ": FAILED TO CLOSE STATEMENT!");
         }
     }
 }
