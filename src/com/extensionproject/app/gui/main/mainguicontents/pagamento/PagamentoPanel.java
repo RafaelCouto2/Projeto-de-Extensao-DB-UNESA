@@ -5,11 +5,23 @@ import com.extensionproject.app.domain.pagamento.Pagamentos;
 import com.extensionproject.app.general.TableRequests;
 import com.extensionproject.app.general.Utils;
 import com.extensionproject.app.logger.LoggerManager;
+import org.apache.logging.log4j.core.appender.FileManager;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.swing.*;
+import javax.swing.table.TableModel;
 import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
@@ -92,7 +104,7 @@ public class PagamentoPanel {
         TableRequests.pagamentoTableRequest(new String[] {"select `id_pagamento`,`id_responsavel`,`id_alunoreferente`,`valor_mensal`,DATE_FORMAT(`data_pagamento`, '%d/%m/%Y') as `data_pagamento` from `extpj`.`pagamento`;",
                 "select `id_responsavel`,`nome` from `extpj`.`responsavel`;", "select * from `extpj`.`aluno`;"});
         this.pagamentoTable = new JTable(TableRequests.getResultsSetData(0),
-                new Vector<>(Arrays.asList("ID PAGAMENTO", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO")));
+                new Vector<>(Arrays.asList("ID   ", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO")));
         //this.pagamentoTable = new JTable(TableRequests.getRowsData(), new Object[]{"ID RESPONSÁVEL", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO"});
         for(int i = 0; i < this.pagamentoTable.getRowCount(); i++) {
             for (int l = 0; l < TableRequests.getResultsSetData(1).size(); l++) {
@@ -105,7 +117,7 @@ public class PagamentoPanel {
         this.pagamentoTable.setBackground(Color.white);
         this.pagamentoTable.setFont(Utils.jetmono);
         this.pagamentoTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        this.pagamentoTable.getColumn("ID PAGAMENTO").setMaxWidth(55);
+        this.pagamentoTable.getColumn("ID   ").setMaxWidth(55);
         this.pagamentoTable.getColumn("VALOR").setMaxWidth(60);
         this.pagamentoTable.getColumn("DATA DO PAGAMENTO").setMaxWidth(140);
         this.pagamentoTable.getColumn("RESPONSÁVEL").setMaxWidth(180);
@@ -368,6 +380,79 @@ public class PagamentoPanel {
                     }
                 }
             }
+        }
+    }
+
+    private void createExcelTable(){
+        try(Workbook wb = new XSSFWorkbook()){
+            Files.deleteIfExists(Path.of(".//tabelas//tabela_de_pagamentos.xlsx"));
+            File filexlsx = new File(".//tabelas//tabela_de_pagamentos.xlsx");
+
+            Sheet sheet = wb.createSheet("Sheet1");
+
+            CellStyle style = wb.createCellStyle();
+            CellStyle stylerow = wb.createCellStyle();
+            style.setBorderBottom(BorderStyle.THIN);
+            style.setBorderLeft(BorderStyle.THIN);
+            style.setBorderRight(BorderStyle.THIN);
+            style.setBorderTop(BorderStyle.THIN);
+            style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            style.setFillForegroundColor(IndexedColors.GREEN.getIndex());
+            style.setFillBackgroundColor(IndexedColors.WHITE.getIndex());
+            style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+            org.apache.poi.ss.usermodel.Font font = wb.createFont();
+            font.setFontName("JetBrains Mono");
+            font.setFontHeightInPoints((short) 10);
+            font.setBold(true);
+            font.setColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+            style.setFont(font);
+            style.setAlignment(HorizontalAlignment.CENTER);
+            style.setVerticalAlignment(VerticalAlignment.CENTER);
+
+            org.apache.poi.ss.usermodel.Font fontrow = wb.createFont();
+            fontrow.setFontName("JetBrains Mono");
+            fontrow.setFontHeightInPoints((short) 9);
+            fontrow.setBold(true);
+            fontrow.setColor(HSSFColor.HSSFColorPredefined.GREY_80_PERCENT.getIndex());
+            stylerow.setFont(fontrow);
+            stylerow.setBorderBottom(BorderStyle.THIN);
+            stylerow.setBorderLeft(BorderStyle.THIN);
+            stylerow.setBorderRight(BorderStyle.THIN);
+            stylerow.setBorderTop(BorderStyle.THIN);
+            stylerow.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            stylerow.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            stylerow.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            stylerow.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            stylerow.setAlignment(HorizontalAlignment.LEFT);
+
+            Row row = sheet.createRow(1);
+            TableModel model = this.pagamentoTable.getModel();
+            Row header = sheet.createRow(0);
+
+            //CRIAÇÃO DOS HEADINGS DE COLUNAS DA TABELA EXCEL. PARA CADA COLUNA, CRIA-SE UMA EXCEL.
+            for(int headings = 0; headings < model.getColumnCount(); headings++){
+                header.createCell(headings).setCellValue(this.pagamentoTable.getColumnName(headings));
+                header.getCell(headings).setCellStyle(style);
+                sheet.autoSizeColumn(headings);
+            }
+            for(int rows = 0; rows < model.getRowCount(); rows++){
+                for(int columns = 0; columns < this.pagamentoTable.getColumnCount(); columns++){
+                    if(columns == 0){
+                        row.createCell(columns);
+                        row.getCell(columns).setCellValue(Double.parseDouble(this.pagamentoTable.getValueAt(rows, columns).toString()));
+
+                    } else {
+                        row.createCell(columns).setCellValue(this.pagamentoTable.getValueAt(rows, columns).toString());
+                    }
+                    row.getCell(columns).setCellStyle(stylerow);
+                    sheet.autoSizeColumn(columns);
+                }
+                row = sheet.createRow((rows + 2));
+            }
+            wb.write(new FileOutputStream(filexlsx));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
