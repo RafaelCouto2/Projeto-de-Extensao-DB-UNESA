@@ -2,6 +2,7 @@ package com.extensionproject.app.gui.main.mainguicontents.pagamento;
 
 import com.extensionproject.app.connect.factoryconnection.FactoryConnection;
 import com.extensionproject.app.domain.pagamento.Pagamentos;
+import com.extensionproject.app.domain.responsavel.Responsaveis;
 import com.extensionproject.app.general.TableRequests;
 import com.extensionproject.app.general.Utils;
 import com.extensionproject.app.logger.LoggerManager;
@@ -13,9 +14,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Vector;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class PagamentoPanel {
@@ -23,7 +22,7 @@ public class PagamentoPanel {
     private JButton btnRegistrar, btnDeletar;
     private JCheckBox switchMode;
     private JTextField[] txtFields;
-    private JComboBox<String>[] cmbFields;
+    private JComboBox<Object>[] cmbFields;
     private JLabel[] lblInfo;
     private JTable pagamentoTable;
     private JScrollPane scrollPane;
@@ -228,10 +227,12 @@ public class PagamentoPanel {
         this.cmbFields = new JComboBox[2];
         for (int l = 0; l < 2; l++) {
             int cmbIndx = l;
-            this.cmbFields[l] = new JComboBox<>(){{
+            this.cmbFields[l] = new JComboBox<Object>(){{
                 for (int i = 0; i < TableRequests.getResultsSetData(cmbIndx+1).size(); i++){
-                    //if(!getItemAt(i))
-                    addItem((String) TableRequests.getResultsSetData(cmbIndx+1).get(i).get( (cmbIndx == 0? 1:2)));
+//                    Responsaveis res = new Responsaveis();
+//                    res.setNome("");
+                    addItem(TableRequests.getResultsSetData(cmbIndx+1).get(i).get( (cmbIndx == 0)? 1:2));
+
                     setSelectedItem(null);
                     setEditable(false);
                     setEnabled(false);
@@ -247,7 +248,7 @@ public class PagamentoPanel {
                     case 1:
                         this.cmbFields[1].removeAllItems();
                         for(int i = 0; i < TableRequests.getResultsSetData(2).size(); i++){
-                            this.cmbFields[1].addItem((String) TableRequests.getResultsSetData(2).get(i).get(2));
+                            this.cmbFields[1].addItem(TableRequests.getResultsSetData(2).get(i).get(2));
                         }
                         this.cmbFields[1].setSelectedItem(null);
                         break;
@@ -302,18 +303,48 @@ public class PagamentoPanel {
         this.ignoreFireEvent = true;
         if (e.getStateChange() == ItemEvent.SELECTED) {
             if (e.getSource() == (this.cmbFields[0])) {
+                int[] responsavelIndx = new int[TableRequests.getResultsSetData(1).size()];
+                for (int pfv = 0; pfv < TableRequests.getResultsSetData(1).size(); pfv++){
+                    responsavelIndx[pfv] = (int) TableRequests.getResultsSetData(1).get(pfv).get(0);
+                }
+                Map<Integer, Object> respMap = new HashMap<>();
+                for(int indx = 0; indx < responsavelIndx.length; indx++){
+                    respMap.put(responsavelIndx[indx], TableRequests.getResultsSetData(1).get(indx).get(0));
+                }
                 this.resetcmbField.accept(1);
-                for (int i = 0; i < TableRequests.getResultsSetData(1).size(); i++) {
-                    if (Objects.equals(this.cmbFields[0].getSelectedItem(), TableRequests.getResultsSetData(1).get(i).get(1))) {
-                        for (int c = 0; c < TableRequests.getResultsSetData(2).size(); c++) {
-                            if (!TableRequests.getResultsSetData(2).get(c).get(0).equals(
-                                    TableRequests.getResultsSetData(1).get(i).get(0))) {
-                                this.cmbFields[1].removeItem(TableRequests.getResultsSetData(2).get(c).get(2));
 
+
+                for (int i = 0; i < TableRequests.getResultsSetData(1).size(); i++) {
+                    //if (Objects.equals(this.cmbFields[0].getSelectedItem(), TableRequests.getResultsSetData(1).get(i).get(1))) {
+                        //if (Objects.equals(this.cmbFields[0].getSelectedItem(), respMap.get(i))){
+                    System.out.println(this.cmbFields[0].getSelectedIndex());
+                            if(i == this.cmbFields[0].getSelectedIndex()) {
+
+                                System.out.println(Objects.equals(this.cmbFields[0].getSelectedItem(), respMap.get(i)));
+                                System.out.println("RESPMAP: " + respMap.get(i));
+                                System.out.println("--------------------------------- 1 ");
+
+                                for (int c = 0; c < TableRequests.getResultsSetData(2).size(); c++) {
+
+                                    System.out.println("I: " + i);
+
+                                    if (Integer.parseInt(TableRequests.getResultsSetData(2).get(c).get(0).toString()) != responsavelIndx[i]) {
+
+                                        System.out.println("RESPINDX: " + responsavelIndx[i]);
+                                        System.out.println("ALUNO REFERENTE C: " + TableRequests.getResultsSetData(2).get(c).get(2));
+
+                                        this.cmbFields[1].removeItem(TableRequests.getResultsSetData(2).get(c).get(2));
+
+                                        System.out.println("---------------------------------------- 2");
+
+                                    }
+
+                                }
+                                break;
                             }
-                        }
-                        this.pagamento.setId_responsavel(TableRequests.getResultsSetData(1).get(i).get(0).toString());
-                    }
+                            this.pagamento.setId_responsavel(TableRequests.getResultsSetData(1).get(i).get(0).toString());
+                        //}
+
                 }
             }
         }
