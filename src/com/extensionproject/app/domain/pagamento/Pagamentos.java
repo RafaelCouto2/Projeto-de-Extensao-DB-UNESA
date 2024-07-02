@@ -1,5 +1,7 @@
 package com.extensionproject.app.domain.pagamento;
 
+import com.extensionproject.app.logger.LoggerManager;
+
 public class Pagamentos {
     private String id_pagamento, id_responsavel, id_alunoreferente, valor, data_pagamento;
     private boolean hasValues;
@@ -45,5 +47,17 @@ public class Pagamentos {
 
     public void setData_pagamento(String data_pagamento) {
         this.data_pagamento = data_pagamento;
+    }
+
+    public boolean hasValues() {
+        try {
+            if (!this.getId_pagamento().isBlank() && !this.getId_responsavel().isBlank() && !this.getId_alunoreferente().isBlank()) return true;
+            else {
+                return false;
+            }
+        } catch (NullPointerException e) {
+            LoggerManager.getClassLog(Pagamentos.class).error(": VALORES VAZIOS. COMPLETE TODOS OS CAMPOS.");
+            return false;
+        }
     }
 }

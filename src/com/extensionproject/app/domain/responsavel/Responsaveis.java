@@ -2,8 +2,8 @@ package com.extensionproject.app.domain.responsavel;
 
 public class Responsaveis {
     private String id_responsavel, nome, cpf, telefone, sexo, dt_nascimento;
-    public Responsaveis(){
-
+    public Responsaveis(int id, String nome){
+        this.nome = nome;
     }
 
     public String getId_responsavel() {
