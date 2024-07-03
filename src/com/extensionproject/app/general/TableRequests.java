@@ -81,7 +81,8 @@ public class TableRequests {
                 for (int c = 0; c < resultsSetData[0].get(l).size(); c++) {
                     switch (c) {
                         case 1:
-                            responsavel = resultsSetData[1].get(resNext).get(nomesIndex[0]);
+                            //ATENÇÃO: O ACRESCENTADOR DE ID AO NOME DO RESPONSÁVEL FICA AQUI.
+                            responsavel = resultsSetData[0].get(l).get(1) + ": " + resultsSetData[1].get(resNext).get(nomesIndex[0]);
                             resultsSetData[0].get(l).set(c, responsavel);
                             break;
                         case 2:

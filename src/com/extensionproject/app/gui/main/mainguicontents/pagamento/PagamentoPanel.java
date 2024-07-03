@@ -5,7 +5,6 @@ import com.extensionproject.app.domain.pagamento.Pagamentos;
 import com.extensionproject.app.general.TableRequests;
 import com.extensionproject.app.general.Utils;
 import com.extensionproject.app.logger.LoggerManager;
-import org.apache.logging.log4j.core.appender.FileManager;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -104,20 +103,14 @@ public class PagamentoPanel {
         TableRequests.pagamentoTableRequest(new String[] {"select `id_pagamento`,`id_responsavel`,`id_alunoreferente`,`valor_mensal`,DATE_FORMAT(`data_pagamento`, '%d/%m/%Y') as `data_pagamento` from `extpj`.`pagamento`;",
                 "select `id_responsavel`,`nome` from `extpj`.`responsavel`;", "select * from `extpj`.`aluno`;"});
         this.pagamentoTable = new JTable(TableRequests.getResultsSetData(0),
-                new Vector<>(Arrays.asList("ID   ", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO")));
+                new Vector<>(Arrays.asList("ID PG", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO")));
         //this.pagamentoTable = new JTable(TableRequests.getRowsData(), new Object[]{"ID RESPONSÁVEL", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO"});
-        for(int i = 0; i < this.pagamentoTable.getRowCount(); i++) {
-            for (int l = 0; l < TableRequests.getResultsSetData(1).size(); l++) {
-                if (TableRequests.getResultsSetData(1).get(l).get(1).equals(this.pagamentoTable.getValueAt(i, 1))) {
-                    this.pagamentoTable.setValueAt(TableRequests.getResultsSetData(1).get(l).get(0) + ": " + this.pagamentoTable.getValueAt(i, 1), i, 1);
-                }
-            }
-        }
+
         this.pagamentoTable.setDragEnabled(false);
         this.pagamentoTable.setBackground(Color.white);
         this.pagamentoTable.setFont(Utils.jetmono);
         this.pagamentoTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        this.pagamentoTable.getColumn("ID   ").setMaxWidth(55);
+        this.pagamentoTable.getColumn("ID PG").setMaxWidth(55);
         this.pagamentoTable.getColumn("VALOR").setMaxWidth(60);
         this.pagamentoTable.getColumn("DATA DO PAGAMENTO").setMaxWidth(140);
         this.pagamentoTable.getColumn("RESPONSÁVEL").setMaxWidth(180);
@@ -130,7 +123,6 @@ public class PagamentoPanel {
         this.pagamentoTable.getTableHeader().setBackground(new Color(16, 124, 65));
         this.pagamentoTable.setVisible(true);
     }
-
 
     private void startTxtFields() {
 
@@ -178,14 +170,13 @@ public class PagamentoPanel {
                         txtFields[i].setBackground( (!bool)? Color.gray.brighter(): Color.LIGHT_GRAY.brighter());
                         txtFields[i].setText((bool && i >= 3)?"00":"");
                         spnDate.setBackground( (!bool)? Color.gray.brighter(): Color.LIGHT_GRAY.brighter());
-                        if(bool){
+                        if (bool) {
                             if (i == 0) {
-                                txtFields[i].setText(String.valueOf(Integer.parseInt(pagamentoTable.getValueAt(
-                                        pagamentoTable.getRowCount() - 1, 0).toString()) + 1));
+                                nextId.accept(1);
                                 cmbFields[i].setSelectedItem(null);
-                                cmbFields[i+1].setSelectedItem(null);
+                                cmbFields[i + 1].setSelectedItem(null);
                             }
-                            if (i < 2){
+                            if (i < 2) {
                                 cmbFields[i].setBackground(Color.LIGHT_GRAY.brighter());
                             }
                         } else if (i < 2) {
@@ -194,7 +185,7 @@ public class PagamentoPanel {
                             txtFields[0].setText("");
                         }
                         if(i < 2){
-                            cmbFields[i].setEditable(bool);
+                            //cmbFields[i].setEditable(false);
                             cmbFields[i].setEnabled(bool);
                         }
                         txtFields[i].setEditable(bool);
@@ -255,6 +246,7 @@ public class PagamentoPanel {
             int cmbIndx = l;
             this.cmbFields[l] = new JComboBox<>(){{
                 for (int i = 0; i < TableRequests.getResultsSetData(cmbIndx+1).size(); i++){
+                    //O ACRESCENTADOR DE ID AO NOME DO RESPONSÁVEL E ALUNO FICA AQUI.
                     addItem(TableRequests.getResultsSetData(cmbIndx+1).get(i).get((cmbIndx == 0)? 0:1) + ": " +
                             TableRequests.getResultsSetData(cmbIndx+1).get(i).get((cmbIndx == 0)? 1:2));
 
@@ -284,6 +276,13 @@ public class PagamentoPanel {
         this.cmbFields[0].addItemListener(this::cmbResponsavelItemListener);
         this.cmbFields[1].addItemListener(this::cmbAlunoItemListener);
     }
+
+    Consumer<Integer> nextId = lamb -> {
+        if(this.pagamentoTable.getModel().getRowCount() > 0) {
+            txtFields[0].setText(String.valueOf(Integer.parseInt(pagamentoTable.getValueAt(
+                    pagamentoTable.getRowCount() - 1, 0).toString()) + 1));
+        }
+    };
 
     private void iniPn() {
         this.tableGrid.gridx = 0; // coluna 0
@@ -317,8 +316,10 @@ public class PagamentoPanel {
         }
         this.tableMouseListener();
         //this.startCmbFields();
-        txtFields[0].setText(String.valueOf(Integer.parseInt(pagamentoTable.getValueAt(
-                pagamentoTable.getRowCount() - 1, 0).toString()) + 1));
+        if(this.pagamentoTable.getModel().getRowCount() > 0) {
+            txtFields[0].setText(String.valueOf(Integer.parseInt(pagamentoTable.getValueAt(
+                    pagamentoTable.getRowCount() - 1, 0).toString()) + 1));
+        }
         this.scrollPane.add(this.pagamentoTable);
         this.scrollPane.setViewportView(this.pagamentoTable);
     }
