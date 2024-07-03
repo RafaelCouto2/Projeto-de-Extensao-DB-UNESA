@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class MainGui extends JFrame {
     private JPanel mainGui;
     private JPanel windowField;
-    private PagamentoPanel pagamentoPanel;
+    //private PagamentoPanel pagamentoPanel;
     private int panelid = -1;
     private JButton tempButton;
     private JButton btnPagamento;
@@ -32,7 +32,6 @@ public class MainGui extends JFrame {
         this.setResizable(false);
         this.setTitle("Escolinha da Tia Celeusa ");
 
-
         this.setVisible(true);
     }
 
@@ -51,7 +50,7 @@ public class MainGui extends JFrame {
             if (panelid != 1 && this.hasConnection()) {
                 panelid = 1;
                 canUpdate = true;
-                pagamentoPanel = new PagamentoPanel(this.windowField);
+                new PagamentoPanel(this.windowField);
                 updateScreen();
             }
         });
@@ -87,9 +86,9 @@ public class MainGui extends JFrame {
 
                 break;
             case 1:
-//                this.pagamentoPanel.drawTableRect();
-//                this.pagamentoPanel.drawFieldsRect();
-//                this.windowField.repaint();
+
+
+
                 break;
         }
 

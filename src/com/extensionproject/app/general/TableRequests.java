@@ -109,16 +109,6 @@ public class TableRequests {
         }
     }
 
-    public static void requestTableInfo(String sql) throws SQLException { //USANDO NO BOTAO
-
-        try {
-            FactoryConnection.createStatement().executeUpdate(sql);
-        } catch (NullPointerException e){
-            LoggerManager.getClassLog(TableRequests.class).error(": STATEMENT IS NULL.");
-        }
-        FactoryConnection.closeStatement();
-    }
-
     public static Vector<Vector<Object>> getResultsSetData(int indx) {
         return resultsSetData[indx];
     }

@@ -62,6 +62,7 @@ public class PagamentoPanel {
 
     public PagamentoPanel(JPanel panel) {
         this.mainpanel = panel;
+        this.mainpanel.removeAll();
         this.iniComponents();
     }
 
@@ -324,16 +325,6 @@ public class PagamentoPanel {
         this.scrollPane.setViewportView(this.pagamentoTable);
     }
 
-    public void drawTableRect() {
-        this.mainpanel.getGraphics().drawRect(this.scrollPane.getX(), this.scrollPane.getY(),
-                this.scrollPane.getWidth(), this.scrollPane.getHeight());
-
-    }
-
-    public void drawFieldsRect() {
-        this.mainpanel.getGraphics().drawRect(this.lblInfo[0].getX() - 2, this.lblInfo[0].getY() - 2, 600,110);
-    }
-
     private void tableMouseListener() {
         this.pagamentoTable.addMouseListener(new TableMouseListenerEvents(this.pagamentoTable, this.txtFields, this.cmbFields, this.spnDate, this.pagamento));
     }
@@ -359,6 +350,8 @@ public class PagamentoPanel {
                         break;
                     }
                 }
+
+
             }
         }
         this.cmbFields[1].dispatchEvent(e);
@@ -384,7 +377,7 @@ public class PagamentoPanel {
         }
     }
 
-    private void createExcelTable(){
+    private void exportExcelTable(){
         try(Workbook wb = new XSSFWorkbook()){
             Files.deleteIfExists(Path.of(".//tabelas//tabela_de_pagamentos.xlsx"));
             File filexlsx = new File(".//tabelas//tabela_de_pagamentos.xlsx");
@@ -494,5 +487,46 @@ public class PagamentoPanel {
             }
         } else LoggerManager.getClassLog(PagamentoPanel.class).error(": NÃO FOI POSSÍVEL DELETAR O REGISTRO DE PAGAMENTO.");
 
+    }
+
+
+    public JButton getBtnRegistrar() {
+        return btnRegistrar;
+    }
+
+    public JButton getBtnDeletar() {
+        return btnDeletar;
+    }
+
+    public JCheckBox getSwitchMode() {
+        return switchMode;
+    }
+
+    public JTextField[] getTxtFields() {
+        return txtFields;
+    }
+
+    public JComboBox<Object>[] getCmbFields() {
+        return cmbFields;
+    }
+
+    public JLabel[] getLblInfo() {
+        return lblInfo;
+    }
+
+    public JTable getPagamentoTable() {
+        return pagamentoTable;
+    }
+
+    public JScrollPane getScrollPane() {
+        return scrollPane;
+    }
+
+    public JPanel getMainpanel() {
+        return mainpanel;
+    }
+
+    public JSpinner getSpnDate() {
+        return spnDate;
     }
 }
