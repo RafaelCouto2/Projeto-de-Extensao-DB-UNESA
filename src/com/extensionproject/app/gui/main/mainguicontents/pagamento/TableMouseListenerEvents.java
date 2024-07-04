@@ -17,6 +17,7 @@ public class TableMouseListenerEvents implements MouseListener {
     private final JComboBox<?>[] cmbFields;
     private final JSpinner spnDate;
     private final Pagamentos pagamento;
+    public static boolean ignoreTableClick = false;
     private static boolean hasSelected;
 
     public TableMouseListenerEvents(JTable pgtable, JTextField[] txtfields, JComboBox<?>[] cmbFields, JSpinner spnDate, Pagamentos pgm){
@@ -31,42 +32,46 @@ public class TableMouseListenerEvents implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         String rsValue, cnValue;
         if(this.pgtable.isEnabled()) {
-            for (int r = 0; r < 5; r++) {
-                try {
-                    switch (r) {
-                        case 0:
-                            this.pagamento.setId_pagamento(this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString());
-                            this.cmbFields[0].setSelectedItem(this.pgtable.getValueAt(this.pgtable.getSelectedRow(), 1));
-                            break;
-                        case 1:
-                            this.cmbFields[1].setSelectedItem(this.pgtable.getValueAt(this.pgtable.getSelectedRow(), 2));
-                            break;
-                        case 4:
-                            java.util.Date date = new SimpleDateFormat("dd/MM/yyyy").parse(this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString());
-                            this.spnDate.setValue(date);
-                            this.pagamento.setData_pagamento(this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString());
-                            break;
-                    }
-                    if (r == 1 || r == 2 || r == 4) continue;
-                    if (r == 3) {
-                        rsValue = this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString().substring(0,
-                                this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString().indexOf("."));
+            if (this.pgtable.getValueAt(this.pgtable.getSelectedRow(), 0) != null) {
+                ignoreTableClick = true;
+                for (int r = 0; r < 5; r++) {
+                    try {
+                        switch (r) {
+                            case 0:
+                                this.pagamento.setId_pagamento(this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString());
+                                this.cmbFields[0].setSelectedItem(this.pgtable.getValueAt(this.pgtable.getSelectedRow(), 1));
+                                break;
+                            case 1:
+                                this.cmbFields[1].setSelectedItem(this.pgtable.getValueAt(this.pgtable.getSelectedRow(), 2));
+                                break;
+                            case 4:
+                                java.util.Date date = new SimpleDateFormat("dd/MM/yyyy").parse(this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString());
+                                this.spnDate.setValue(date);
+                                this.pagamento.setData_pagamento(this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString());
+                                break;
+                        }
+                        if (r == 1 || r == 2 || r == 4) continue;
+                        if (r == 3) {
+                            rsValue = this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString().substring(0,
+                                    this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString().indexOf("."));
 
-                        cnValue = this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString().substring(
-                                this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString().indexOf(".") + 1);
+                            cnValue = this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString().substring(
+                                    this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString().indexOf(".") + 1);
 
-                        this.txtfields[r].setText(rsValue);
-                        this.txtfields[r + 1].setText(cnValue);
-                    } else {
-                        this.txtfields[r].setText(this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString());
+                            this.txtfields[r].setText(rsValue);
+                            this.txtfields[r + 1].setText(cnValue);
+                        } else {
+                            this.txtfields[r].setText(this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString());
+                        }
+
+                    } catch (ArrayIndexOutOfBoundsException clickoutoftable) {
+                        LoggerManager.getClassLog(TableMouseListenerEvents.class).info(": FALHA AO CAPTURAR OS DADOS. POR FAVOR, CLIQUE INTERNAMENTE DENTRO DA TABELA.");
+                        hasSelected = false;
+                    } catch (ParseException ex) {
+                        throw new RuntimeException(ex);
+                    } finally {
+                        hasSelected = true;
                     }
-                } catch (ArrayIndexOutOfBoundsException clickoutoftable) {
-                    LoggerManager.getClassLog(TableMouseListenerEvents.class).info(": FALHA AO CAPTURAR OS DADOS. POR FAVOR, CLIQUE INTERNAMENTE DENTRO DA TABELA.");
-                    hasSelected = false;
-                } catch (ParseException ex) {
-                    throw new RuntimeException(ex);
-                } finally {
-                    hasSelected = true;
                 }
             }
         }

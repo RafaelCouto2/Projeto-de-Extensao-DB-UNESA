@@ -10,6 +10,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.Color;
@@ -29,7 +30,7 @@ import java.util.function.Consumer;
 
 public class PagamentoPanel {
 
-    private JButton btnRegistrar, btnDeletar;
+    private JButton btnRegistrar, btnDeletar, btnAtualizar, btnRefresh;
     private JCheckBox switchMode;
     private JTextField[] txtFields;
     private JComboBox<Object>[] cmbFields;
@@ -70,29 +71,30 @@ public class PagamentoPanel {
         this.tableGrid = new GridBagConstraints();
         this.tableGrid.fill = GridBagConstraints.BOTH;
         this.tableGrid.insets = new Insets(5,5,10,2);
-        this.componentsGrid = new GridBagConstraints[15];
-        for (int i = 0; i < 15; i++){
+        this.componentsGrid = new GridBagConstraints[16];
+        for (int i = 0; i < 16; i++){
             this.componentsGrid[i] = new GridBagConstraints();
             this.componentsGrid[i].fill = GridBagConstraints.HORIZONTAL;
             this.componentsGrid[i].gridx = 0;
-            this.componentsGrid[i].gridy = (i == 2 || i == 4 || i == 8 || i == 12 || i == 13 || i == 14) ? 2 : 1;
+            this.componentsGrid[i].gridy = (i == 2 || i == 4 || i == 8 || i == 12 || i == 13 || i == 14 || i == 15) ? 2 : 1;
         }
         this.componentsGrid[13].fill = GridBagConstraints.BOTH;
-        this.componentsGrid[0].insets = new Insets(6,3,-18,613); // ID GRID
-        this.componentsGrid[1].insets = new Insets(6,50,-18,320); // RESPONSAVEL GRID
-        this.componentsGrid[2].insets = new Insets(1,50,15,320); // ALUNO GRID
+        this.componentsGrid[0].insets = new Insets(6, 3, -18, 613); // ID GRID
+        this.componentsGrid[1].insets = new Insets(6, 55, -18, 315); // RESPONSAVEL GRID
+        this.componentsGrid[2].insets = new Insets(1, 55, 15, 315); // ALUNO GRID
         this.componentsGrid[3].insets = new Insets(6, 395, -18, 220); // VALOR PAGAMENTO GRID REAIS
-        this.componentsGrid[4].insets = new Insets(20,486, 15, 18); // BTNREGISTRAR GRID
+        this.componentsGrid[4].insets = new Insets(20, 486, 16, 18); // BTNREGISTRAR GRID
         this.componentsGrid[5].insets = new Insets(6, 444, -18, 180); // VALOR PAGAMENTO GRID CENTAVOS
-        this.componentsGrid[6].insets = new Insets(1,5,20,610); // ID LABEL GRID
-        this.componentsGrid[7].insets = new Insets(1,55,20,300); // RESPONSAVEL LABEL GRID
-        this.componentsGrid[8].insets = new Insets(8,55,65,300); // ALUNO LABEL GRID
+        this.componentsGrid[6].insets = new Insets(1, 5, 20, 610); // ID LABEL GRID
+        this.componentsGrid[7].insets = new Insets(1, 55, 20, 300); // RESPONSAVEL LABEL GRID
+        this.componentsGrid[8].insets = new Insets(8, 55, 65, 300); // ALUNO LABEL GRID
         this.componentsGrid[9].insets = new Insets(6, 370, -16, 220); // VALOR PAGAMENTO R$ LABEL GRID
         this.componentsGrid[10].insets = new Insets(6, 436, -16, 180); // VALOR PAGAMENTO ',' LABEL GRID
         this.componentsGrid[11].insets = new Insets(6, 480, -18, 55); // SWITCH MODE CHECKBOX GRID
-        this.componentsGrid[12].insets = new Insets(20,486, 15, 18); // BTNDELETAR GRID
-        this.componentsGrid[13].insets = new Insets(25,390, 25, 180); //DAY GRID
-        this.componentsGrid[14].insets = new Insets(25, 350, 25, 220);
+        this.componentsGrid[12].insets = new Insets(20, 486, 16, 18); // BTNDELETAR GRID
+        this.componentsGrid[13].insets = new Insets(25, 390, 25, 180); //DAY GRID
+        this.componentsGrid[14].insets = new Insets(25, 350, 25, 220); //DATA LABEL GRID
+        this.componentsGrid[15].insets = new Insets(1, 1, 15, 610); //BTN REFRESH GRID
     }
 
     private void setLoyout() {
@@ -107,6 +109,7 @@ public class PagamentoPanel {
                 new Vector<>(Arrays.asList("ID PG", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO")));
         //this.pagamentoTable = new JTable(TableRequests.getRowsData(), new Object[]{"ID RESPONSÁVEL", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO"});
 
+        this.addEmptyRow.accept(1); //AUTO ADD ROW.
         this.pagamentoTable.setDragEnabled(false);
         this.pagamentoTable.setBackground(Color.white);
         this.pagamentoTable.setFont(Utils.jetmono);
@@ -124,6 +127,14 @@ public class PagamentoPanel {
         this.pagamentoTable.getTableHeader().setBackground(new Color(16, 124, 65));
         this.pagamentoTable.setVisible(true);
     }
+
+    Consumer<Integer> addEmptyRow = lamb -> { //AUTO ROW ADDER IF ROWS < 20.
+        if(this.pagamentoTable.getModel().getRowCount() < 20){
+            for(int i = this.pagamentoTable.getModel().getRowCount(); i < 20; i++) {
+                ((DefaultTableModel) this.pagamentoTable.getModel()).addRow(new Object[]{null,"","",null,""});
+            }
+        }
+    };
 
     private void startTxtFields() {
 
@@ -147,7 +158,7 @@ public class PagamentoPanel {
     private void startBtns() {
         this.btnRegistrar = new JButton() {{
             setFont(new Font("Unispace", Font.BOLD, 11));
-            setText("<html>Registrar <br>pagamento</html>".toUpperCase());
+            setText("<html>Registrar<br>pagamento</html>".toUpperCase());
             setEnabled(false);
             setVisible(false);
             setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -155,10 +166,18 @@ public class PagamentoPanel {
         }};
         this.btnDeletar = new JButton(){{
             setFont(new Font("Unispace", Font.BOLD, 11));
-            setText("<html>Deletar registro <br>de pagamento</html>\"".toUpperCase());
+            setText("<html>Deletar registro<br>de pagamento</html>".toUpperCase());
             addActionListener(e-> btnDeletarActionEvent(e));
             setCursor(new Cursor(Cursor.HAND_CURSOR));
         }};
+
+        this.btnRefresh = new JButton(){{
+            setFont(new Font("Unispace", Font.BOLD, 11));
+            Icon icon = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource(".//main//resources//imgs//refresh_icon.png")));
+            setIcon(icon);
+            addActionListener(e -> updateTable());
+        }};
+
         this.switchMode = new JCheckBox(){{
             setText("<html>REGISTRAR<br>PAGAMENTOS?</html>");
             addActionListener(e -> {
@@ -173,21 +192,17 @@ public class PagamentoPanel {
                         spnDate.setBackground( (!bool)? Color.gray.brighter(): Color.LIGHT_GRAY.brighter());
                         if (bool) {
                             if (i == 0) {
-                                nextId.accept(1);
+                                //nextId.accept(1); //NEXT ID IF AUTO ADD ROW IS DEACTIVATED.
+                                nextId_.accept(1);
                                 cmbFields[i].setSelectedItem(null);
                                 cmbFields[i + 1].setSelectedItem(null);
                             }
                             if (i < 2) {
-                                cmbFields[i].setBackground(Color.LIGHT_GRAY.brighter());
+                                cmbFields[i].setBackground(new Color(187, 248, 182));
                             }
-                        } else if (i < 2) {
-                            cmbFields[i].setBackground(Color.gray.brighter());
                         } else {
+                            if(i < 2) cmbFields[i].setBackground(new Color(248, 182, 182));
                             txtFields[0].setText("");
-                        }
-                        if(i < 2){
-                            //cmbFields[i].setEditable(false);
-                            cmbFields[i].setEnabled(bool);
                         }
                         txtFields[i].setEditable(bool);
                     }
@@ -206,6 +221,7 @@ public class PagamentoPanel {
             this.mainpanel.add(this.btnRegistrar, this.componentsGrid[4]);
             this.mainpanel.add(this.switchMode, this.componentsGrid[11]);
             this.mainpanel.add(this.btnDeletar, this.componentsGrid[12]);
+            this.mainpanel.add(this.btnRefresh, this.componentsGrid[15]);
         };
         addbtns.accept(1);
     }
@@ -253,8 +269,9 @@ public class PagamentoPanel {
 
                     setSelectedItem(null);
                     setEditable(false);
-                    setEnabled(false);
-                    setBackground(Color.gray.brighter());
+                    //setEnabled(false); //THOSE OPTIONS CHANGES THE BACKGROUND.
+                    //setBackground(Color.LIGHT_GRAY.brighter());
+                    setBackground(new Color(248, 182, 182));
                     setCursor(new Cursor(Cursor.HAND_CURSOR));
                 }
             }};
@@ -282,6 +299,18 @@ public class PagamentoPanel {
         if(this.pagamentoTable.getModel().getRowCount() > 0) {
             txtFields[0].setText(String.valueOf(Integer.parseInt(pagamentoTable.getValueAt(
                     pagamentoTable.getRowCount() - 1, 0).toString()) + 1));
+        }
+    };
+
+    Consumer<Integer> nextId_ = lamb -> {
+        if(this.pagamentoTable.getModel().getRowCount() > 0) {
+            for(int i = pagamentoTable.getModel().getRowCount(); i > 0; i--){
+                if(pagamentoTable.getValueAt(i - 1, 0) != null){
+                    txtFields[0].setText(String.valueOf(Integer.parseInt(pagamentoTable.getValueAt(i - 1, 0).toString()) + 1));
+
+                    break;
+                }
+            }
         }
     };
 
@@ -316,11 +345,9 @@ public class PagamentoPanel {
             this.pagamentoTable.setEnabled(false);
         }
         this.tableMouseListener();
-        //this.startCmbFields();
-        if(this.pagamentoTable.getModel().getRowCount() > 0) {
-            txtFields[0].setText(String.valueOf(Integer.parseInt(pagamentoTable.getValueAt(
-                    pagamentoTable.getRowCount() - 1, 0).toString()) + 1));
-        }
+        //nextId.accept(1); //NEXT ID IF AUTO ADD ROW IS DEACTIVATED.
+        nextId_.accept(1);
+        addEmptyRow.accept(1);
         this.scrollPane.add(this.pagamentoTable);
         this.scrollPane.setViewportView(this.pagamentoTable);
     }
@@ -330,6 +357,7 @@ public class PagamentoPanel {
     }
 
     private boolean ignoreFireEvent;
+
     private void cmbResponsavelItemListener(ItemEvent e){
         this.ignoreFireEvent = true;
         if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -350,16 +378,29 @@ public class PagamentoPanel {
                         break;
                     }
                 }
+                if(!this.switchMode.isSelected()){
+                    if(!TableMouseListenerEvents.ignoreTableClick) {
 
-
+                        this.updateTable();
+                        int actualRow = this.pagamentoTable.getRowCount();
+                        for (int l = actualRow - 1; l >= 0; l--) {
+                            String tableItem = this.pagamentoTable.getModel().getValueAt(l, 1).toString();
+                            String selectedItem = this.cmbFields[0].getModel().getSelectedItem().toString();
+                            if (!selectedItem.equals(tableItem)) {
+                                ((DefaultTableModel) this.pagamentoTable.getModel()).removeRow(l);
+                            }
+                        }
+                    }
+                }
             }
+            TableMouseListenerEvents.ignoreTableClick = false;
         }
         this.cmbFields[1].dispatchEvent(e);
         this.ignoreFireEvent = false;
     }
 
     private void cmbAlunoItemListener(ItemEvent i){
-        if(!ignoreFireEvent) {
+        if(!this.ignoreFireEvent) {
             if (i.getStateChange() == ItemEvent.SELECTED) {
                 if (i.getSource() == this.cmbFields[1]) {
                     for(int l = 0; l < TableRequests.getResultsSetData(1).size(); l++) {
