@@ -32,10 +32,11 @@ public class TableMouseListenerEvents implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         String rsValue, cnValue;
         if(this.pgtable.isEnabled()) {
-            if (this.pgtable.getValueAt(this.pgtable.getSelectedRow(), 0) != null) {
-                ignoreTableClick = true;
-                for (int r = 0; r < 5; r++) {
-                    try {
+            try {
+                if (this.pgtable.getValueAt(this.pgtable.getSelectedRow(), 0) != null) {
+                    ignoreTableClick = true;
+                    for (int r = 0; r < 5; r++) {
+
                         switch (r) {
                             case 0:
                                 this.pagamento.setId_pagamento(this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString());
@@ -63,16 +64,14 @@ public class TableMouseListenerEvents implements MouseListener {
                         } else {
                             this.txtfields[r].setText(this.pgtable.getValueAt(this.pgtable.getSelectedRow(), r).toString());
                         }
-
-                    } catch (ArrayIndexOutOfBoundsException clickoutoftable) {
-                        LoggerManager.getClassLog(TableMouseListenerEvents.class).info(": FALHA AO CAPTURAR OS DADOS. POR FAVOR, CLIQUE INTERNAMENTE DENTRO DA TABELA.");
-                        hasSelected = false;
-                    } catch (ParseException ex) {
-                        throw new RuntimeException(ex);
-                    } finally {
                         hasSelected = true;
                     }
                 }
+            } catch (ArrayIndexOutOfBoundsException clickoutoftable) {
+                LoggerManager.getClassLog(TableMouseListenerEvents.class).info(": FALHA AO CAPTURAR OS DADOS. POR FAVOR, CLIQUE INTERNAMENTE DENTRO DA TABELA.");
+                hasSelected = false;
+            } catch (ParseException ex) {
+                throw new RuntimeException(ex);
             }
         }
     }

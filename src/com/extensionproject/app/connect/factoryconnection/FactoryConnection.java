@@ -52,7 +52,7 @@ public class FactoryConnection {
     public static Statement createStatement()  {
         try {
             statement = conn.createStatement();
-            logfactoryconnection.info(":STATEMENT READY!");
+            logfactoryconnection.info(": STATEMENT READY!");
             return statement;
         } catch (SQLException e) {
             logfactoryconnection.error(": FAILED TO CREATE STATEMENT!");

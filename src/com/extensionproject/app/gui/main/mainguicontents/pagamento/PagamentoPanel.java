@@ -5,23 +5,14 @@ import com.extensionproject.app.domain.pagamento.Pagamentos;
 import com.extensionproject.app.general.TableRequests;
 import com.extensionproject.app.general.Utils;
 import com.extensionproject.app.logger.LoggerManager;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
@@ -43,6 +34,8 @@ public class PagamentoPanel {
     private Consumer<Integer> resetcmbField;
     private Pagamentos pagamento;
     private JSpinner spnDate;
+    private int actualRow;
+    private int actualPgId;
 
     private void iniComponents() {
         this.pagamento = new Pagamentos();
@@ -57,7 +50,6 @@ public class PagamentoPanel {
         this.startDateSpn();
         this.tableMouseListener();
         this.mainpanel.setBackground(new Color(241, 239, 249));
-
         this.mainpanel.setVisible(true);
     }
 
@@ -110,6 +102,8 @@ public class PagamentoPanel {
         //this.pagamentoTable = new JTable(TableRequests.getRowsData(), new Object[]{"ID RESPONSÁVEL", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO"});
 
         this.addEmptyRow.accept(1); //AUTO ADD ROW.
+        this.setActualRow.accept(1);
+        this.setActualPgId.accept(1);
         this.pagamentoTable.setDragEnabled(false);
         this.pagamentoTable.setBackground(Color.white);
         this.pagamentoTable.setFont(Utils.jetmono);
@@ -126,12 +120,25 @@ public class PagamentoPanel {
         this.pagamentoTable.getTableHeader().setForeground(Color.white);
         this.pagamentoTable.getTableHeader().setBackground(new Color(16, 124, 65));
         this.pagamentoTable.setVisible(true);
+
     }
 
     Consumer<Integer> addEmptyRow = lamb -> { //AUTO ROW ADDER IF ROWS < 20.
         if(this.pagamentoTable.getModel().getRowCount() < 20){
             for(int i = this.pagamentoTable.getModel().getRowCount(); i < 20; i++) {
                 ((DefaultTableModel) this.pagamentoTable.getModel()).addRow(new Object[]{null,"","",null,""});
+            }
+        }
+    };
+
+    Consumer<Integer> setActualRow = lamb -> this.actualRow = this.pagamentoTable.getModel().getRowCount();
+    Consumer<Integer> setActualPgId = lamb -> {
+        if(this.pagamentoTable.getModel().getRowCount() > 0) {
+            for(int i = pagamentoTable.getModel().getRowCount(); i > 0; i--){
+                if(pagamentoTable.getValueAt(i - 1, 0) != null){
+                    this.actualPgId = Integer.parseInt(pagamentoTable.getValueAt(i - 1, 0).toString());
+                    break;
+                }
             }
         }
     };
@@ -307,9 +314,9 @@ public class PagamentoPanel {
             for(int i = pagamentoTable.getModel().getRowCount(); i > 0; i--){
                 if(pagamentoTable.getValueAt(i - 1, 0) != null){
                     txtFields[0].setText(String.valueOf(Integer.parseInt(pagamentoTable.getValueAt(i - 1, 0).toString()) + 1));
-
+                    this.actualPgId = Integer.parseInt(pagamentoTable.getValueAt(i - 1, 0).toString());
                     break;
-                }
+                } else this.pagamento.setId_pagamento("DEFAULT");
             }
         }
     };
@@ -418,79 +425,6 @@ public class PagamentoPanel {
         }
     }
 
-    private void exportExcelTable(){
-        try(Workbook wb = new XSSFWorkbook()){
-            Files.deleteIfExists(Path.of(".//tabelas//tabela_de_pagamentos.xlsx"));
-            File filexlsx = new File(".//tabelas//tabela_de_pagamentos.xlsx");
-
-            Sheet sheet = wb.createSheet("Sheet1");
-
-            CellStyle style = wb.createCellStyle();
-            CellStyle stylerow = wb.createCellStyle();
-            style.setBorderBottom(BorderStyle.THIN);
-            style.setBorderLeft(BorderStyle.THIN);
-            style.setBorderRight(BorderStyle.THIN);
-            style.setBorderTop(BorderStyle.THIN);
-            style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            style.setFillForegroundColor(IndexedColors.GREEN.getIndex());
-            style.setFillBackgroundColor(IndexedColors.WHITE.getIndex());
-            style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-            org.apache.poi.ss.usermodel.Font font = wb.createFont();
-            font.setFontName("JetBrains Mono");
-            font.setFontHeightInPoints((short) 10);
-            font.setBold(true);
-            font.setColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
-            style.setFont(font);
-            style.setAlignment(HorizontalAlignment.CENTER);
-            style.setVerticalAlignment(VerticalAlignment.CENTER);
-
-            org.apache.poi.ss.usermodel.Font fontrow = wb.createFont();
-            fontrow.setFontName("JetBrains Mono");
-            fontrow.setFontHeightInPoints((short) 9);
-            fontrow.setBold(true);
-            fontrow.setColor(HSSFColor.HSSFColorPredefined.GREY_80_PERCENT.getIndex());
-            stylerow.setFont(fontrow);
-            stylerow.setBorderBottom(BorderStyle.THIN);
-            stylerow.setBorderLeft(BorderStyle.THIN);
-            stylerow.setBorderRight(BorderStyle.THIN);
-            stylerow.setBorderTop(BorderStyle.THIN);
-            stylerow.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            stylerow.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            stylerow.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            stylerow.setTopBorderColor(IndexedColors.BLACK.getIndex());
-            stylerow.setAlignment(HorizontalAlignment.LEFT);
-
-            Row row = sheet.createRow(1);
-            TableModel model = this.pagamentoTable.getModel();
-            Row header = sheet.createRow(0);
-
-            //CRIAÇÃO DOS HEADINGS DE COLUNAS DA TABELA EXCEL. PARA CADA COLUNA, CRIA-SE UMA EXCEL.
-            for(int headings = 0; headings < model.getColumnCount(); headings++){
-                header.createCell(headings).setCellValue(this.pagamentoTable.getColumnName(headings));
-                header.getCell(headings).setCellStyle(style);
-                sheet.autoSizeColumn(headings);
-            }
-            for(int rows = 0; rows < model.getRowCount(); rows++){
-                for(int columns = 0; columns < this.pagamentoTable.getColumnCount(); columns++){
-                    if(columns == 0){
-                        row.createCell(columns);
-                        row.getCell(columns).setCellValue(Double.parseDouble(this.pagamentoTable.getValueAt(rows, columns).toString()));
-
-                    } else {
-                        row.createCell(columns).setCellValue(this.pagamentoTable.getValueAt(rows, columns).toString());
-                    }
-                    row.getCell(columns).setCellStyle(stylerow);
-                    sheet.autoSizeColumn(columns);
-                }
-                row = sheet.createRow((rows + 2));
-            }
-            wb.write(new FileOutputStream(filexlsx));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private void btnRegistrarActionEvent(ActionEvent evt) {
         boolean txtFilled = false;
         for (JTextField txtField : txtFields) {
@@ -518,16 +452,23 @@ public class PagamentoPanel {
 
     private void btnDeletarActionEvent(ActionEvent evt){
 
-        if (TableMouseListenerEvents.hasSelected()) {
+        if (TableMouseListenerEvents.hasSelected() && this.pagamentoTable.getModel().getValueAt(0,0) != null) {
             try (Statement statement = FactoryConnection.createStatement()) {
                 statement.executeUpdate("delete from `extpj`.`pagamento` where `id_pagamento` = " + this.txtFields[0].getText() + ";");
                 this.updateTable();
+                if(this.actualPgId > Integer.parseInt(this.txtFields[0].getText()) || this.pagamentoTable.getModel().getValueAt(0,0) == null){
+                    String call = "{call reset_autoincrement('pagamento', 'id_pagamento')}";
+                    try(CallableStatement stmt = FactoryConnection.getConn().prepareCall(call)){
+                        stmt.execute();
+                        LoggerManager.getClassLog(PagamentoPanel.class).info("IDs DE PAGAMENTOS RESETADOS.");
+                    }
+                    this.setActualPgId.accept(1);
+                }
                 LoggerManager.getClassLog(PagamentoPanel.class).info(": REGISTRO DE PAGAMENTO DELETADO COM SUCESSO!");
             } catch (SQLException e) {
                 LoggerManager.getClassLog(PagamentoPanel.class).error(e.getMessage());
             }
         } else LoggerManager.getClassLog(PagamentoPanel.class).error(": NÃO FOI POSSÍVEL DELETAR O REGISTRO DE PAGAMENTO.");
-
     }
 
 
