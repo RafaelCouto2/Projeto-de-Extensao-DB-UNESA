@@ -1,4 +1,4 @@
-package com.extensionproject.app.gui.main.mainguicontents.pagamento;
+package com.extensionproject.app.gui.main.contents.pagamento;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

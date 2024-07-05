@@ -1,4 +1,4 @@
-package com.extensionproject.app.gui.login.loginguicontents;
+package com.extensionproject.app.gui.login.contents;
 
 import com.extensionproject.app.GuiLinker;
 import com.extensionproject.app.connect.factoryconnection.FactoryConnection;

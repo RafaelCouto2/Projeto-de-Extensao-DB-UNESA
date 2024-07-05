@@ -1,4 +1,4 @@
-package com.extensionproject.app.gui.main.mainguicontents.pagamento;
+package com.extensionproject.app.gui.main.contents.pagamento;
 
 import com.extensionproject.app.domain.pagamento.Pagamentos;
 import com.extensionproject.app.exception.WrongPointTableClickException;
@@ -96,7 +96,7 @@ public class TableMouseListenerEvents implements MouseListener {
 
     }
 
-    protected static boolean hasSelected() throws WrongPointTableClickException {
+    public static boolean hasSelected() throws WrongPointTableClickException {
         return hasSelected;
     }
 }

@@ -1,4 +1,4 @@
-package com.extensionproject.app.gui.main.mainguicontents.cadastro;
+package com.extensionproject.app.gui.main.contents.cadastro.gui;
 
 import javax.swing.*;
 
@@ -11,6 +11,8 @@ public class CadastroPanel {
     public CadastroPanel(JPanel mainpanel) {
         this.mainpanel = mainpanel;
         this.mainpanel.removeAll();
+
+
 
     }
 

@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class ExportTable {
+public class ExportTable implements IArquivo<JTable> {
 
     private void exportExcelTable(JTable table, String tablename){
 
@@ -88,4 +88,23 @@ public class ExportTable {
         }
     }
 
+    @Override
+    public void abrirArquivo(String filename) {
+        try {
+            Files.deleteIfExists(Path.of(".//tabelas//tabela_de_" + filename + ".xlsx"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        File filexlsx = new File(".//tabelas//tabela_de_" + filename + ".xlsx");
+    }
+
+    @Override
+    public void gravarArquivo(JTable ftype) {
+
+    }
+
+    @Override
+    public void fecharArquivo() {
+
+    }
 }

@@ -1,9 +1,10 @@
-package com.extensionproject.app.gui.main.mainguicontents.pagamento;
+package com.extensionproject.app.gui.main.contents.pagamento.gui;
 
 import com.extensionproject.app.connect.factoryconnection.FactoryConnection;
 import com.extensionproject.app.domain.pagamento.Pagamentos;
 import com.extensionproject.app.general.TableRequests;
 import com.extensionproject.app.general.Utils;
+import com.extensionproject.app.gui.main.contents.pagamento.TableMouseListenerEvents;
 import com.extensionproject.app.logger.LoggerManager;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

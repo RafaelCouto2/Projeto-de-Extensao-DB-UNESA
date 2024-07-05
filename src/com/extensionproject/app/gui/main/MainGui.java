@@ -2,7 +2,7 @@ package com.extensionproject.app.gui.main;
 
 import com.extensionproject.app.GuiLinker;
 import com.extensionproject.app.connect.factoryconnection.FactoryConnection;
-import com.extensionproject.app.gui.main.mainguicontents.pagamento.PagamentoPanel;
+import com.extensionproject.app.gui.main.contents.pagamento.gui.PagamentoPanel;
 import com.extensionproject.app.logger.LoggerManager;
 
 import javax.swing.*;
