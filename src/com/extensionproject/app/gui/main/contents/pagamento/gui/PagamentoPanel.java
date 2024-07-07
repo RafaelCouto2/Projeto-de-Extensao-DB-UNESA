@@ -14,7 +14,7 @@ public class PagamentoPanel {
     private PagamentoPanelSpnDate pspnDate;
     private PagamentoPanelButtons pbtns;
     private PagamentoPanelCmbBoxes pcmbFields;
-    private PagamentoTableLabels plblInfo;
+    private PagamentoPanelLabels plblInfo;
 
 
     private final JPanel mainpanel;
@@ -37,7 +37,7 @@ public class PagamentoPanel {
         this.pcmbFields.startCmbFields();
         this.pbtns = new PagamentoPanelButtons(this);
         this.pbtns.startBtns();
-        this.plblInfo = new PagamentoTableLabels(this);
+        this.plblInfo = new PagamentoPanelLabels(this);
         this.plblInfo.startLbls();
         this.pspnDate = new PagamentoPanelSpnDate(this);
         this.pspnDate.startDateSpn();
@@ -67,22 +67,29 @@ public class PagamentoPanel {
             this.componentsGrid[i].gridy = (i == 2 || i == 4 || i == 8 || i == 12 || i == 13 || i == 14 || i == 15) ? 2 : 1;
         }
         this.componentsGrid[13].fill = GridBagConstraints.BOTH;
-        this.componentsGrid[0].insets = new Insets(6, 3, -18, 613); // ID GRID
-        this.componentsGrid[1].insets = new Insets(6, 55, -18, 315); // RESPONSAVEL GRID
-        this.componentsGrid[2].insets = new Insets(1, 55, 15, 315); // ALUNO GRID
-        this.componentsGrid[3].insets = new Insets(6, 395, -18, 220); // VALOR PAGAMENTO GRID REAIS
-        this.componentsGrid[4].insets = new Insets(20, 486, 16, 18); // BTNREGISTRAR GRID
-        this.componentsGrid[5].insets = new Insets(6, 444, -18, 180); // VALOR PAGAMENTO GRID CENTAVOS
-        this.componentsGrid[6].insets = new Insets(1, 5, 20, 610); // ID LABEL GRID
-        this.componentsGrid[7].insets = new Insets(1, 55, 20, 300); // RESPONSAVEL LABEL GRID
-        this.componentsGrid[8].insets = new Insets(8, 55, 65, 300); // ALUNO LABEL GRID
-        this.componentsGrid[9].insets = new Insets(6, 370, -16, 220); // VALOR PAGAMENTO R$ LABEL GRID
-        this.componentsGrid[10].insets = new Insets(6, 436, -16, 180); // VALOR PAGAMENTO ',' LABEL GRID
-        this.componentsGrid[11].insets = new Insets(6, 480, -18, 55); // SWITCH MODE CHECKBOX GRID
-        this.componentsGrid[12].insets = new Insets(20, 486, 16, 18); // BTNDELETAR GRID
-        this.componentsGrid[13].insets = new Insets(25, 390, 25, 180); //DAY GRID
-        this.componentsGrid[14].insets = new Insets(25, 350, 25, 220); //DATA LABEL GRID
-        this.componentsGrid[15].insets = new Insets(1, 1, 15, 610); //BTN REFRESH GRID
+
+        int[][] insets = {
+                {6, 3, -18, 613}, // TXTID GRID
+                {6, 55, -18, 315}, // CMBRESPONSAVEL GRID
+                {1, 55, 15, 315}, // CMBALUNO GRID
+                {6, 395, -18, 220}, // TXTVALOR PAGAMENTO GRID REAIS
+                {20, 486, 16, 18}, // BTNREGISTRAR GRID
+                {6, 444, -18, 180}, // TXTVALOR PAGAMENTO GRID CENTAVOS
+                {1, 5, 20, 610}, // ID LABEL GRID
+                {1, 55, 20, 300}, // RESPONSAVEL LABEL GRID
+                {8, 55, 65, 300}, // ALUNO LABEL GRID
+                {6, 370, -16, 220}, // VALOR PAGAMENTO R$ LABEL GRID
+                {6, 436, -16, 180}, // VALOR PAGAMENTO ',' LABEL GRID
+                {6, 480, -18, 55}, // SWITCH MODE CHECKBOX GRID
+                {20, 486, 16, 18}, // BTNDELETAR GRID
+                {25, 390, 25, 180}, //DATA GRID
+                {25, 350, 25, 220}, //DATA LABEL GRID
+                {1, 1, 15, 610}}; //BTNREFRESH GRID
+
+        for (int i = 0; i < 16; i++){
+            this.componentsGrid[i].insets = new Insets(insets[i][0], insets[i][1], insets[i][2], insets[i][3]);
+        }
+
     }
 
     private void setLoyout() {
@@ -126,7 +133,7 @@ public class PagamentoPanel {
         return this.pcmbFields;
     }
 
-    public PagamentoTableLabels getPlblInfo() {
+    public PagamentoPanelLabels getPlblInfo() {
         return plblInfo;
     }
 }

@@ -9,8 +9,8 @@ import java.util.function.Consumer;
 
 public class PagamentoPanelTxtFields {
 
-    private PagamentoPanel mainpanel;
-    private JTextField txtFields[];
+    private final PagamentoPanel mainpanel;
+    private JTextField[] txtFields;
     public PagamentoPanelTxtFields(PagamentoPanel mainpanel){
 
         this.mainpanel = mainpanel;

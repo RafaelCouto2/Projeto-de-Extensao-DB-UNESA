@@ -22,9 +22,7 @@ public class PagamentoPanelButtons {
     private JCheckBox switchMode;
 
     public PagamentoPanelButtons(PagamentoPanel mainpanel){
-
         this.mainpanel = mainpanel;
-
     }
 
     public void startBtns() {
@@ -137,11 +135,11 @@ public class PagamentoPanelButtons {
 
     private void btnDeletarActionEvent(ActionEvent evt){
 
-        if (TableMouseListenerEvents.hasSelected() && this.mainpanel.getPpagamentoTable().getPagamentoTable().getModel().getValueAt(0,0) != null) {
+        if (this.mainpanel.getPpagamentoTable().getTableMouseListenerEvents().hasSelected() && this.mainpanel.getPpagamentoTable().getPagamentoTable().getModel().getValueAt(0,0) != null) {
             try (Statement statement = FactoryConnection.createStatement()) {
                 statement.executeUpdate("delete from `extpj`.`pagamento` where `id_pagamento` = " + this.mainpanel.getPtxtFields().getTxtFields()[0].getText() + ";");
                 this.mainpanel.getPpagamentoTable().updateTable();
-                if(this.mainpanel.getPpagamentoTable().getActualPgId() > Integer.parseInt(this.mainpanel.getPtxtFields().getTxtFields()[0].getText()) || this.mainpanel.getPpagamentoTable().getPagamentoTable().getModel().getValueAt(0,0) == null){
+                if(this.mainpanel.getPpagamentoTable().getPagamentoTable().getModel().getValueAt(0,0) == null){
                     String call = "{call reset_autoincrement('pagamento', 'id_pagamento')}";
                     try(CallableStatement stmt = FactoryConnection.getConn().prepareCall(call)){
                         stmt.execute();

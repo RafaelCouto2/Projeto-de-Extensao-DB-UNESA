@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class PagamentoPanelSpnDate {
-    private  PagamentoPanel mainpanel;
+    private final PagamentoPanel mainpanel;
     private JSpinner spnDate;
     public PagamentoPanelSpnDate(PagamentoPanel mainpanel) {
         this.mainpanel = mainpanel;

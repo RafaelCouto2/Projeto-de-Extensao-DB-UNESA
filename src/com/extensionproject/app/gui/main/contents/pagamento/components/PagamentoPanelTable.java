@@ -17,9 +17,10 @@ public class PagamentoPanelTable {
 
     private int actualRow;
     private int actualPgId;
-    private PagamentoPanel mainpanel;
+    private final PagamentoPanel mainpanel;
     private JTable pagamentoTable;
     private JScrollPane scrollPane;
+    private TableMouseListenerEvents tableMouseListenerEvents;
     public PagamentoPanelTable(PagamentoPanel mainpanel) {
 
         this.mainpanel = mainpanel;
@@ -86,7 +87,9 @@ public class PagamentoPanelTable {
     }
 
     public void tableMouseListener() {
-        this.pagamentoTable.addMouseListener(new TableMouseListenerEvents(this.pagamentoTable, this.mainpanel.getPtxtFields().getTxtFields(), this.mainpanel.getPcmbFields().getCmbFields(), this.mainpanel.getPspnDate().getSpnDate(), this.mainpanel.getPagamento()));
+        //this.pagamentoTable.addMouseListener(new TableMouseListenerEvents(this.pagamentoTable, this.mainpanel.getPtxtFields().getTxtFields(), this.mainpanel.getPcmbFields().getCmbFields(), this.mainpanel.getPspnDate().getSpnDate(), this.mainpanel.getPagamento()));
+        this.tableMouseListenerEvents = new TableMouseListenerEvents(this.pagamentoTable, this.mainpanel.getPtxtFields().getTxtFields(), this.mainpanel.getPcmbFields().getCmbFields(), this.mainpanel.getPspnDate().getSpnDate(), this.mainpanel.getPagamento());
+        this.pagamentoTable.addMouseListener(tableMouseListenerEvents);
     }
 
     Consumer<Integer> addEmptyRow = lamb -> { //AUTO ROW ADDER IF ROWS < 20.
@@ -133,4 +136,9 @@ public class PagamentoPanelTable {
     public void setActualRow(int actualRow) {
         this.actualRow = actualRow;
     }
+
+    public TableMouseListenerEvents getTableMouseListenerEvents() {
+        return this.tableMouseListenerEvents;
+    }
+
 }

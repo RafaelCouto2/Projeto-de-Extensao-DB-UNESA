@@ -1,7 +1,6 @@
 package com.extensionproject.app.gui.main.contents.pagamento.components;
 
 import com.extensionproject.app.general.TableRequests;
-import com.extensionproject.app.gui.main.contents.pagamento.TableMouseListenerEvents;
 import com.extensionproject.app.gui.main.contents.pagamento.gui.PagamentoPanel;
 
 import javax.swing.*;
@@ -82,7 +81,7 @@ public class PagamentoPanelCmbBoxes {
                     }
                 }
                 if(!this.mainpanel.getPbtns().getSwitchMode().isSelected()){
-                    if(!TableMouseListenerEvents.ignoreTableClick) {
+                    if(!this.mainpanel.getPpagamentoTable().getTableMouseListenerEvents().isIgnoreTableClick()) {
 
                         this.mainpanel.getPpagamentoTable().updateTable();
                         int actualRow = this.mainpanel.getPpagamentoTable().getPagamentoTable().getRowCount();
@@ -96,7 +95,8 @@ public class PagamentoPanelCmbBoxes {
                     }
                 }
             }
-            TableMouseListenerEvents.ignoreTableClick = false;
+            this.mainpanel.getPpagamentoTable().getTableMouseListenerEvents().setIgnoreTableClick(false);
+            //TableMouseListenerEvents.ignoreTableClick = false;
         }
         this.cmbFields[1].dispatchEvent(e);
         this.ignoreFireEvent = false;

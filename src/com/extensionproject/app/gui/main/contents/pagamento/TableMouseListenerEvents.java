@@ -17,8 +17,8 @@ public class TableMouseListenerEvents implements MouseListener {
     private final JComboBox<?>[] cmbFields;
     private final JSpinner spnDate;
     private final Pagamentos pagamento;
-    public static boolean ignoreTableClick = false;
-    private static boolean hasSelected;
+    private boolean ignoreTableClick = false;
+    private boolean hasSelected;
 
     public TableMouseListenerEvents(JTable pgtable, JTextField[] txtfields, JComboBox<?>[] cmbFields, JSpinner spnDate, Pagamentos pgm){
         this.pgtable = pgtable;
@@ -96,7 +96,15 @@ public class TableMouseListenerEvents implements MouseListener {
 
     }
 
-    public static boolean hasSelected() throws WrongPointTableClickException {
+    public boolean hasSelected() throws WrongPointTableClickException {
         return hasSelected;
+    }
+
+    public boolean isIgnoreTableClick() {
+        return ignoreTableClick;
+    }
+
+    public void setIgnoreTableClick(boolean ignoreTableClick) {
+        this.ignoreTableClick = ignoreTableClick;
     }
 }

@@ -4,10 +4,9 @@ import com.extensionproject.app.gui.main.contents.pagamento.gui.PagamentoPanel;
 
 public class PagamentoPanelCheckBox {
 
-    private PagamentoPanel mainpanel;
+    private final PagamentoPanel mainpanel;
     public PagamentoPanelCheckBox(PagamentoPanel mainpanel) {
         this.mainpanel = mainpanel;
     }
-
 
 }

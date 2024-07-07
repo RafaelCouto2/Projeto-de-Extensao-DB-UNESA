@@ -7,10 +7,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.function.Consumer;
 
-public class PagamentoTableLabels {
+public class PagamentoPanelLabels {
     private JLabel[] lblInfo;
-    private PagamentoPanel mainpanel;
-    public PagamentoTableLabels(PagamentoPanel mainpanel) {
+    private final PagamentoPanel mainpanel;
+    public PagamentoPanelLabels(PagamentoPanel mainpanel) {
         this.mainpanel = mainpanel;
     }
 
