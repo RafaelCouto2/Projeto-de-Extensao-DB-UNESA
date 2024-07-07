@@ -21,7 +21,7 @@ import java.util.Objects;
 import java.util.Vector;
 import java.util.function.Consumer;
 
-public class PagamentoPanelBackUp {
+public class OLD_PagamentoPanel {
 
     private JButton btnRegistrar, btnDeletar, btnAtualizar, btnRefresh;
     private JCheckBox switchMode;
@@ -55,7 +55,7 @@ public class PagamentoPanelBackUp {
         this.mainpanel.setVisible(true);
     }
 
-    public PagamentoPanelBackUp(JPanel panel) {
+    public OLD_PagamentoPanel(JPanel panel) {
         this.mainpanel = panel;
         this.mainpanel.removeAll();
         this.iniComponents();
@@ -444,10 +444,10 @@ public class PagamentoPanelBackUp {
                         + this.pagamento.getId_responsavel() +  ", " + this.pagamento.getId_alunoreferente() +
                         ", " + this.txtFields[3].getText() + "." + this.txtFields[4].getText()  +
                         ", " + "STR_TO_DATE('" + this.pagamento.getData_pagamento() + "', '%d/%m/%Y')" + ");");
-                LoggerManager.getClassLog(PagamentoPanelBackUp.class).info(": NOVO PAGAMENTO REGRISTRADO!");
+                LoggerManager.getClassLog(OLD_PagamentoPanel.class).info(": NOVO PAGAMENTO REGRISTRADO!");
                 this.updateTable();
             } catch (SQLException e) {
-                LoggerManager.getClassLog(PagamentoPanelBackUp.class).error(": NÃO FOI POSSÍVEL REGISTRAR UM NOVO PAGAMENTO! " + e.getMessage());
+                LoggerManager.getClassLog(OLD_PagamentoPanel.class).error(": NÃO FOI POSSÍVEL REGISTRAR UM NOVO PAGAMENTO! " + e.getMessage());
             }
         }
     }
@@ -462,15 +462,15 @@ public class PagamentoPanelBackUp {
                     String call = "{call reset_autoincrement('pagamento', 'id_pagamento')}";
                     try(CallableStatement stmt = FactoryConnection.getConn().prepareCall(call)){
                         stmt.execute();
-                        LoggerManager.getClassLog(PagamentoPanelBackUp.class).info("IDs DE PAGAMENTOS RESETADOS.");
+                        LoggerManager.getClassLog(OLD_PagamentoPanel.class).info("IDs DE PAGAMENTOS RESETADOS.");
                     }
                     this.setActualPgId.accept(1);
                 }
-                LoggerManager.getClassLog(PagamentoPanelBackUp.class).info(": REGISTRO DE PAGAMENTO DELETADO COM SUCESSO!");
+                LoggerManager.getClassLog(OLD_PagamentoPanel.class).info(": REGISTRO DE PAGAMENTO DELETADO COM SUCESSO!");
             } catch (SQLException e) {
-                LoggerManager.getClassLog(PagamentoPanelBackUp.class).error(e.getMessage());
+                LoggerManager.getClassLog(OLD_PagamentoPanel.class).error(e.getMessage());
             }
-        } else LoggerManager.getClassLog(PagamentoPanelBackUp.class).error(": NÃO FOI POSSÍVEL DELETAR O REGISTRO DE PAGAMENTO.");
+        } else LoggerManager.getClassLog(OLD_PagamentoPanel.class).error(": NÃO FOI POSSÍVEL DELETAR O REGISTRO DE PAGAMENTO.");
     }
 
 

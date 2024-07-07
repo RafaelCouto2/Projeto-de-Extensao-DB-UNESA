@@ -2,7 +2,6 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-!**/src/com/extensionproject/app/gui/main/contents/pagamento/gui/OLD_PagamentoPanel.java
 
 ### Eclipse ###
 .apt_generated
