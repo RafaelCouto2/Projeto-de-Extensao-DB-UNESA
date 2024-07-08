@@ -19,7 +19,7 @@ public class MainGui extends JFrame {
     private JButton btnAluno;
     public boolean canUpdate;
 
-    private static final int WIDTH = 800, HEIGHT = 640;
+    private static final int WIDTH = 900, HEIGHT = 640;
 
     public void initComponents(){
         this.btnEvnts();

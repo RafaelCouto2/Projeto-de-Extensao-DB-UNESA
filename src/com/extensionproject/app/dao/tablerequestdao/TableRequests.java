@@ -43,10 +43,10 @@ public class TableRequests {
     }
 
     // Preenche os dados dos ResultSet em uma estrutura de dados
-    private void fetchResultsSetData(int resultsetsize){
-        this.resultsSetData = new Vector[resultsetsize];
+    private void fetchResultsSetData(int size){
+        this.resultsSetData = new Vector[size];
         try {
-            for (int i = 0; i < resultsetsize; i++) {
+            for (int i = 0; i < size; i++) {
                 int totColumns = this.resultSetsMetaData.get(i).getColumnCount();
                 this.resultsSetData[i] = new Vector<>();
                 while (this.resultSets.get(i).next()) {

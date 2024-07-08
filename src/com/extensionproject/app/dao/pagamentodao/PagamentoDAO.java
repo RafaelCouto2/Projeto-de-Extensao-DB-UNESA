@@ -37,19 +37,36 @@ public class PagamentoDAO {
     }
         ///{call reset_autoincrement('pagamento', 'id_pagamento')}
 
-    public void insertPagamento(String[] infos){
+    public void insertPagamento(String[] dados){
         try (Statement stmt = StatementsManager.createStatement()) {
             if (stmt == null) {
                 throw new IllegalStateException("Falha ao criar o Statement.");
             }
-            stmt.executeUpdate("insert into `extpj`.`pagamento` values (" + infos[0] +
-                    ", " + infos[1] +
-                    ", " + infos[2] +
-                    ", " + infos[3] +
-                    ", " + infos[4] + ");");
+            stmt.executeUpdate("insert into `extpj`.`pagamento` values (" + dados[0] +
+                    ", " + dados[1] +
+                    ", " + dados[2] +
+                    ", " + dados[3] +
+                    ", " + dados[4] + ");");
             LoggerManager.getClassLog(PagamentoDAO.class).info(": NOVO PAGAMENTO REGRISTRADO!");
         } catch (SQLException e) {
             LoggerManager.getClassLog(PagamentoDAO.class).error(e.getMessage() + ": NÃO FOI POSSÍVEL REGISTRAR O PAGAMENTO.");
+        }
+    }
+
+    public void updatePagamento(String[] dados){
+        try(Statement stmt = StatementsManager.createStatement()){
+            if(stmt == null){
+                throw new IllegalStateException("Falha ao criar o Statement.");
+            }
+            stmt.executeUpdate("update `extpj`.`pagamento` set `id_responsavel` = " + dados[1] +
+                    ", `id_alunoreferente` = " + dados[2] +
+                    ", `valor_mensal` = " + dados[3] +
+                    ", `data_pagamento` = STR_TO_DATE('" + dados[4] + "', '%d/%m/%Y')" +
+                    " where `id_pagamento` = " + dados[0]);
+
+            LoggerManager.getClassLog(PagamentoDAO.class).info(": REGISTRO DE PAGAMENTO FOI ATUALIZADO.");
+        } catch (SQLException e) {
+            LoggerManager.getClassLog(PagamentoDAO.class).error(e.getMessage() + ": NÃO FOI POSSÍVEL ATUALIZAR O PAGAMENTO.");
         }
     }
 

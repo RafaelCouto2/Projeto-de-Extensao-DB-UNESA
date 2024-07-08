@@ -1,6 +1,7 @@
 package com.extensionproject.app.gui.main.contents.pagamento.components;
 
 import com.extensionproject.app.general.Utils;
+import com.extensionproject.app.gui.main.contents.pagamento.events.FieldsKeyListener;
 import com.extensionproject.app.gui.main.contents.pagamento.gui.PagamentoPanel;
 
 import javax.swing.*;
@@ -26,6 +27,8 @@ public class PagamentoPanelTxtFields {
             this.txtFields[i].setEditable(false);
             this.txtFields[i].setBackground(Color.gray.brighter());
         }
+//        this.txtFields[3].addKeyListener(new FieldsKeyListener(3, mainpanel));
+//        this.txtFields[4].addKeyListener(new FieldsKeyListener(4, mainpanel));
         Consumer<Integer> addfields = f -> {
             for(int i = 0; i < this.txtFields.length; i++){
                 this.mainpanel.getMainpanel().add(this.txtFields[i], this.mainpanel.getComponentsGrid()[((i == 4) ? 5 : i)]);

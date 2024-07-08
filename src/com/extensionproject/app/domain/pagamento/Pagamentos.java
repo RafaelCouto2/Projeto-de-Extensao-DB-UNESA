@@ -3,10 +3,13 @@ package com.extensionproject.app.domain.pagamento;
 import com.extensionproject.app.logger.LoggerManager;
 
 public class Pagamentos {
+
+
     private String id_pagamento, id_responsavel, id_alunoreferente, valor, data_pagamento;
     private boolean hasValues;
     public Pagamentos(){
         this.hasValues = false;
+        this.valor = "000.00";
     }
 
     public String getId_pagamento() {
@@ -38,6 +41,13 @@ public class Pagamentos {
     }
 
     public void setValor(String valor) {
+//        int dot = this.valor.indexOf(".");
+//        if(reaisoucentavos.equals("reais")){
+//            this.valor = this.valor.replace(this.valor.substring(0, dot), valor);
+//            System.out.println(this.valor);
+//        } else {
+//
+//        }
         this.valor = valor;
     }
 

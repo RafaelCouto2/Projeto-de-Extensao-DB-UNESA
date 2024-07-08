@@ -78,9 +78,9 @@ public class PagamentoPanelTable {
 
     public void updateTable() {
         this.startTable();
-        if(this.mainpanel.getPbtns().getSwitchMode().isSelected()){
-            this.pagamentoTable.setEnabled(false);
-        }
+//        if(this.mainpanel.getPbtns().getSwitchMode().isSelected()){
+//            this.pagamentoTable.setEnabled(false);
+//        }
         this.tableMouseListener();
         //nextId.accept(1); //NEXT ID IF AUTO ADD ROW IS DEACTIVATED.
         this.mainpanel.getPbtns().nextId_.accept(1);

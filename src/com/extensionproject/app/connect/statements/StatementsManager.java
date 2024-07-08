@@ -36,11 +36,18 @@ public class StatementsManager {
         }
     }
 
-    public static ResultSet executeQuery(String sqlstm){
+    public static ResultSet executeQuery(String sqlstm) {
         try {
             return stmt.executeQuery(sqlstm);
         } catch (SQLException e) {
             LoggerManager.getClassLog(StatementsManager.class).error("NÃO FOI POSSÍVEL EXECUTAR A QUERY.");
+            if(stmt != null){
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                    LoggerManager.getClassLog(StatementsManager.class).error(ex);
+                }
+            }
             throw new RuntimeException(e);
         }
     }

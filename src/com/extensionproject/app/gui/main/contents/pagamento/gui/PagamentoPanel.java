@@ -59,34 +59,53 @@ public class PagamentoPanel {
         this.tableGrid = new GridBagConstraints();
         this.tableGrid.fill = GridBagConstraints.BOTH;
         this.tableGrid.insets = new Insets(5,5,10,2);
-        this.componentsGrid = new GridBagConstraints[16];
-        for (int i = 0; i < 16; i++){
+        this.componentsGrid = new GridBagConstraints[17];
+        for (int i = 0; i < 17; i++){
             this.componentsGrid[i] = new GridBagConstraints();
             this.componentsGrid[i].fill = GridBagConstraints.HORIZONTAL;
             this.componentsGrid[i].gridx = 0;
-            this.componentsGrid[i].gridy = (i == 2 || i == 4 || i == 8 || i == 12 || i == 13 || i == 14 || i == 15) ? 2 : 1;
+            this.componentsGrid[i].gridy = (i == 2 || i == 4 || i == 8 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16) ? 2 : 1;
         }
         this.componentsGrid[13].fill = GridBagConstraints.BOTH;
+//        int[][] insets = {
+//                {6, 3, -18, 613}, // TXTID GRID
+//                {6, 55, -18, 315}, // CMBRESPONSAVEL GRID
+//                {1, 55, 15, 315}, // CMBALUNO GRID
+//                {6, 395, -18, 220}, // TXTVALOR PAGAMENTO GRID REAIS
+//                {20, 486, 16, 18}, // BTNREGISTRAR GRID
+//                {6, 444, -18, 180}, // TXTVALOR PAGAMENTO GRID CENTAVOS
+//                {1, 5, 20, 610}, // ID LABEL GRID
+//                {1, 55, 20, 300}, // RESPONSAVEL LABEL GRID
+//                {8, 55, 65, 300}, // ALUNO LABEL GRID
+//                {6, 370, -16, 220}, // VALOR PAGAMENTO R$ LABEL GRID
+//                {6, 436, -16, 180}, // VALOR PAGAMENTO ',' LABEL GRID
+//                {6, 480, -18, 55}, // SWITCH MODE CHECKBOX GRID
+//                {20, 486, 16, 18}, // BTNDELETAR GRID
+//                {25, 390, 25, 180}, //DATA GRID
+//                {25, 350, 25, 220}, //DATA LABEL GRID
+//                {1, 1, 15, 610}}; //BTNREFRESH GRID
 
         int[][] insets = {
-                {6, 3, -18, 613}, // TXTID GRID
-                {6, 55, -18, 315}, // CMBRESPONSAVEL GRID
-                {1, 55, 15, 315}, // CMBALUNO GRID
-                {6, 395, -18, 220}, // TXTVALOR PAGAMENTO GRID REAIS
-                {20, 486, 16, 18}, // BTNREGISTRAR GRID
-                {6, 444, -18, 180}, // TXTVALOR PAGAMENTO GRID CENTAVOS
-                {1, 5, 20, 610}, // ID LABEL GRID
-                {1, 55, 20, 300}, // RESPONSAVEL LABEL GRID
-                {8, 55, 65, 300}, // ALUNO LABEL GRID
-                {6, 370, -16, 220}, // VALOR PAGAMENTO R$ LABEL GRID
-                {6, 436, -16, 180}, // VALOR PAGAMENTO ',' LABEL GRID
-                {6, 480, -18, 55}, // SWITCH MODE CHECKBOX GRID
-                {20, 486, 16, 18}, // BTNDELETAR GRID
-                {25, 390, 25, 180}, //DATA GRID
-                {25, 350, 25, 220}, //DATA LABEL GRID
-                {1, 1, 15, 610}}; //BTNREFRESH GRID
+                {6, 3, -18, 713}, // TXTID GRID
+                {6, 55, -18, 415}, // CMBRESPONSAVEL GRID
+                {1, 55, 15, 415}, // CMBALUNO GRID
+                {6, 395, -18, 320}, // TXTVALOR PAGAMENTO GRID REAIS
+                {20, 486, 16, 148}, // BTNREGISTRAR GRID
+                {6, 444, -18, 280}, // TXTVALOR PAGAMENTO GRID CENTAVOS
+                {1, 5, 20, 710}, // ID LABEL GRID
+                {1, 55, 20, 400}, // RESPONSAVEL LABEL GRID
+                {8, 55, 65, 400}, // ALUNO LABEL GRID
+                {6, 370, -16, 320}, // VALOR PAGAMENTO R$ LABEL GRID
+                {6, 436, -16, 280}, // VALOR PAGAMENTO ',' LABEL GRID
+                {6, 480, -18, 65}, // SWITCH MODE CHECKBOX GRID
+                {20, 486, 16, 28}, // BTNDELETAR GRID
+                {25, 390, 25, 280}, //DATA GRID
+                {25, 350, 25, 320}, //DATA LABEL GRID
+                {1, 1, 15, 710}, //BTNREFRESH GRID
+                {20, 620, 16, 18} //BTNATUALIZAR
+        };
 
-        for (int i = 0; i < 16; i++){
+        for (int i = 0; i < 17; i++){
             this.componentsGrid[i].insets = new Insets(insets[i][0], insets[i][1], insets[i][2], insets[i][3]);
         }
 
