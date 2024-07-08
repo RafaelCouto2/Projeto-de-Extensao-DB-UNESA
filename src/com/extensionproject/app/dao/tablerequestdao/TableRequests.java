@@ -1,6 +1,5 @@
-package com.extensionproject.app.general;
+package com.extensionproject.app.dao.tablerequestdao;
 
-import com.extensionproject.app.DAO.tablerequestDAO.TableRequestDAO;
 import com.extensionproject.app.connect.statements.StatementsManager;
 import com.extensionproject.app.logger.LoggerManager;
 

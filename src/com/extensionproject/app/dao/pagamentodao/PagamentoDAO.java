@@ -1,8 +1,8 @@
-package com.extensionproject.app.DAO.pagamentoDAO;
+package com.extensionproject.app.dao.pagamentodao;
 
 import com.extensionproject.app.connect.factoryconnection.ConnectionManager;
 import com.extensionproject.app.connect.statements.StatementsManager;
-import com.extensionproject.app.general.TableRequests;
+import com.extensionproject.app.dao.tablerequestdao.TableRequests;
 import com.extensionproject.app.logger.LoggerManager;
 
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package com.extensionproject.app.DAO.tablerequestDAO;
+package com.extensionproject.app.dao.tablerequestdao;
 
 import com.extensionproject.app.connect.statements.StatementsManager;
 

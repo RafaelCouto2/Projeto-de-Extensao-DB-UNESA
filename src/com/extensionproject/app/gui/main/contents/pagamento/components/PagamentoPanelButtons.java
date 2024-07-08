@@ -1,6 +1,6 @@
 package com.extensionproject.app.gui.main.contents.pagamento.components;
 
-import com.extensionproject.app.DAO.pagamentoDAO.PagamentoDAO;
+import com.extensionproject.app.dao.pagamentodao.PagamentoDAO;
 import com.extensionproject.app.gui.main.contents.pagamento.gui.PagamentoPanel;
 
 import javax.swing.*;
