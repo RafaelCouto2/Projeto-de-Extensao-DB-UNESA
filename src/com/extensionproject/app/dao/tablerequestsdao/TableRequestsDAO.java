@@ -1,11 +1,11 @@
-package com.extensionproject.app.dao.tablerequestdao;
+package com.extensionproject.app.dao.tablerequestsdao;
 
 import com.extensionproject.app.connect.statements.StatementsManager;
 
 import java.sql.ResultSet;
 
-public class TableRequestDAO {
-    public TableRequestDAO() {
+public class TableRequestsDAO {
+    public TableRequestsDAO() {
         //StatementsManager.createStatement();
     }
 

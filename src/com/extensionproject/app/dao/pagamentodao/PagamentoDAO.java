@@ -2,7 +2,7 @@ package com.extensionproject.app.dao.pagamentodao;
 
 import com.extensionproject.app.connect.factoryconnection.ConnectionManager;
 import com.extensionproject.app.connect.statements.StatementsManager;
-import com.extensionproject.app.dao.tablerequestdao.TableRequests;
+import com.extensionproject.app.dao.tablerequestsdao.TableRequests;
 import com.extensionproject.app.logger.LoggerManager;
 
 import java.sql.SQLException;
@@ -18,9 +18,6 @@ public class PagamentoDAO {
                 "`valor_mensal`,DATE_FORMAT(`data_pagamento`, '%d/%m/%Y') as `data_pagamento` from `extpj`.`pagamento`;",
                 "select `id_responsavel`,`nome` from `extpj`.`responsavel`;", "select * from `extpj`.`aluno`;"});
 
-//        tablerequest.pagamentoTableRequest(new String[] {"select `id_pagamento`,`id_responsavel`,`id_alunoreferente`," +
-//                "`valor_mensal`,DATE_FORMAT(`data_pagamento`, '%d/%m/%Y') as `data_pagamento` from `extpj`.`pagamento`;",
-//                "select `id_responsavel`,`nome` from `extpj`.`responsavel`;", "select * from `extpj`.`aluno`;"});
     }
 
     public void deletePagamento(String id){
@@ -35,7 +32,6 @@ public class PagamentoDAO {
             LoggerManager.getClassLog(PagamentoDAO.class).error(e.getMessage()+ ": NÃO FOI POSSÍVEL DELETAR O REGISTRO DE PAGAMENTO.");
         }
     }
-        ///{call reset_autoincrement('pagamento', 'id_pagamento')}
 
     public void insertPagamento(String[] dados){
         try (Statement stmt = StatementsManager.createStatement()) {
@@ -69,7 +65,6 @@ public class PagamentoDAO {
             LoggerManager.getClassLog(PagamentoDAO.class).error(e.getMessage() + ": NÃO FOI POSSÍVEL ATUALIZAR O PAGAMENTO.");
         }
     }
-
 
     public void resetAutoIncrement() {
         ConnectionManager.prepareCall("call reset_autoincrement('pagamento', 'id_pagamento')");

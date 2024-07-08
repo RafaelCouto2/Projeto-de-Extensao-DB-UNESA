@@ -1,4 +1,4 @@
-package com.extensionproject.app.dao.tablerequestdao;
+package com.extensionproject.app.dao.tablerequestsdao;
 
 import com.extensionproject.app.connect.statements.StatementsManager;
 import com.extensionproject.app.logger.LoggerManager;
@@ -16,17 +16,17 @@ public class TableRequests {
     private Vector<Object>[] tablesColumnsName;
     private Vector<Vector<Object>>[] resultsSetsDataBackup;
     private Vector<ResultSet> resultSets;
-    private final TableRequestDAO tableRequestDAO;
+    private final TableRequestsDAO tableRequestsDAO;
 
     public TableRequests(){
-        this.tableRequestDAO = new TableRequestDAO();
+        this.tableRequestsDAO = new TableRequestsDAO();
     }
 
     // Obtém os ResultSet para as consultas SQL
     private void fetchResultsSets(String[] sqls){
         this.resultSets = new Vector<>();
         for (String sql : sqls) {
-            this.resultSets.add(this.tableRequestDAO.executeQuery(sql));
+            this.resultSets.add(this.tableRequestsDAO.executeQuery(sql));
         }
     }
 

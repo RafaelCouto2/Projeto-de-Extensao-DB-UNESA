@@ -8,20 +8,16 @@ import java.awt.Color;
 
 public class PagamentoPanel {
 
-
     private PagamentoPanelTxtFields ptxtFields;
     private PagamentoPanelTable ppagamentoTable;
     private PagamentoPanelSpnDate pspnDate;
     private PagamentoPanelButtons pbtns;
     private PagamentoPanelCmbBoxes pcmbFields;
     private PagamentoPanelLabels plblInfo;
-
-
     private final JPanel mainpanel;
     private GridBagConstraints tableGrid;
     private GridBagConstraints[] componentsGrid;
     private Pagamentos pagamento;
-
 
     private void iniComponents() {
         this.pagamento = new Pagamentos();
@@ -46,7 +42,6 @@ public class PagamentoPanel {
         this.mainpanel.setBackground(new Color(241, 239, 249));
         this.mainpanel.setVisible(true);
 
-
     }
 
     public PagamentoPanel(JPanel panel) {
@@ -58,7 +53,7 @@ public class PagamentoPanel {
     private void startDefaultGridBagConstraints() {
         this.tableGrid = new GridBagConstraints();
         this.tableGrid.fill = GridBagConstraints.BOTH;
-        this.tableGrid.insets = new Insets(5,5,10,2);
+        this.tableGrid.insets = new Insets(5,5,10,18);
         this.componentsGrid = new GridBagConstraints[17];
         for (int i = 0; i < 17; i++){
             this.componentsGrid[i] = new GridBagConstraints();
@@ -67,23 +62,6 @@ public class PagamentoPanel {
             this.componentsGrid[i].gridy = (i == 2 || i == 4 || i == 8 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16) ? 2 : 1;
         }
         this.componentsGrid[13].fill = GridBagConstraints.BOTH;
-//        int[][] insets = {
-//                {6, 3, -18, 613}, // TXTID GRID
-//                {6, 55, -18, 315}, // CMBRESPONSAVEL GRID
-//                {1, 55, 15, 315}, // CMBALUNO GRID
-//                {6, 395, -18, 220}, // TXTVALOR PAGAMENTO GRID REAIS
-//                {20, 486, 16, 18}, // BTNREGISTRAR GRID
-//                {6, 444, -18, 180}, // TXTVALOR PAGAMENTO GRID CENTAVOS
-//                {1, 5, 20, 610}, // ID LABEL GRID
-//                {1, 55, 20, 300}, // RESPONSAVEL LABEL GRID
-//                {8, 55, 65, 300}, // ALUNO LABEL GRID
-//                {6, 370, -16, 220}, // VALOR PAGAMENTO R$ LABEL GRID
-//                {6, 436, -16, 180}, // VALOR PAGAMENTO ',' LABEL GRID
-//                {6, 480, -18, 55}, // SWITCH MODE CHECKBOX GRID
-//                {20, 486, 16, 18}, // BTNDELETAR GRID
-//                {25, 390, 25, 180}, //DATA GRID
-//                {25, 350, 25, 220}, //DATA LABEL GRID
-//                {1, 1, 15, 610}}; //BTNREFRESH GRID
 
         int[][] insets = {
                 {6, 3, -18, 713}, // TXTID GRID
@@ -114,7 +92,6 @@ public class PagamentoPanel {
     private void setLoyout() {
         this.mainpanel.setLayout(new GridBagLayout());
     }
-
 
     public JPanel getMainpanel() {
         return mainpanel;

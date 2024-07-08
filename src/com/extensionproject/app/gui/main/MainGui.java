@@ -18,7 +18,6 @@ public class MainGui extends JFrame {
     private JLabel lblMenu;
     private JButton btnAluno;
     public boolean canUpdate;
-
     private static final int WIDTH = 900, HEIGHT = 640;
 
     public void initComponents(){
@@ -100,7 +99,7 @@ public class MainGui extends JFrame {
                 g.drawString("<-- SELECIONE ALGUMA INTERFACE NO MENU",this.getWidth() - 550, 50);
                 break;
             case 1:
-                g.drawString("TABELA DE PAGAMENTOS DOS RESPONSÁVEIS DE CADA ALUNO",this.getWidth() - 550, 50);
+                g.drawString("TABELA DE PAGAMENTOS DOS RESPONSÁVEIS DE CADA ALUNO",this.getWidth() - 600, 50);
                 break;
             case 2:
 

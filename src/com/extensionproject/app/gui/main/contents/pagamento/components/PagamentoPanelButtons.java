@@ -16,8 +16,8 @@ public class PagamentoPanelButtons {
     private PagamentoPanel mainpanel;
     private JButton btnRegistrar, btnDeletar, btnAtualizar, btnRefresh;
     private JCheckBox switchMode;
-
     private PagamentoDAO pagamentoDAO;
+
     public PagamentoPanelButtons(PagamentoPanel mainpanel){
         this.mainpanel = mainpanel;
     }
@@ -41,7 +41,7 @@ public class PagamentoPanelButtons {
 
         this.btnRefresh = new JButton() {{
             setFont(Utils.unibold);
-            Icon icon = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource(".//main//resources//imgs//refresh_icon.png")));
+            Icon icon = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("imgs/refresh_icon.png")));
             setIcon(icon);
             addActionListener(e -> mainpanel.getPpagamentoTable().updateTable());
         }};
@@ -95,7 +95,6 @@ public class PagamentoPanelButtons {
             });
             setCursor(new Cursor(Cursor.HAND_CURSOR));
         }};
-
 
         Consumer<Integer> addbtns = lamb -> {
             this.mainpanel.getMainpanel().add(this.btnRegistrar, this.mainpanel.getComponentsGrid()[4]);

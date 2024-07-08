@@ -29,14 +29,9 @@ public class PagamentoPanelTable {
     }
 
     public void startTable() {
-
-//        TableRequests.pagamentoTableRequest(new String[] {"select `id_pagamento`,`id_responsavel`,`id_alunoreferente`,`valor_mensal`,DATE_FORMAT(`data_pagamento`, '%d/%m/%Y') as `data_pagamento` from `extpj`.`pagamento`;",
-//                "select `id_responsavel`,`nome` from `extpj`.`responsavel`;", "select * from `extpj`.`aluno`;"});
-
         this.pagamentoDAO.iniTableData();
         this.pagamentoTable = new JTable(this.getPagamentoDAO().getTablerequest().getResultsSetData(0),
                 new Vector<>(Arrays.asList("ID PG", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO")));
-        //this.pagamentoTable = new JTable(TableRequests.getRowsData(), new Object[]{"ID RESPONSÁVEL", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO"});
 
         this.addEmptyRow.accept(1); //AUTO ADD ROW.
         this.setActualRow.accept(1);
@@ -46,10 +41,10 @@ public class PagamentoPanelTable {
         this.pagamentoTable.setFont(Utils.jetmono);
         this.pagamentoTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.pagamentoTable.getColumn("ID PG").setMaxWidth(55);
-        this.pagamentoTable.getColumn("VALOR").setMaxWidth(60);
+        this.pagamentoTable.getColumn("VALOR").setMaxWidth(65);
         this.pagamentoTable.getColumn("DATA DO PAGAMENTO").setMaxWidth(140);
-        this.pagamentoTable.getColumn("RESPONSÁVEL").setMaxWidth(180);
-        this.pagamentoTable.getColumn("ALUNO REFERENTE").setMaxWidth(180);
+        this.pagamentoTable.getColumn("RESPONSÁVEL").setMaxWidth(230);
+        this.pagamentoTable.getColumn("ALUNO REFERENTE").setMaxWidth(230);
         this.pagamentoTable.setForeground(new Color(66,66,66));
         this.pagamentoTable.setGridColor(new Color(210,208,216));
         this.pagamentoTable.setRowHeight(20);
@@ -90,7 +85,6 @@ public class PagamentoPanelTable {
     }
 
     public void tableMouseListener() {
-        //this.pagamentoTable.addMouseListener(new TableMouseListenerEvents(this.pagamentoTable, this.mainpanel.getPtxtFields().getTxtFields(), this.mainpanel.getPcmbFields().getCmbFields(), this.mainpanel.getPspnDate().getSpnDate(), this.mainpanel.getPagamento()));
         this.tableMouseListenerEvents = new TableMouseListenerEvents(this.pagamentoTable, this.mainpanel.getPtxtFields().getTxtFields(), this.mainpanel.getPcmbFields().getCmbFields(), this.mainpanel.getPspnDate().getSpnDate(), this.mainpanel.getPagamento());
         this.pagamentoTable.addMouseListener(tableMouseListenerEvents);
     }
