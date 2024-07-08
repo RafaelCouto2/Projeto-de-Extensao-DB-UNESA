@@ -1,8 +1,8 @@
 package com.extensionproject.app.gui.main.contents.pagamento.components;
 
-import com.extensionproject.app.general.TableRequests;
+import com.extensionproject.app.DAO.pagamentoDAO.PagamentoDAO;
 import com.extensionproject.app.general.Utils;
-import com.extensionproject.app.gui.main.contents.pagamento.TableMouseListenerEvents;
+import com.extensionproject.app.gui.main.contents.pagamento.events.TableMouseListenerEvents;
 import com.extensionproject.app.gui.main.contents.pagamento.gui.PagamentoPanel;
 
 import javax.swing.*;
@@ -21,17 +21,20 @@ public class PagamentoPanelTable {
     private JTable pagamentoTable;
     private JScrollPane scrollPane;
     private TableMouseListenerEvents tableMouseListenerEvents;
+    private final PagamentoDAO pagamentoDAO;
+
     public PagamentoPanelTable(PagamentoPanel mainpanel) {
-
         this.mainpanel = mainpanel;
-
+        this.pagamentoDAO = new PagamentoDAO();
     }
 
     public void startTable() {
 
-        TableRequests.pagamentoTableRequest(new String[] {"select `id_pagamento`,`id_responsavel`,`id_alunoreferente`,`valor_mensal`,DATE_FORMAT(`data_pagamento`, '%d/%m/%Y') as `data_pagamento` from `extpj`.`pagamento`;",
-                "select `id_responsavel`,`nome` from `extpj`.`responsavel`;", "select * from `extpj`.`aluno`;"});
-        this.pagamentoTable = new JTable(TableRequests.getResultsSetData(0),
+//        TableRequests.pagamentoTableRequest(new String[] {"select `id_pagamento`,`id_responsavel`,`id_alunoreferente`,`valor_mensal`,DATE_FORMAT(`data_pagamento`, '%d/%m/%Y') as `data_pagamento` from `extpj`.`pagamento`;",
+//                "select `id_responsavel`,`nome` from `extpj`.`responsavel`;", "select * from `extpj`.`aluno`;"});
+
+        this.pagamentoDAO.iniTableData();
+        this.pagamentoTable = new JTable(this.getPagamentoDAO().getTablerequest().getResultsSetData(0),
                 new Vector<>(Arrays.asList("ID PG", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO")));
         //this.pagamentoTable = new JTable(TableRequests.getRowsData(), new Object[]{"ID RESPONSÁVEL", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO"});
 
@@ -141,4 +144,7 @@ public class PagamentoPanelTable {
         return this.tableMouseListenerEvents;
     }
 
+    public PagamentoDAO getPagamentoDAO() {
+        return this.pagamentoDAO;
+    }
 }

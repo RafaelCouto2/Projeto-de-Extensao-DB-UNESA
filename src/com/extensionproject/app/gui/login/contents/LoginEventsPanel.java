@@ -1,6 +1,7 @@
 package com.extensionproject.app.gui.login.contents;
 
 import com.extensionproject.app.GuiLinker;
+import com.extensionproject.app.connect.factoryconnection.ConnectionManager;
 import com.extensionproject.app.connect.factoryconnection.FactoryConnection;
 import com.extensionproject.app.gui.login.LoginGui;
 
@@ -15,7 +16,7 @@ public class LoginEventsPanel {
 
         this.gui.getBtnLogin().addActionListener(e -> {
             //JOptionPane.showInputDialog("HEHEHE!");
-            FactoryConnection.createConnection(gui.getTxtLogin(), gui.getTxtSenha());
+            ConnectionManager.createConnection(gui.getTxtLogin(), gui.getTxtSenha());
             GuiLinker.getMainGui().setVisible(true);
             GuiLinker.getLoginGui().setVisible(false);
         });

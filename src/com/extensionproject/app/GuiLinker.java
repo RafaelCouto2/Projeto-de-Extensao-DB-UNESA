@@ -6,7 +6,7 @@ import com.extensionproject.app.gui.main.MainGui;
 public class GuiLinker {
     private static LoginGui logingui;
     private static MainGui maingui;
-    public static void GuiLinker() {
+    public static void guiLinker() {
         logingui = new LoginGui();
         maingui = new MainGui();
     }

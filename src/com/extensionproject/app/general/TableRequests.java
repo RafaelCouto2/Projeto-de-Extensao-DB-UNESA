@@ -1,116 +1,108 @@
 package com.extensionproject.app.general;
 
-import com.extensionproject.app.connect.factoryconnection.FactoryConnection;
+import com.extensionproject.app.DAO.tablerequestDAO.TableRequestDAO;
+import com.extensionproject.app.connect.statements.StatementsManager;
 import com.extensionproject.app.logger.LoggerManager;
 
-//import java.sql.*;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 
-import java.util.Objects;
 import java.util.Vector;
 
 public class TableRequests {
 
-    private static Vector<Vector<Object>>[] resultsSetData;
-    private static Vector<ResultSetMetaData> resultSetsMetaData;
-    private static Vector<Vector<Object>>[] resultsSetsDataBackup;
+    private Vector<Vector<Object>>[] resultsSetData;
+    private Vector<ResultSetMetaData> resultSetsMetaData;
+    private Vector<Object>[] tablesColumnsName;
+    private Vector<Vector<Object>>[] resultsSetsDataBackup;
+    private Vector<ResultSet> resultSets;
+    private final TableRequestDAO tableRequestDAO;
 
-    private static void tableRequest(String[] sqls){
-        try {
-            Vector<ResultSet> resultSets = new Vector<>();
-            resultSetsMetaData = new Vector<>();
-            resultsSetData = new Vector[sqls.length];
-            resultsSetsDataBackup = new Vector[sqls.length];
-            //RESULT SETS DOS SQL[], PRINCIPAL.
-            for (int i = 0; i < sqls.length; i++) {
-                resultSets.add(Objects.requireNonNull(FactoryConnection.createStatement().executeQuery(sqls[i])));
-                resultSetsMetaData.add(resultSets.get(i).getMetaData());
-                LoggerManager.getClassLog(TableRequests.class).info(": CREATING RESULT SETS FOR: " + resultSetsMetaData.get(i).getTableName(1));
-            }
+    public TableRequests(){
+        this.tableRequestDAO = new TableRequestDAO();
+    }
 
-            for (int i = 0; i < sqls.length; i++) {
-                int totColumns = resultSetsMetaData.get(i).getColumnCount();
-                resultsSetData[i] = new Vector<>();
-                while (resultSets.get(i).next()){
-                    Vector<Object> row = new Vector<>();
-                    for (int r = 0; r < totColumns; r++){
-                        row.add(resultSets.get(i).getObject(r+1));
-                    }
-                    resultsSetData[i].add(row);
-                }
-            }
-            resultsSetsDataBackup = resultsSetData.clone();
-        } catch (SQLException e) {
-            LoggerManager.getClassLog(TableRequests.class).error(e.getMessage());
-            throw new RuntimeException(e.getMessage()){{LoggerManager.getClassLog(TableRequests.class).error(": RUNTIME EXCEPTION!");}};
-        } catch (NullPointerException e){
-            LoggerManager.getClassLog(TableRequests.class).error(e.getMessage() + ": STATEMENT IS NULL.");
+    // Obtém os ResultSet para as consultas SQL
+    private void fetchResultsSets(String[] sqls){
+        this.resultSets = new Vector<>();
+        for (String sql : sqls) {
+            this.resultSets.add(this.tableRequestDAO.executeQuery(sql));
         }
     }
 
-    public static void pagamentoTableRequest(String[] sql) {
-        tableRequest(sql);
-        try {
-            int[] nomesIndex = {0,0};
-            for(int resultindex = 0; resultindex < 2; resultindex++) {
-                for (int indx = 0; indx < resultSetsMetaData.elementAt(resultindex + 1).getColumnCount(); indx++) {
-                    if (resultSetsMetaData.get(resultindex + 1).getColumnName(indx + 1).equals("nome")) {
-                        nomesIndex[resultindex] = indx;
-                    }
-                }
-            }
-            int resNext = 0;
-            int aluNext = 0;
-            for (int l = 0; l < resultsSetData[0].size(); l++) {
-                Object responsavel, aluno;
-                while (resultsSetData[1].get(resNext).get(0) != resultsSetData[0].get(l).get(1)) {
-                    resNext++;
-                    if(resNext >= resultsSetData[1].size()){
-                        resNext = 0;
-                    }
-                }
-                while (resultsSetData[2].get(aluNext).get(1) != resultsSetData[0].get(l).get(2) || resultsSetData[2].get(aluNext).get(0) != resultsSetData[0].get(l).get(1)) {
-                    //resultsSetData[1].get(resNext).get(0) <- Mesmo que resultsSetData[0].get(l).get(1)
-                    aluNext++;
-                    if(aluNext >= resultsSetData[2].size()){
-                        aluNext = 0;
-                    }
-                }
-                for (int c = 0; c < resultsSetData[0].get(l).size(); c++) {
-                    switch (c) {
-                        case 1:
-                            //ATENÇÃO: O ACRESCENTADOR DE ID AO NOME DO RESPONSÁVEL FICA AQUI.
-                            responsavel = resultsSetData[0].get(l).get(1) + ": " + resultsSetData[1].get(resNext).get(nomesIndex[0]);
-                            resultsSetData[0].get(l).set(c, responsavel);
-                            break;
-                        case 2:
-                            aluno = resultsSetData[2].get(aluNext).get(nomesIndex[1]);
-                            resultsSetData[0].get(l).set(c, aluno);
-                            break;
-                    }
-                }
-            }
-        } catch(SQLException e){
-            LoggerManager.getClassLog(TableRequests.class).error(e.getMessage());
-            throw new RuntimeException(e);
-        } catch (ArrayIndexOutOfBoundsException e){
-            LoggerManager.getClassLog(TableRequests.class).error(e.getMessage());
-
-        } finally {
+    // Obtém os meta-dados dos ResultSet
+    private void fetchResultsSetMetaData(int totsqls){
+        this.resultSetsMetaData = new Vector<>();
+        for (int i = 0; i < totsqls; i++) {
             try {
-                if (!FactoryConnection.getStatement().isClosed()){
-                    FactoryConnection.getStatement().close();
-                }
+                this.resultSetsMetaData.add(this.resultSets.get(i).getMetaData());
             } catch (SQLException e) {
-                LoggerManager.getClassLog(TableRequests.class).error(e.getMessage() + " -> THERES NO CONNECTION BETWEEN THIS APP AND DB!");
+                LoggerManager.getClassLog(TableRequests.class).error(": NÃO FOI POSSIVEL CAPTURAR OS RESULT SET.");
             }
         }
     }
 
-    public static Vector<Vector<Object>> getResultsSetData(int indx) {
+    // Preenche os dados dos ResultSet em uma estrutura de dados
+    private void fetchResultsSetData(int resultsetsize){
+        this.resultsSetData = new Vector[resultsetsize];
+        try {
+            for (int i = 0; i < resultsetsize; i++) {
+                int totColumns = this.resultSetsMetaData.get(i).getColumnCount();
+                this.resultsSetData[i] = new Vector<>();
+                while (this.resultSets.get(i).next()) {
+                    Vector<Object> row = new Vector<>();
+                    for (int r = 0; r < totColumns; r++) {
+                        row.add(this.resultSets.get(i).getObject(r + 1));
+                    }
+                    this.resultsSetData[i].add(row);
+                }
+            }
+        } catch (SQLException e){
+            LoggerManager.getClassLog(TableRequests.class).error(": ERRO AO PASSAR OS DADOS DOS RESULTS SETS PARA O VECTOR.");
+        }
+    }
+
+    // Obtém os nomes das colunas dos ResultSet
+    private void fetchTableColumnsName(int totsqls){
+        this.tablesColumnsName = new Vector[totsqls];
+        try {
+            for (int i = 0; i < totsqls; i++) {
+                int totColumns = this.resultSetsMetaData.get(i).getColumnCount();
+                this.tablesColumnsName[i] = new Vector<>();
+                for (int l = 0; l < totColumns; l++) {
+                    this.tablesColumnsName[i].add(this.resultSetsMetaData.get(i).getColumnName(l + 1));
+                }
+            }
+        } catch (SQLException e) {
+            LoggerManager.getClassLog(TableRequests.class).error(": ERRO AO PASSAR OS NOMES DAS COLUNAS NO METADADOS PARA O VECTOR.");
+        }
+
+    }
+
+    // Chama todos os métodos para a criação os resultados do db.
+    public void tableRequest(String[] sqls){
+        try {
+            this.resultsSetsDataBackup = new Vector[sqls.length];
+            this.fetchResultsSets(sqls);
+            this.fetchResultsSetMetaData(sqls.length);
+            this.fetchResultsSetData(sqls.length);
+            this.fetchTableColumnsName(sqls.length);
+            this.resultsSetsDataBackup = resultsSetData.clone();
+        } finally {
+            StatementsManager.closeStatement();
+        }
+    }
+
+    public Vector<Vector<Object>> getResultsSetData(int indx) {
         return resultsSetData[indx];
     }
 
+    public Vector<Vector<Object>>[] getResultsSetData() {
+        return resultsSetData;
+    }
+
+    public Vector<Object>[] getTablesColumnsName() {
+        return tablesColumnsName;
+    }
 }

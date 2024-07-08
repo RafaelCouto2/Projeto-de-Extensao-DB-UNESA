@@ -1,4 +1,4 @@
-package com.extensionproject.app.gui.main.contents.pagamento;
+package com.extensionproject.app.gui.main.contents.pagamento.events;
 
 import com.extensionproject.app.domain.pagamento.Pagamentos;
 import com.extensionproject.app.exception.WrongPointTableClickException;

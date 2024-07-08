@@ -1,6 +1,5 @@
 package com.extensionproject.app.gui.main.contents.pagamento.components;
 
-import com.extensionproject.app.general.TableRequests;
 import com.extensionproject.app.gui.main.contents.pagamento.gui.PagamentoPanel;
 
 import javax.swing.*;
@@ -13,7 +12,7 @@ import java.util.function.Consumer;
 public class PagamentoPanelCmbBoxes {
 
     private JComboBox<Object>[] cmbFields;
-    private PagamentoPanel mainpanel;
+    private final PagamentoPanel mainpanel;
     private Consumer<Integer> resetcmbField;
     public PagamentoPanelCmbBoxes(PagamentoPanel mainpanel) {
         this.mainpanel = mainpanel;
@@ -24,10 +23,10 @@ public class PagamentoPanelCmbBoxes {
         for (int l = 0; l < 2; l++) {
             int cmbIndx = l;
             this.cmbFields[l] = new JComboBox<>(){{
-                for (int i = 0; i < TableRequests.getResultsSetData(cmbIndx+1).size(); i++){
+                for (int i = 0; i < mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(cmbIndx+1).size(); i++){
                     //O ACRESCENTADOR DE ID AO NOME DO RESPONSÁVEL E ALUNO FICA AQUI.
-                    addItem(TableRequests.getResultsSetData(cmbIndx+1).get(i).get((cmbIndx == 0)? 0:1) + ": " +
-                            TableRequests.getResultsSetData(cmbIndx+1).get(i).get((cmbIndx == 0)? 1:2));
+                    addItem(mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(cmbIndx+1).get(i).get((cmbIndx == 0)? 0:1) + ": " +
+                            mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(cmbIndx+1).get(i).get((cmbIndx == 0)? 1:2));
 
                     setSelectedItem(null);
                     setEditable(false);
@@ -44,8 +43,8 @@ public class PagamentoPanelCmbBoxes {
                         break;
                     case 1:
                         this.cmbFields[1].removeAllItems();
-                        for(int i = 0; i < TableRequests.getResultsSetData(2).size(); i++){
-                            this.cmbFields[1].addItem(TableRequests.getResultsSetData(2).get(i).get(2));
+                        for(int i = 0; i < mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(2).size(); i++){
+                            this.cmbFields[1].addItem(mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(2).get(i).get(2));
                         }
                         this.cmbFields[1].setSelectedItem(null);
                         break;
@@ -64,19 +63,19 @@ public class PagamentoPanelCmbBoxes {
         this.ignoreFireEvent = true;
         if (e.getStateChange() == ItemEvent.SELECTED) {
             if (e.getSource() == (this.cmbFields[0])) {
-                int[] responsavelIndx = new int[TableRequests.getResultsSetData(1).size()];
-                for (int pfv = 0; pfv < TableRequests.getResultsSetData(1).size(); pfv++){
-                    responsavelIndx[pfv] = (int) TableRequests.getResultsSetData(1).get(pfv).get(0);
+                int[] responsavelIndx = new int[mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(1).size()];
+                for (int pfv = 0; pfv < mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(1).size(); pfv++){
+                    responsavelIndx[pfv] = (int) mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(1).get(pfv).get(0);
                 }
                 this.resetcmbField.accept(1);
-                for (int i = 0; i < TableRequests.getResultsSetData(1).size(); i++) {
+                for (int i = 0; i < mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(1).size(); i++) {
                     if(i == this.cmbFields[0].getSelectedIndex()) {
-                        for (int c = 0; c < TableRequests.getResultsSetData(2).size(); c++) {
-                            if (Integer.parseInt(TableRequests.getResultsSetData(2).get(c).get(0).toString()) != responsavelIndx[i]) {
-                                this.cmbFields[1].removeItem(TableRequests.getResultsSetData(2).get(c).get(2));
+                        for (int c = 0; c < mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(2).size(); c++) {
+                            if (Integer.parseInt(mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(2).get(c).get(0).toString()) != responsavelIndx[i]) {
+                                this.cmbFields[1].removeItem(mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(2).get(c).get(2));
                             }
                         }
-                        this.mainpanel.getPagamento().setId_responsavel(TableRequests.getResultsSetData(1).get(i).get(0).toString());
+                        this.mainpanel.getPagamento().setId_responsavel(mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(1).get(i).get(0).toString());
                         break;
                     }
                 }
@@ -106,12 +105,12 @@ public class PagamentoPanelCmbBoxes {
         if(!this.ignoreFireEvent) {
             if (i.getStateChange() == ItemEvent.SELECTED) {
                 if (i.getSource() == this.cmbFields[1]) {
-                    for(int l = 0; l < TableRequests.getResultsSetData(1).size(); l++) {
-                        for (int c = 0; c < TableRequests.getResultsSetData(2).size(); c++) {
-                            if (TableRequests.getResultsSetData(2).get(c).get(2).equals(this.cmbFields[1].getSelectedItem()) &&
-                                    TableRequests.getResultsSetData(2).get(c).get(0) == TableRequests.getResultsSetData(1).get(l).get(0)) {
+                    for(int l = 0; l < mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(1).size(); l++) {
+                        for (int c = 0; c < mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(2).size(); c++) {
+                            if (mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(2).get(c).get(2).equals(this.cmbFields[1].getSelectedItem()) &&
+                                    mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(2).get(c).get(0) == mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(1).get(l).get(0)) {
 
-                                this.mainpanel.getPagamento().setId_alunoreferente(TableRequests.getResultsSetData(2).get(c).get(1).toString());
+                                this.mainpanel.getPagamento().setId_alunoreferente(mainpanel.getPpagamentoTable().getPagamentoDAO().getTablerequest().getResultsSetData(2).get(c).get(1).toString());
                                 break;
                             }
                         }

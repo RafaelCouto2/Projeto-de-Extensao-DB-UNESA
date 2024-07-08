@@ -1,13 +1,12 @@
 package com.extensionproject.app.gui.main;
 
 import com.extensionproject.app.GuiLinker;
+import com.extensionproject.app.connect.factoryconnection.ConnectionManager;
 import com.extensionproject.app.connect.factoryconnection.FactoryConnection;
 import com.extensionproject.app.gui.main.contents.pagamento.gui.PagamentoPanel;
-import com.extensionproject.app.logger.LoggerManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.SQLException;
 
 public class MainGui extends JFrame {
     private JPanel mainGui;
@@ -47,7 +46,7 @@ public class MainGui extends JFrame {
         });
 
         this.btnPagamento.addActionListener(e -> {
-            if (panelid != 1 && this.hasConnection()) {
+            if (panelid != 1 && ConnectionManager.hasConnection()) {
                 panelid = 1;
                 canUpdate = true;
                 new PagamentoPanel(this.windowField);
@@ -86,8 +85,6 @@ public class MainGui extends JFrame {
 
                 break;
             case 1:
-
-
 
                 break;
         }
@@ -132,20 +129,6 @@ public class MainGui extends JFrame {
                 }
                 deltaU--;
                 canUpdate = false;
-            }
-        }
-    }
-
-    private boolean hasConnection() {
-        if (FactoryConnection.getConn() == null) {
-            LoggerManager.getClassLog(FactoryConnection.class).info(": THERES NO CONNECTION BETWEEN APP AND DB.");
-            return false;
-        } else {
-            try {
-                return !FactoryConnection.getConn().isClosed();
-            } catch (SQLException e) {
-                LoggerManager.getClassLog(MainGui.class).info(": THERES NO CONNECTION BETWEEN APP AND DB.");
-                return false;
             }
         }
     }

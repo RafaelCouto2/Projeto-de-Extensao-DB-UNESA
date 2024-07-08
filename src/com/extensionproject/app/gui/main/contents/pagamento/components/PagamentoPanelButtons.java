@@ -1,16 +1,11 @@
 package com.extensionproject.app.gui.main.contents.pagamento.components;
 
-import com.extensionproject.app.connect.factoryconnection.FactoryConnection;
-import com.extensionproject.app.gui.main.contents.pagamento.TableMouseListenerEvents;
+import com.extensionproject.app.DAO.pagamentoDAO.PagamentoDAO;
 import com.extensionproject.app.gui.main.contents.pagamento.gui.PagamentoPanel;
-import com.extensionproject.app.logger.LoggerManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.sql.CallableStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -21,11 +16,13 @@ public class PagamentoPanelButtons {
     private JButton btnRegistrar, btnDeletar, btnAtualizar, btnRefresh;
     private JCheckBox switchMode;
 
+    private PagamentoDAO pagamentoDAO;
     public PagamentoPanelButtons(PagamentoPanel mainpanel){
         this.mainpanel = mainpanel;
     }
 
     public void startBtns() {
+        pagamentoDAO = new PagamentoDAO();
         this.btnRegistrar = new JButton() {{
             setFont(new Font("Unispace", Font.BOLD, 11));
             setText("<html>Registrar<br>pagamento</html>".toUpperCase());
@@ -116,42 +113,30 @@ public class PagamentoPanelButtons {
         if (this.mainpanel.getPtxtFields().getTxtFields()[0].getText().isBlank()){
             this.mainpanel.getPagamento().setId_pagamento("DEFAULT");
         } else this.mainpanel.getPagamento().setId_pagamento(this.mainpanel.getPtxtFields().getTxtFields()[0].getText());
-
         this.mainpanel.getPagamento().setData_pagamento(new SimpleDateFormat("dd/MM/yyyy").format(this.mainpanel.getPspnDate().getSpnDate().getValue()));
-        if(txtFilled && this.mainpanel.getPagamento().hasValues()) {
-            try (Statement statement = FactoryConnection.createStatement()) {
 
-                statement.executeUpdate("insert into `extpj`.`pagamento` values (" + this.mainpanel.getPagamento().getId_pagamento() + ", "
-                        + this.mainpanel.getPagamento().getId_responsavel() +  ", " + this.mainpanel.getPagamento().getId_alunoreferente() +
-                        ", " + this.mainpanel.getPtxtFields().getTxtFields()[3].getText() + "." + this.mainpanel.getPtxtFields().getTxtFields()[4].getText()  +
-                        ", " + "STR_TO_DATE('" + this.mainpanel.getPagamento().getData_pagamento() + "', '%d/%m/%Y')" + ");");
-                LoggerManager.getClassLog(PagamentoPanel.class).info(": NOVO PAGAMENTO REGRISTRADO!");
-                this.mainpanel.getPpagamentoTable().updateTable();
-            } catch (SQLException e) {
-                LoggerManager.getClassLog(PagamentoPanel.class).error(": NÃO FOI POSSÍVEL REGISTRAR UM NOVO PAGAMENTO! " + e.getMessage());
-            }
+        if(txtFilled && this.mainpanel.getPagamento().hasValues()) {
+
+            pagamentoDAO.insertPagamento(new String[]{this.mainpanel.getPagamento().getId_pagamento(),
+                    this.mainpanel.getPagamento().getId_responsavel(),
+                    this.mainpanel.getPagamento().getId_alunoreferente(),
+                    this.mainpanel.getPtxtFields().getTxtFields()[3].getText() + "." + this.mainpanel.getPtxtFields().getTxtFields()[4].getText(),
+                    "STR_TO_DATE('" + this.mainpanel.getPagamento().getData_pagamento() + "', '%d/%m/%Y')"});
+
+            this.mainpanel.getPpagamentoTable().updateTable();
         }
     }
 
     private void btnDeletarActionEvent(ActionEvent evt){
 
         if (this.mainpanel.getPpagamentoTable().getTableMouseListenerEvents().hasSelected() && this.mainpanel.getPpagamentoTable().getPagamentoTable().getModel().getValueAt(0,0) != null) {
-            try (Statement statement = FactoryConnection.createStatement()) {
-                statement.executeUpdate("delete from `extpj`.`pagamento` where `id_pagamento` = " + this.mainpanel.getPtxtFields().getTxtFields()[0].getText() + ";");
-                this.mainpanel.getPpagamentoTable().updateTable();
-                if(this.mainpanel.getPpagamentoTable().getPagamentoTable().getModel().getValueAt(0,0) == null){
-                    String call = "{call reset_autoincrement('pagamento', 'id_pagamento')}";
-                    try(CallableStatement stmt = FactoryConnection.getConn().prepareCall(call)){
-                        stmt.execute();
-                        LoggerManager.getClassLog(PagamentoPanel.class).info("IDs DE PAGAMENTOS RESETADOS.");
-                    }
-                    this.mainpanel.getPpagamentoTable().setActualPgId.accept(1);
-                }
-                LoggerManager.getClassLog(PagamentoPanel.class).info(": REGISTRO DE PAGAMENTO DELETADO COM SUCESSO!");
-            } catch (SQLException e) {
-                LoggerManager.getClassLog(PagamentoPanel.class).error(e.getMessage());
+            pagamentoDAO.deletePagamento(this.mainpanel.getPtxtFields().getTxtFields()[0].getText());
+            this.mainpanel.getPpagamentoTable().updateTable();
+            if(this.mainpanel.getPpagamentoTable().getPagamentoTable().getModel().getValueAt(0,0) == null){
+                pagamentoDAO.resetAutoIncrement();
+                this.mainpanel.getPpagamentoTable().setActualPgId.accept(1);
             }
-        } else LoggerManager.getClassLog(PagamentoPanel.class).error(": NÃO FOI POSSÍVEL DELETAR O REGISTRO DE PAGAMENTO.");
+        }
     }
 
     public JCheckBox getSwitchMode() {
