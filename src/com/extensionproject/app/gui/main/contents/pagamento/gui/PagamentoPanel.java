@@ -40,6 +40,7 @@ public class PagamentoPanel {
         this.ppagamentoTable.tableMouseListener();
 
         this.mainpanel.setBackground(new Color(241, 239, 249));
+        this.mainpanel.revalidate();
         this.mainpanel.setVisible(true);
 
     }

@@ -34,7 +34,7 @@ public class PagamentoPanelButtons {
         }};
         this.btnDeletar = new JButton() {{
             setFont(Utils.unibold);
-            setText("<html>Deletar registro<br>de pagamento</html>".toUpperCase());
+            setText("<html>Deletar<br>pagamento</html>".toUpperCase());
             addActionListener(e -> btnDeletarActionEvent());
             setCursor(Utils.handcursor);
         }};
@@ -48,7 +48,7 @@ public class PagamentoPanelButtons {
 
         this.btnAtualizar = new JButton() {{
             setFont(Utils.unibold);
-            setText("<html>Atualizar Registro<br></html>".toUpperCase());
+            setText("<html>Editar<br>pagamento</html>".toUpperCase());
             setHorizontalAlignment(SwingConstants.CENTER);
             setCursor(Utils.handcursor);
             addActionListener(e -> btnAtualizarActionEvent());
@@ -56,7 +56,7 @@ public class PagamentoPanelButtons {
         }};
 
         this.switchMode = new JCheckBox() {{
-            setText("<html>REGISTRAR OU ATUALIZAR<br>PAGAMENTOS?</html>");
+            setText("<html>REGISTRAR OU EDITAR<br>PAGAMENTOS?</html>");
             addActionListener(e -> {
                 Consumer<Boolean> b = (bool) -> {
                     btnRegistrar.setEnabled(bool);

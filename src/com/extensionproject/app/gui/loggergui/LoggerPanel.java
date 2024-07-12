@@ -59,7 +59,7 @@ public class LoggerPanel extends JPanel implements Runnable {
 
         if(this.lastModified != this.file.lastModified()) {
             this.file = new File("./logs/app.log");
-            this.logtemp = new RandomAccessFile("./logs/app.log", "rw");
+            this.logtemp = new RandomAccessFile("./logs/app.log", "r");
             this.txtLog.setText("\n");
             try{
                 while (!this.logtemp.readLine().equals("\0")) {

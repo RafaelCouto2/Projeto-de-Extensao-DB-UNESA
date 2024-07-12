@@ -1,0 +1,59 @@
+
+Ficava em TableRequests, agora em PagamentoDAO.
+public void pagamentoTableRequest(String[] sql) {
+        tableRequest(sql);
+        try {
+            int[] nomesIndex = {0,0};
+            for(int resultindex = 0; resultindex < 2; resultindex++) {
+                for(int tableindx = 0; tableindx < tablesColumnsName[resultindex+1].size(); tableindx++){
+                    if (tablesColumnsName[resultindex+1].get(tableindx).toString().equals("nome")) {
+                        nomesIndex[resultindex] = tableindx;
+                    }
+
+                }
+            }
+
+            int resNext = 0;
+            int aluNext = 0;
+            for (int l = 0; l < resultsSetData[0].size(); l++) {
+                Object responsavel, aluno;
+                while (resultsSetData[1].get(resNext).get(0) != resultsSetData[0].get(l).get(1)) {
+                    resNext++;
+                    if(resNext >= resultsSetData[1].size()){
+                        resNext = 0;
+                    }
+                }
+                while (resultsSetData[2].get(aluNext).get(1) != resultsSetData[0].get(l).get(2) || resultsSetData[2].get(aluNext).get(0) != resultsSetData[0].get(l).get(1)) {
+                    //resultsSetData[1].get(resNext).get(0) <- Mesmo que resultsSetData[0].get(l).get(1)
+                    aluNext++;
+                    if(aluNext >= resultsSetData[2].size()){
+                        aluNext = 0;
+                    }
+                }
+                for (int c = 0; c < resultsSetData[0].get(l).size(); c++) {
+                    switch (c) {
+                        case 1:
+                            //ATENÇÃO: O ACRESCENTADOR DE ID AO NOME DO RESPONSÁVEL FICA AQUI.
+                            responsavel = resultsSetData[0].get(l).get(1) + ": " + resultsSetData[1].get(resNext).get(nomesIndex[0]);
+                            resultsSetData[0].get(l).set(c, responsavel);
+                            break;
+                        case 2:
+                            aluno = resultsSetData[2].get(aluNext).get(nomesIndex[1]);
+                            resultsSetData[0].get(l).set(c, aluno);
+                            break;
+                    }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e){
+            LoggerManager.getClassLog(TableRequests.class).error(e.getMessage());
+
+        } finally {
+            try {
+                if (!StatementsManager.getStmt().isClosed()){
+                    StatementsManager.getStmt().close();
+                }
+            } catch (SQLException e) {
+                LoggerManager.getClassLog(TableRequests.class).error(e.getMessage() + ": NÃO HÁ STATEMENTS ABERTOS.");
+            }
+        }
+    }

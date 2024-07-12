@@ -80,7 +80,7 @@
           <text value=""/>
         </properties>
       </component>
-      <component id="72f33" class="javax.swing.JButton" binding="btnAluno">
+      <component id="72f33" class="javax.swing.JButton" binding="btnAlunos">
         <constraints>
           <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -93,8 +93,9 @@
           <horizontalAlignment value="2"/>
           <horizontalTextPosition value="4"/>
           <icon value="imgs/boy_emoji.png"/>
-          <label value="&lt;html&gt;GERENCIAR &lt;br&gt; &#10;ALUNOS&lt;/html&gt;"/>
-          <text value="&lt;html&gt;GERENCIAR &lt;br&gt; &#10;ALUNOS&lt;/html&gt;"/>
+          <iconTextGap value="0"/>
+          <label value="&lt;html&gt;GERENCIAR&lt;br&gt;ALUNOS&lt;/html&gt;"/>
+          <text value="&lt;html&gt;GERENCIAR&lt;br&gt;ALUNOS&lt;/html&gt;"/>
           <verticalAlignment value="0"/>
           <verticalTextPosition value="0"/>
         </properties>
@@ -115,15 +116,32 @@
           <background color="-12355376"/>
           <borderPainted value="false"/>
           <contentAreaFilled value="true"/>
+          <doubleBuffered value="false"/>
           <font name="Franklin Gothic Demi Cond" size="11" style="1"/>
           <foreground color="-2038301"/>
-          <horizontalAlignment value="0"/>
+          <horizontalAlignment value="2"/>
           <horizontalTextPosition value="4"/>
           <icon value="imgs/money_tableGreen.png"/>
           <iconTextGap value="0"/>
           <inheritsPopupMenu value="false"/>
           <selected value="false"/>
-          <text value="PAGAMENTOS"/>
+          <text value="&lt;html&gt;PAGAMENTOS&lt;/html&gt;"/>
+        </properties>
+      </component>
+      <component id="40e22" class="javax.swing.JButton" binding="btnResp">
+        <constraints>
+          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-12355376"/>
+          <borderPainted value="false"/>
+          <font name="Franklin Gothic Demi Cond" size="12" style="1"/>
+          <foreground color="-2103835"/>
+          <horizontalAlignment value="2"/>
+          <horizontalTextPosition value="4"/>
+          <icon value="imgs/man_icon_.png"/>
+          <iconTextGap value="0"/>
+          <text value="&lt;html&gt;GERENCIAR&lt;br&gt;RESPONSÁVEIS&lt;/html&gt;"/>
         </properties>
       </component>
     </children>
