@@ -5,20 +5,18 @@ import com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui.Cadast
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Vector;
 import java.util.function.Consumer;
 
-public class ResponsavelTable {
+public class CadastroResponsavelTable {
 
     private JTable resptable;
     private CadastroResponsavel mainpanel;
     private JScrollPane scrollPane;
-    private ResponsavelTableColumnComboBox cmbBox;
-    public ResponsavelTable(CadastroResponsavel mainpanel) {
+
+    public CadastroResponsavelTable(CadastroResponsavel mainpanel) {
         this.mainpanel = mainpanel;
     }
 
@@ -62,14 +60,18 @@ public class ResponsavelTable {
         }
     };
 
+    public void reloadTable(){
+        this.startTable();
+        this.scrollPane.add(this.resptable);
+        this.scrollPane.setViewportView(this.resptable);
+        addEmptyRow.accept(1);
+
+    }
 
     public JTable getResptable() {
         return this.resptable;
     }
 
-    public ResponsavelTableColumnComboBox getCmbBox() {
-        return cmbBox;
-    }
 
     public CadastroResponsavel getMainpanel() {
         return this.mainpanel;
