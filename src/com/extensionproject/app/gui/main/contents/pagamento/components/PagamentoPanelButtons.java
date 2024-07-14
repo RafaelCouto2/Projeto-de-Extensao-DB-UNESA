@@ -76,10 +76,10 @@ public class PagamentoPanelButtons {
                                 mainpanel.getPcmbFields().getCmbFields()[i + 1].setSelectedItem(null);
                             }
                             if (i < 2) {
-                                mainpanel.getPcmbFields().getCmbFields()[i].setBackground(new Color(187, 248, 182));
+                                mainpanel.getPcmbFields().getCmbFields()[i].setBackground(Utils.cmbGreen);
                             }
                         } else {
-                            if(i < 2) mainpanel.getPcmbFields().getCmbFields()[i].setBackground(new Color(248, 182, 182));
+                            if(i < 2) mainpanel.getPcmbFields().getCmbFields()[i].setBackground(Utils.cmbRed);
                             mainpanel.getPtxtFields().getTxtFields()[0].setText("");
                         }
                         mainpanel.getPtxtFields().getTxtFields()[i].setEditable(bool);

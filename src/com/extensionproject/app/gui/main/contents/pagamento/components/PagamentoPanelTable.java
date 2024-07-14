@@ -39,20 +39,24 @@ public class PagamentoPanelTable {
         this.pagamentoTable.setDragEnabled(false);
         this.pagamentoTable.setBackground(Color.white);
         this.pagamentoTable.setFont(Utils.jetmono);
+        this.pagamentoTable.setCursor(Utils.handcursor);
         this.pagamentoTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.pagamentoTable.getColumn("ID PG").setMaxWidth(55);
         this.pagamentoTable.getColumn("VALOR").setMaxWidth(65);
         this.pagamentoTable.getColumn("DATA DO PAGAMENTO").setMaxWidth(140);
         this.pagamentoTable.getColumn("RESPONSÁVEL").setMaxWidth(230);
         this.pagamentoTable.getColumn("ALUNO REFERENTE").setMaxWidth(230);
-        this.pagamentoTable.setForeground(new Color(66,66,66));
-        this.pagamentoTable.setGridColor(new Color(210,208,216));
+        this.pagamentoTable.setForeground(Utils.tableForeground);
+        this.pagamentoTable.setGridColor(Utils.tableGrid);
         this.pagamentoTable.setRowHeight(20);
         this.pagamentoTable.getTableHeader().setFont(Utils.jetmono);
         this.pagamentoTable.getTableHeader().setForeground(Color.white);
-        this.pagamentoTable.getTableHeader().setBackground(new Color(16, 124, 65));
-        this.pagamentoTable.setVisible(true);
-
+        this.pagamentoTable.getTableHeader().setBackground(Utils.tableHeader);
+        JTextField NonEditabletxtfield = new JTextField(){{this.setEditable(false);}};
+        DefaultCellEditor nonEditCell = new DefaultCellEditor(NonEditabletxtfield);
+        for(int c = 0; c < this.pagamentoTable.getColumnCount(); c++) {
+            this.pagamentoTable.getColumnModel().getColumn(c).setCellEditor(nonEditCell);
+        }
     }
 
     public void iniPn() {

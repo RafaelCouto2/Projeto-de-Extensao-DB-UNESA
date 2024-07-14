@@ -32,6 +32,7 @@ public class CadastroResponsavelTxtFields {
         for (int i = 0; i < 2; i++) {
             this.txtFields[i] = new JFormattedTextField(nformatter);
             this.txtFields[i].setFont(new Font("Arial", Font.BOLD, 13));
+            this.txtFields[i].setEnabled(false);
             this.mainpanel.getMainpanel().add(this.txtFields[i], this.mainpanel.getComponentsGrid()[i]);
         }
 
@@ -41,9 +42,13 @@ public class CadastroResponsavelTxtFields {
             this.setMaximum(99);
             this.setCommitsOnValidEdit(true);
         }});
-
+        this.txtFields[2].setEnabled(false);
         this.txtFields[2].setFont(new Font("Arial", Font.BOLD, 13));
         this.mainpanel.getMainpanel().add(this.txtFields[2], this.mainpanel.getComponentsGrid()[2]);
         //this.mainpanel.getMainpanel().add(this.txtFields[0], this.mainpanel.getComponentsGrid()[0]);
+    }
+
+    public JFormattedTextField[] getTxtFields() {
+        return this.txtFields;
     }
 }

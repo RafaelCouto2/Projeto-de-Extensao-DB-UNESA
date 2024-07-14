@@ -1,5 +1,6 @@
 package com.extensionproject.app.gui.main.contents.pagamento.components;
 
+import com.extensionproject.app.general.Utils;
 import com.extensionproject.app.gui.main.contents.pagamento.gui.PagamentoPanel;
 
 import javax.swing.*;
@@ -32,7 +33,8 @@ public class PagamentoPanelCmbBoxes {
                     setEditable(false);
                     //setEnabled(false); //THOSE OPTIONS CHANGES THE BACKGROUND.
                     //setBackground(Color.LIGHT_GRAY.brighter());
-                    setBackground(new Color(248, 182, 182));
+                    setBackground(Utils.cmbRed);
+                    setFont(Utils.jetmono);
                     setCursor(new Cursor(Cursor.HAND_CURSOR));
                 }
             }};

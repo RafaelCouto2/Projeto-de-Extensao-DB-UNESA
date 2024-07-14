@@ -5,6 +5,8 @@ import com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui.Cadast
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -54,6 +56,7 @@ public class CadastroResponsavelButtons {
 
         this.mainpanel.getMainpanel().add(this.btnCadastro[0], this.mainpanel.getComponentsGrid()[3]);
         this.mainpanel.getMainpanel().add(this.btnCadastro[1], this.mainpanel.getComponentsGrid()[8]);
+        this.mainpanel.getMainpanel().add(this.btnCadastro[2], this.mainpanel.getComponentsGrid()[9]);
 
         this.mainpanel.getMainpanel().add(this.btnSwitch, this.mainpanel.getComponentsGrid()[7]);
     }
@@ -73,6 +76,24 @@ public class CadastroResponsavelButtons {
     private void btnSwitchActionEvent(boolean bool) {
         System.out.println(bool);
 
+        this.btnCadastro[1].setVisible(!bool);
+        this.btnCadastro[2].setVisible(bool);
+        this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().setEditable(bool);
+        this.mainpanel.getCmbBoxes().getCmbBoxSexo().setEnabled(bool);
+        this.mainpanel.getCmbBoxes().getCmbBoxSexo().setSelectedItem(null);
+        this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().setSelectedItem(null);
+        this.mainpanel.getSpnData().getSpnDate().setValue(new SimpleDateFormat(){{this.setCalendar(Utils.calendar);}}.getCalendar().getTime());
+        this.mainpanel.getSpnData().getSpnDate().setEnabled(bool);
+        for (int i = 0; i < 3; i++) {
+            this.mainpanel.getTxtFields().getTxtFields()[i].setEnabled(bool);
+        }
+
+        if(bool){
+            this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().setBackground(Utils.cmbGreen);
+            this.mainpanel.getTxtFields().getTxtFields()[0].setText(String.valueOf(this.mainpanel.getResponsavelTable().getActualId() + 1));
+        } else{
+            this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().setBackground(Utils.cmbRed);
+        }
 
     }
 

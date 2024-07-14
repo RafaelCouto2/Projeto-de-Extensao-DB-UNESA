@@ -20,6 +20,11 @@ public class CadastroResponsavelSpinner {
         this.spnDate.setBackground(Color.gray.brighter());
         this.spnDate.setFont(Utils.jetmono);
         this.spnDate.setCursor(Utils.handcursor);
+        this.spnDate.setEnabled(false);
         this.mainpanel.getMainpanel().add(this.spnDate, this.mainpanel.getComponentsGrid()[6]);
+    }
+
+    public JSpinner getSpnDate() {
+        return this.spnDate;
     }
 }

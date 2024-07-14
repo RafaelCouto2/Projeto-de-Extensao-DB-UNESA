@@ -72,8 +72,8 @@ public class CadastroResponsavel {
                 {1,360,15,300}, // CMBOX SEXO (RESPONSÁVEIS)
                 {5,226,40,438}, // SPNDATA
                 {1,480,15,100}, // SWITCH
-                {1,340,40,270}, // BTN DELETAR
-                {1,1,1,1},
+                {1,340,40,290}, // BTN DELETAR
+                {1,340,40,290}, // BTN REGISTRAR
                 {1,1,1,1}
         };
 
@@ -105,5 +105,21 @@ public class CadastroResponsavel {
 
     public CadastroResponsavelTable getResponsavelTable() {
         return this.cadastroResponsavelTable;
+    }
+
+    public CadastroResponsavelButtons getBtnCadastro() {
+        return btnCadastro;
+    }
+
+    public CadastroResponsavelCmbBoxes getCmbBoxes() {
+        return cmbBoxes;
+    }
+
+    public CadastroResponsavelSpinner getSpnData() {
+        return spnData;
+    }
+
+    public CadastroResponsavelTxtFields getTxtFields() {
+        return txtFields;
     }
 }
