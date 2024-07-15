@@ -77,7 +77,7 @@ public class CadastroResponsavel {
                 {1,480,15,100}, // SWITCH
                 {1,340,40,290}, // BTN DELETAR
                 {1,340,40,290}, // BTN REGISTRAR
-                {1,1,1,1}
+                {1,480,40,148} //BTN EDITAR
         };
 
         for(int g = 0; g < 11; g++){
