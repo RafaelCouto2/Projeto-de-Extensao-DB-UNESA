@@ -1,6 +1,6 @@
 package com.extensionproject.app.gui.main.contents.pagamento.events;
 
-import com.extensionproject.app.domain.pagamento.Pagamentos;
+import com.extensionproject.app.domain.pagamento.Pagamento;
 import com.extensionproject.app.exception.WrongPointTableClickException;
 import com.extensionproject.app.logger.LoggerManager;
 
@@ -16,11 +16,11 @@ public class TableMouseListenerEvents implements MouseListener {
     private final JTextField[] txtfields;
     private final JComboBox<?>[] cmbFields;
     private final JSpinner spnDate;
-    private final Pagamentos pagamento;
+    private final Pagamento pagamento;
     private boolean ignoreTableClick = false;
     private boolean hasSelected;
 
-    public TableMouseListenerEvents(JTable pgtable, JTextField[] txtfields, JComboBox<?>[] cmbFields, JSpinner spnDate, Pagamentos pgm){
+    public TableMouseListenerEvents(JTable pgtable, JTextField[] txtfields, JComboBox<?>[] cmbFields, JSpinner spnDate, Pagamento pgm){
         this.pgtable = pgtable;
         this.txtfields = txtfields;
         this.cmbFields = cmbFields;

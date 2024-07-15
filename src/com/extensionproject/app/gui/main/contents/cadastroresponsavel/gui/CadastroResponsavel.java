@@ -1,6 +1,7 @@
 package com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui;
 
 import com.extensionproject.app.dao.cadastrodao.responsaveldao.ResponsavelDAO;
+import com.extensionproject.app.domain.responsavel.Responsavel;
 import com.extensionproject.app.gui.main.contents.cadastroresponsavel.components.*;
 
 import javax.swing.*;
@@ -16,10 +17,12 @@ public class CadastroResponsavel {
     private CadastroResponsavelButtons btnCadastro;
     private CadastroResponsavelCmbBoxes cmbBoxes;
     private CadastroResponsavelSpinner spnData;
+    private Responsavel resposavel;
 
     private void initComponents (){
         this.setMainPanelLayout();
         this.startComponentsGrid();
+        this.resposavel = new Responsavel();
         this.responsavelDAO = new ResponsavelDAO(this);
         this.cadastroResponsavelTable = new CadastroResponsavelTable(this);
         this.cadastroResponsavelTable.startTable();

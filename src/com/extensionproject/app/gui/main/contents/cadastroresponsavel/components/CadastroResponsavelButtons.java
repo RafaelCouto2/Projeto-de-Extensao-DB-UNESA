@@ -74,7 +74,6 @@ public class CadastroResponsavelButtons {
     }
 
     private void btnSwitchActionEvent(boolean bool) {
-        System.out.println(bool);
 
         this.btnCadastro[1].setVisible(!bool);
         this.btnCadastro[2].setVisible(bool);
@@ -84,8 +83,14 @@ public class CadastroResponsavelButtons {
         this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().setSelectedItem(null);
         this.mainpanel.getSpnData().getSpnDate().setValue(new SimpleDateFormat(){{this.setCalendar(Utils.calendar);}}.getCalendar().getTime());
         this.mainpanel.getSpnData().getSpnDate().setEnabled(bool);
+
+
+
         for (int i = 0; i < 3; i++) {
             this.mainpanel.getTxtFields().getTxtFields()[i].setEnabled(bool);
+            if(i >= 1) {
+                this.mainpanel.getTxtFields().getTxtFields()[i].setText("");
+            }
         }
 
         if(bool){
@@ -97,4 +102,7 @@ public class CadastroResponsavelButtons {
 
     }
 
+    public JCheckBox getBtnSwitch() {
+        return this.btnSwitch;
+    }
 }

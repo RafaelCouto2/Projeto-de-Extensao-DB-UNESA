@@ -43,7 +43,7 @@ public class PagamentoPanelTable {
         this.pagamentoTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.pagamentoTable.getColumn("ID PG").setMaxWidth(55);
         this.pagamentoTable.getColumn("VALOR").setMaxWidth(65);
-        this.pagamentoTable.getColumn("DATA DO PAGAMENTO").setMaxWidth(140);
+        this.pagamentoTable.getColumn("DATA DO PAGAMENTO").setMaxWidth(147);
         this.pagamentoTable.getColumn("RESPONSÁVEL").setMaxWidth(230);
         this.pagamentoTable.getColumn("ALUNO REFERENTE").setMaxWidth(230);
         this.pagamentoTable.setForeground(Utils.tableForeground);

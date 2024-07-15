@@ -1,7 +1,11 @@
 package com.extensionproject.app.dao.cadastrodao.responsaveldao;
 
+import com.extensionproject.app.connect.statements.StatementsManager;
 import com.extensionproject.app.dao.tablerequestsdao.TableRequests;
 import com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui.CadastroResponsavel;
+import com.extensionproject.app.logger.LoggerManager;
+
+import java.sql.SQLException;
 
 public class ResponsavelDAO {
 
@@ -18,34 +22,48 @@ public class ResponsavelDAO {
                 "'%d/%m/%Y') as `dt_nascimento`, `telefone` from `extpj`.`responsavel`;"});
     }
 
-    public void responsavelTableRequest(String[] sql){
-        this.tableRequests.tableRequest(sql);
-        totRows = this.tableRequests.getResultsSetData()[0].size();
-        for(int l = 0; l < this.tableRequests.getResultsSetData()[0].size(); l++){
-            if (this.tableRequests.getResultsSetData()[0].get(l).get(2).equals("m")){
-                this.tableRequests.getResultsSetData()[0].get(l).set(2, "Masculino");
-            } else this.tableRequests.getResultsSetData()[0].get(l).set(2, "Feminino");
-        }
+    public void insertResponsavel(){
 
-        for (int i = 0; i < this.tableRequests.getResultsSetData()[0].size(); i++) {
-            StringBuilder builder = new StringBuilder(String.valueOf(this.tableRequests.getResultsSetData()[0].get(i).get(4)));
-            try {
-                for (int l = 0; l < this.tableRequests.getResultsSetData()[0].get(i).get(4).toString().length(); l++) {
-                    switch (l){
-                        case 0:
-                            this.tableRequests.getResultsSetData()[0].get(i).set(4, builder.insert(l, "("));
-                            break;
-                        case 3:
-                            this.tableRequests.getResultsSetData()[0].get(i).set(4, builder.insert(l, ")"));
-                            break;
-                        case 9:
-                            this.tableRequests.getResultsSetData()[0].get(i).set(4, builder.insert(l, "-"));
-                            break;
+    }
+
+    public void responsavelTableRequest(String[] sql){
+        try {
+            this.tableRequests.tableRequest(sql);
+            totRows = this.tableRequests.getResultsSetData()[0].size();
+            for (int l = 0; l < this.tableRequests.getResultsSetData()[0].size(); l++) {
+                if (this.tableRequests.getResultsSetData()[0].get(l).get(2).equals("m")) {
+                    this.tableRequests.getResultsSetData()[0].get(l).set(2, "Masculino");
+                } else this.tableRequests.getResultsSetData()[0].get(l).set(2, "Feminino");
+            }
+
+            for (int i = 0; i < this.tableRequests.getResultsSetData()[0].size(); i++) {
+                StringBuilder builder = new StringBuilder(String.valueOf(this.tableRequests.getResultsSetData()[0].get(i).get(4)));
+                try {
+                    for (int l = 0; l < this.tableRequests.getResultsSetData()[0].get(i).get(4).toString().length(); l++) {
+                        switch (l) {
+                            case 0:
+                                this.tableRequests.getResultsSetData()[0].get(i).set(4, builder.insert(l, "("));
+                                break;
+                            case 3:
+                                this.tableRequests.getResultsSetData()[0].get(i).set(4, builder.insert(l, ")"));
+                                break;
+                            case 9:
+                                this.tableRequests.getResultsSetData()[0].get(i).set(4, builder.insert(l, "-"));
+                                break;
+                        }
                     }
+                } catch (NullPointerException e) {
+                    this.tableRequests.getResultsSetData()[0].get(i).set(4, "(00)00000-0000");
+                    continue;
                 }
-            } catch (NullPointerException e){
-                this.tableRequests.getResultsSetData()[0].get(i).set(4, "(00)00000-0000");
-                continue;
+            }
+        } finally {
+            try {
+                if (!StatementsManager.getStmt().isClosed()){
+                    StatementsManager.getStmt().close();
+                }
+            } catch (SQLException e) {
+                LoggerManager.getClassLog(TableRequests.class).error(e.getMessage() + ": NÃO HÁ STATEMENTS ABERTOS.");
             }
         }
     }

@@ -2,12 +2,12 @@ package com.extensionproject.app.domain.pagamento;
 
 import com.extensionproject.app.logger.LoggerManager;
 
-public class Pagamentos {
+public class Pagamento {
 
 
     private String id_pagamento, id_responsavel, id_alunoreferente, valor, data_pagamento;
     private boolean hasValues;
-    public Pagamentos(){
+    public Pagamento(){
         this.hasValues = false;
         this.valor = "000.00";
     }
@@ -66,7 +66,7 @@ public class Pagamentos {
                 return false;
             }
         } catch (NullPointerException e) {
-            LoggerManager.getClassLog(Pagamentos.class).error(": VALORES VAZIOS. COMPLETE TODOS OS CAMPOS.");
+            LoggerManager.getClassLog(Pagamento.class).error(": VALORES VAZIOS. COMPLETE TODOS OS CAMPOS.");
             return false;
         }
     }

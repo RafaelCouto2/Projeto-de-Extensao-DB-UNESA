@@ -1,9 +1,9 @@
 package com.extensionproject.app.domain.responsavel;
 
-public class Responsaveis {
-    private String id_responsavel, nome, cpf, telefone, sexo, dt_nascimento;
-    public Responsaveis(int id, String nome){
-        this.nome = nome;
+public class Responsavel {
+    private String id_responsavel, nome, sexo, dt_nascimento, telefone;
+    public Responsavel(){
+
     }
 
     public String getId_responsavel() {
@@ -22,13 +22,6 @@ public class Responsaveis {
         this.nome = nome;
     }
 
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
 
     public String getTelefone() {
         return telefone;

@@ -1,6 +1,6 @@
 package com.extensionproject.app.gui.main.contents.pagamento.gui;
 
-import com.extensionproject.app.domain.pagamento.Pagamentos;
+import com.extensionproject.app.domain.pagamento.Pagamento;
 import com.extensionproject.app.gui.main.contents.pagamento.components.*;
 import javax.swing.*;
 import java.awt.*;
@@ -17,10 +17,10 @@ public class PagamentoPanel {
     private final JPanel mainpanel;
     private GridBagConstraints tableGrid;
     private GridBagConstraints[] componentsGrid;
-    private Pagamentos pagamento;
+    private Pagamento pagamento;
 
     private void iniComponents() {
-        this.pagamento = new Pagamentos();
+        this.pagamento = new Pagamento();
         this.setLoyout();
         this.startDefaultGridBagConstraints();
 
@@ -118,7 +118,7 @@ public class PagamentoPanel {
         return this.pspnDate;
     }
 
-    public Pagamentos getPagamento() {
+    public Pagamento getPagamento() {
         return this.pagamento;
     }
 
