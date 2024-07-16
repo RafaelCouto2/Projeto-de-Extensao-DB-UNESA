@@ -91,6 +91,7 @@ public class CadastroResponsavelTable {
         this.startTable();
         this.scrollPane.add(this.resptable);
         this.scrollPane.setViewportView(this.resptable);
+        this.mainpanel.getCmbBoxes().reloadReponsavelCombox();
 
     }
 

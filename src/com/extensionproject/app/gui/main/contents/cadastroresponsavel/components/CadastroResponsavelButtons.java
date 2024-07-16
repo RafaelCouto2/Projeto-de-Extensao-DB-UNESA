@@ -66,7 +66,8 @@ public class CadastroResponsavelButtons {
     }
 
     private void btnDeletarActionEvent(){
-        this.mainpanel.getResponsavelDAO().deleteResponsavel("Depois");
+        this.mainpanel.getResponsavelDAO().deleteResponsavel(this.mainpanel.getResposavel().getId_responsavel());
+        this.mainpanel.getResponsavelTable().reloadTable();
     }
 
     private void btnRegistrarActionEvent(){

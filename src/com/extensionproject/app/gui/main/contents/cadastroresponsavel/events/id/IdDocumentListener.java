@@ -38,8 +38,6 @@ public class IdDocumentListener implements DocumentListener {
             this.main.getMainpanel().getResposavel().setId_responsavel("DEFAULT");
         }
 
-        System.out.println(this.main.getMainpanel().getResposavel().getId_responsavel());
-
     }
 
 

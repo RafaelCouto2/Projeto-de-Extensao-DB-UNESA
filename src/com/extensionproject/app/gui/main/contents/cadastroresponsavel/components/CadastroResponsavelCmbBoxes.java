@@ -42,6 +42,7 @@ public class CadastroResponsavelCmbBoxes {
         this.cmbBoxSexo.addItem(new String("Masculino"));
         this.cmbBoxSexo.addItem(new String("Feminino"));
 
+        this.cmbBoxResponsavel.addItem(" ");
         Vector<Vector<Object>> request0 = this.mainpanel.getResponsavelDAO().getTableRequests().getResultsSetData()[0];
         for (int i = 0; i < request0.size(); i++) {
             if (request0.get(i).get(0) != null) {
@@ -56,6 +57,19 @@ public class CadastroResponsavelCmbBoxes {
         this.mainpanel.getMainpanel().add(this.cmbBoxResponsavel, this.mainpanel.getComponentsGrid()[4]);
         this.mainpanel.getMainpanel().add(this.cmbBoxSexo, this.mainpanel.getComponentsGrid()[5]);
 
+    }
+
+    public void reloadReponsavelCombox() {
+        this.first = true;
+        this.cmbBoxResponsavel.removeAllItems();
+        this.cmbBoxResponsavel.addItem(" ");
+        Vector<Vector<Object>> request0 = this.mainpanel.getResponsavelDAO().getTableRequests().getResultsSetData()[0];
+        for (int i = 0; i < request0.size(); i++) {
+            if (request0.get(i).get(0) != null) {
+                this.cmbBoxResponsavel.addItem(request0.get(i).get(0) + ": " + request0.get(i).get(1));
+            }
+        }
+        this.first = false;
     }
 
     private void cmbBoxResponsavelItemEvent(ItemEvent e) {
@@ -115,6 +129,10 @@ public class CadastroResponsavelCmbBoxes {
                     } else {
                         this.mainpanel.getTxtFields().getTxtFields()[0].setEnabled(true);
                         this.editing = false;
+                    }
+
+                    if(this.cmbBoxResponsavel.getSelectedItem().equals(" ")){
+                        if(this.mainpanel.getBtnCadastro().isStateChanged()) this.mainpanel.getBtnCadastro().changeState();
                     }
 
                 } catch (NullPointerException ex){

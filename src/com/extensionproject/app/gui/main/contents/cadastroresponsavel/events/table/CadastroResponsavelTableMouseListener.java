@@ -23,13 +23,18 @@ public class CadastroResponsavelTableMouseListener implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         try {
-            this.tableclass.getMainpanel().getCmbBoxes().getCmbBoxResponsavel()
-                    .setSelectedItem(
-                            this.table.getValueAt(
-                                    this.table.getSelectedRow(), 0) + ": " +
-                                    this.table.getValueAt(this.table.getSelectedRow(), 1));
+            if (this.table.getValueAt(this.table.getSelectedRow(), 0) != null) {
+                this.tableclass.getMainpanel().getCmbBoxes().getCmbBoxResponsavel()
+                        .setSelectedItem(
+                                this.table.getValueAt(
+                                        this.table.getSelectedRow(), 0) + ": " +
+                                        this.table.getValueAt(this.table.getSelectedRow(), 1));
+            } else {
+                this.tableclass.getMainpanel().getCmbBoxes().getCmbBoxResponsavel().setSelectedItem(null);
+                this.tableclass.getMainpanel().getTxtFields().getTxtFields()[0].setText(String.valueOf(this.tableclass.getActualId() + 1));
+            }
         } catch (ArrayIndexOutOfBoundsException ex){
-            LoggerManager.getClassLog(TableMouseListenerEvents.class).error(": FALHA AO CAPTURAR OS DADOS. POR FAVOR, CLIQUE INTERNAMENTE DENTRO DA TABELA.");
+            LoggerManager.getClassLog(TableMouseListenerEvents.class).error(": FALHA AO CAPTURAR OS DADOS. POR FAVOR, CLIQUE DENTRO DA TABELA.");
         }
     }
 
