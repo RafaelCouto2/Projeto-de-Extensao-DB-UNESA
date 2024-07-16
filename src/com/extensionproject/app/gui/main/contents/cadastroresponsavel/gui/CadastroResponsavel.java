@@ -125,4 +125,8 @@ public class CadastroResponsavel {
     public CadastroResponsavelTxtFields getTxtFields() {
         return txtFields;
     }
+
+    public Responsavel getResposavel() {
+        return this.resposavel;
+    }
 }

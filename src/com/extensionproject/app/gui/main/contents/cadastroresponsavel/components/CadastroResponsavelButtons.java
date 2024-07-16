@@ -66,7 +66,7 @@ public class CadastroResponsavelButtons {
     }
 
     private void btnDeletarActionEvent(){
-
+        this.mainpanel.getResponsavelDAO().deleteResponsavel("Depois");
     }
 
     private void btnRegistrarActionEvent(){
@@ -95,10 +95,9 @@ public class CadastroResponsavelButtons {
 
         for (int i = 0; i < 3; i++) {
             this.mainpanel.getTxtFields().getTxtFields()[i].setEnabled(bool);
-            if(i >= 1) {
-                this.mainpanel.getTxtFields().getTxtFields()[i].setText("");
-            }
         }
+        this.mainpanel.getTxtFields().getTxtFields()[1].setText("");
+        this.mainpanel.getTxtFields().getTxtFields()[2].setText("21");
 
         if(bool){
             this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().setBackground(Utils.cmbGreen);

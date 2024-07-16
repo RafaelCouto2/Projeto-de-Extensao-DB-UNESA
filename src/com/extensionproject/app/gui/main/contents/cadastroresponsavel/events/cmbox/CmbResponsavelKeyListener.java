@@ -1,4 +1,4 @@
-package com.extensionproject.app.gui.main.contents.cadastroresponsavel.events;
+package com.extensionproject.app.gui.main.contents.cadastroresponsavel.events.cmbox;
 
 import com.extensionproject.app.gui.main.contents.cadastroresponsavel.components.CadastroResponsavelCmbBoxes;
 import java.awt.event.KeyEvent;

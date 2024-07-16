@@ -1,7 +1,7 @@
 package com.extensionproject.app.gui.main.contents.cadastroresponsavel.components;
 
 import com.extensionproject.app.general.Utils;
-import com.extensionproject.app.gui.main.contents.cadastroresponsavel.events.CadastroResponsavelTableMouseListener;
+import com.extensionproject.app.gui.main.contents.cadastroresponsavel.events.table.CadastroResponsavelTableMouseListener;
 import com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui.CadastroResponsavel;
 
 import javax.swing.*;

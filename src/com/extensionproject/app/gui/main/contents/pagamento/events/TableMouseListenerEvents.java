@@ -68,7 +68,7 @@ public class TableMouseListenerEvents implements MouseListener {
                     }
                 }
             } catch (ArrayIndexOutOfBoundsException clickoutoftable) {
-                LoggerManager.getClassLog(TableMouseListenerEvents.class).info(": FALHA AO CAPTURAR OS DADOS. POR FAVOR, CLIQUE INTERNAMENTE DENTRO DA TABELA.");
+                LoggerManager.getClassLog(TableMouseListenerEvents.class).error(": FALHA AO CAPTURAR OS DADOS. POR FAVOR, CLIQUE INTERNAMENTE DENTRO DA TABELA.");
                 hasSelected = false;
             } catch (ParseException ex) {
                 throw new RuntimeException(ex);

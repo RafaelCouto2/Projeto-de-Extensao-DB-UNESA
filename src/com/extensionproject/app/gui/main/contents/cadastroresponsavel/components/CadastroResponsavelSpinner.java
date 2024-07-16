@@ -1,9 +1,11 @@
 package com.extensionproject.app.gui.main.contents.cadastroresponsavel.components;
 
 import com.extensionproject.app.general.Utils;
+import com.extensionproject.app.gui.main.contents.cadastroresponsavel.events.dataspinner.SpnDateChangeListener;
 import com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui.CadastroResponsavel;
 
 import javax.swing.*;
+import javax.swing.text.DefaultFormatter;
 import java.awt.*;
 
 public class CadastroResponsavelSpinner {
@@ -21,10 +23,18 @@ public class CadastroResponsavelSpinner {
         this.spnDate.setFont(Utils.jetmono);
         this.spnDate.setCursor(Utils.handcursor);
         this.spnDate.setEnabled(false);
+        JFormattedTextField childcomp = (JFormattedTextField) this.spnDate.getEditor().getComponent(0);
+        DefaultFormatter formatter = (DefaultFormatter) childcomp.getFormatter();
+        formatter.setCommitsOnValidEdit(true);
+        this.spnDate.addChangeListener(new SpnDateChangeListener(this));
         this.mainpanel.getMainpanel().add(this.spnDate, this.mainpanel.getComponentsGrid()[6]);
     }
 
     public JSpinner getSpnDate() {
         return this.spnDate;
+    }
+
+    public CadastroResponsavel getMainpanel() {
+        return this.mainpanel;
     }
 }

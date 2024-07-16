@@ -1,7 +1,7 @@
 package com.extensionproject.app.gui.main.contents.cadastroresponsavel.components;
 
 import com.extensionproject.app.general.Utils;
-import com.extensionproject.app.gui.main.contents.cadastroresponsavel.events.CmbResponsavelKeyListener;
+import com.extensionproject.app.gui.main.contents.cadastroresponsavel.events.cmbox.CmbResponsavelKeyListener;
 import com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui.CadastroResponsavel;
 import com.extensionproject.app.logger.LoggerManager;
 
@@ -89,9 +89,20 @@ public class CadastroResponsavelCmbBoxes {
                                     }
                                 }
 
-                                this.mainpanel.getTxtFields().getTxtFields()[2].setText(newnumber.substring(0, 2));
-                                this.mainpanel.getTxtFields().getTxtFields()[1].setText(newnumber.substring(2));
+                                if(!((newnumber.startsWith("0")) || (newnumber.isBlank()) || (newnumber.contains("00000000000")))){
+                                    this.mainpanel.getTxtFields().getTxtFields()[2].setText(newnumber.substring(0, 2));
+                                    this.mainpanel.getTxtFields().getTxtFields()[1].setText(newnumber.substring(2));
+
+                                } else {
+                                    this.mainpanel.getTxtFields().getTxtFields()[1].setText(null);
+                                    this.mainpanel.getTxtFields().getTxtFields()[2].setText("21");
+                                }
+
+                                //Aplica o id atual ao objeto do responsável.
+                                this.mainpanel.getResposavel().setId_responsavel(this.mainpanel.getTxtFields().getTxtFields()[0].getText());
+
                                 this.mainpanel.getSpnData().getSpnDate().setValue(new SimpleDateFormat("dd/MM/yyyy").parse(table.getValueAt(i,3).toString()));
+
                                 break;
                             }
 
@@ -100,7 +111,8 @@ public class CadastroResponsavelCmbBoxes {
                         bf = new StringBuilder(Objects.requireNonNull(this.cmbBoxResponsavel.getSelectedItem()).toString());
                         String clearedName = bf.delete(0, id+2).toString();
 
-                    } else{
+
+                    } else {
                         this.mainpanel.getTxtFields().getTxtFields()[0].setEnabled(true);
                         this.editing = false;
                     }
@@ -125,6 +137,8 @@ public class CadastroResponsavelCmbBoxes {
             Object source = e.getSource();
             if(source instanceof JComboBox<?>){
                 //Quando se sentir inútil, pense nesse método.
+                //Aplica o sexo do respectivo responsável ao objeto do responsável.
+                this.mainpanel.getResposavel().setSexo(Objects.requireNonNull(this.cmbBoxSexo.getSelectedItem()).toString().substring(0,1).toLowerCase());
             }
         }
     }

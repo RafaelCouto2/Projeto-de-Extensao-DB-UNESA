@@ -1,11 +1,13 @@
 package com.extensionproject.app.dao.cadastrodao.responsaveldao;
 
 import com.extensionproject.app.connect.statements.StatementsManager;
+import com.extensionproject.app.dao.pagamentodao.PagamentoDAO;
 import com.extensionproject.app.dao.tablerequestsdao.TableRequests;
 import com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui.CadastroResponsavel;
 import com.extensionproject.app.logger.LoggerManager;
 
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ResponsavelDAO {
 
@@ -24,6 +26,20 @@ public class ResponsavelDAO {
 
     public void insertResponsavel(){
 
+    }
+
+    public void deleteResponsavel(String id){
+        try(Statement stmt = StatementsManager.createStatement()){
+            if (stmt == null) {
+                throw new IllegalStateException("Falha ao criar o Statement.");
+            }
+            int row = stmt.executeUpdate("delete from `extpj`.`responsavel` where id_responsavel = " + id + ";");
+            LoggerManager.getClassLog(PagamentoDAO.class).info(": CADASTRO DO RESPONSÁVEL DELETADO COM SUCESSO!");
+            LoggerManager.getClassLog(StatementsManager.class).info("ROWS AFFECTED: " + row);
+
+        } catch (SQLException e) {
+            LoggerManager.getClassLog(PagamentoDAO.class).error(e.getMessage()+ ": NÃO FOI POSSÍVEL DELETAR O CADASTRO DO RESPONSÁVEL.");
+        }
     }
 
     public void responsavelTableRequest(String[] sql){

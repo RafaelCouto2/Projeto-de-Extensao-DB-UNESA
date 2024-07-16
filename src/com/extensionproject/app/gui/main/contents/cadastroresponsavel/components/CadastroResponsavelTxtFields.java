@@ -1,6 +1,9 @@
 package com.extensionproject.app.gui.main.contents.cadastroresponsavel.components;
 
-import com.extensionproject.app.general.Utils;
+import com.extensionproject.app.gui.main.contents.cadastroresponsavel.events.telefone.DddFocusListener;
+import com.extensionproject.app.gui.main.contents.cadastroresponsavel.events.id.IdDocumentListener;
+import com.extensionproject.app.gui.main.contents.cadastroresponsavel.events.telefone.TelefoneDocumentListener;
+import com.extensionproject.app.gui.main.contents.cadastroresponsavel.events.telefone.TelefoneFocusListener;
 import com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui.CadastroResponsavel;
 
 import javax.swing.*;
@@ -45,10 +48,18 @@ public class CadastroResponsavelTxtFields {
         this.txtFields[2].setEnabled(false);
         this.txtFields[2].setFont(new Font("Arial", Font.BOLD, 13));
         this.mainpanel.getMainpanel().add(this.txtFields[2], this.mainpanel.getComponentsGrid()[2]);
-        //this.mainpanel.getMainpanel().add(this.txtFields[0], this.mainpanel.getComponentsGrid()[0]);
+
+        this.txtFields[0].getDocument().addDocumentListener(new IdDocumentListener(this));
+        this.txtFields[1].getDocument().addDocumentListener(new TelefoneDocumentListener(this));
+        this.txtFields[1].addFocusListener(new TelefoneFocusListener(this));
+        this.txtFields[2].addFocusListener(new DddFocusListener(this));
     }
 
     public JFormattedTextField[] getTxtFields() {
         return this.txtFields;
+    }
+
+    public CadastroResponsavel getMainpanel() {
+        return this.mainpanel;
     }
 }
