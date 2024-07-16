@@ -29,6 +29,7 @@ public class CadastroResponsavelTableMouseListener implements MouseListener {
                                 this.table.getValueAt(
                                         this.table.getSelectedRow(), 0) + ": " +
                                         this.table.getValueAt(this.table.getSelectedRow(), 1));
+                this.tableclass.getMainpanel().getBtnCadastro().getBtnCadastro()[1].repaint();
             } else {
                 this.tableclass.getMainpanel().getCmbBoxes().getCmbBoxResponsavel().setSelectedItem(null);
                 this.tableclass.getMainpanel().getTxtFields().getTxtFields()[0].setText(String.valueOf(this.tableclass.getActualId() + 1));

@@ -86,6 +86,11 @@ public class CadastroResponsavel {
 
     }
 
+    public void reloadComponentsProperties(){
+        this.getResponsavelTable().reloadTable();
+        this.getCmbBoxes().reloadReponsavelCombox();
+    }
+
     private void setMainPanelLayout(){
         this.mainpanel.setLayout(new GridBagLayout());
     }

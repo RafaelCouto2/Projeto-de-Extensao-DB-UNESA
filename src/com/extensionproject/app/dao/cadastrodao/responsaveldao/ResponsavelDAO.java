@@ -33,9 +33,8 @@ public class ResponsavelDAO {
             if (stmt == null) {
                 throw new IllegalStateException("Falha ao criar o Statement.");
             }
-            int row = stmt.executeUpdate("delete from `extpj`.`responsavel` where id_responsavel = " + id + ";");
+            stmt.executeUpdate("delete from `extpj`.`responsavel` where id_responsavel = " + id + ";");
             LoggerManager.getClassLog(PagamentoDAO.class).info(": CADASTRO DO RESPONSÁVEL DELETADO COM SUCESSO!");
-            LoggerManager.getClassLog(StatementsManager.class).info("ROWS AFFECTED: " + row);
 
         } catch (SQLException e) {
             LoggerManager.getClassLog(PagamentoDAO.class).error(e.getMessage()+ ": NÃO FOI POSSÍVEL DELETAR O CADASTRO DO RESPONSÁVEL.");

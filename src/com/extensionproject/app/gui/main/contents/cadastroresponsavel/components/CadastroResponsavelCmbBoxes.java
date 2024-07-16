@@ -42,7 +42,6 @@ public class CadastroResponsavelCmbBoxes {
         this.cmbBoxSexo.addItem(new String("Masculino"));
         this.cmbBoxSexo.addItem(new String("Feminino"));
 
-        this.cmbBoxResponsavel.addItem(" ");
         Vector<Vector<Object>> request0 = this.mainpanel.getResponsavelDAO().getTableRequests().getResultsSetData()[0];
         for (int i = 0; i < request0.size(); i++) {
             if (request0.get(i).get(0) != null) {
@@ -62,7 +61,7 @@ public class CadastroResponsavelCmbBoxes {
     public void reloadReponsavelCombox() {
         this.first = true;
         this.cmbBoxResponsavel.removeAllItems();
-        this.cmbBoxResponsavel.addItem(" ");
+        //if(this.mainpanel.getBtnCadastro().isStateChanged()) this.cmbBoxResponsavel.addItem("<Cadastrar novo responsável>");
         Vector<Vector<Object>> request0 = this.mainpanel.getResponsavelDAO().getTableRequests().getResultsSetData()[0];
         for (int i = 0; i < request0.size(); i++) {
             if (request0.get(i).get(0) != null) {
@@ -82,6 +81,8 @@ public class CadastroResponsavelCmbBoxes {
                         if(!this.mainpanel.getBtnCadastro().isStateChanged()) this.mainpanel.getBtnCadastro().changeState();
                         StringBuilder bf = new StringBuilder(Objects.requireNonNull(this.cmbBoxResponsavel.getSelectedItem()).toString());
                         int id = bf.indexOf(":");
+                        String clearedName = bf.delete(0, id+2).toString();
+                        this.mainpanel.getResposavel().setNome(clearedName);
                         iddot = id;
                         JTable table = this.mainpanel.getResponsavelTable().getResptable();
                         this.mainpanel.getTxtFields().getTxtFields()[0].setText(
@@ -113,27 +114,29 @@ public class CadastroResponsavelCmbBoxes {
                                 }
 
                                 //Aplica o id atual ao objeto do responsável.
-                                this.mainpanel.getResposavel().setId_responsavel(this.mainpanel.getTxtFields().getTxtFields()[0].getText());
+                                //this.mainpanel.getResposavel().setId_responsavel(this.mainpanel.getTxtFields().getTxtFields()[0].getText());
 
-                                this.mainpanel.getSpnData().getSpnDate().setValue(new SimpleDateFormat("dd/MM/yyyy").parse(table.getValueAt(i,3).toString()));
+                                this.mainpanel.getSpnData().getSpnDate().setValue(new SimpleDateFormat("dd/MM/yyyy")
+                                        .parse(table.getValueAt(i,3).toString()));
 
                                 break;
                             }
 
                         }
 
-                        bf = new StringBuilder(Objects.requireNonNull(this.cmbBoxResponsavel.getSelectedItem()).toString());
-                        String clearedName = bf.delete(0, id+2).toString();
-
 
                     } else {
                         this.mainpanel.getTxtFields().getTxtFields()[0].setEnabled(true);
                         this.editing = false;
+                        this.mainpanel.getResposavel().setNome(this.cmbBoxResponsavel.getEditor().getItem().toString());
                     }
 
-                    if(this.cmbBoxResponsavel.getSelectedItem().equals(" ")){
+                    if(this.cmbBoxResponsavel.getSelectedItem().equals("<Cadastrar novo responsável>") || this.cmbBoxResponsavel.getEditor().getItem().equals("")){
                         if(this.mainpanel.getBtnCadastro().isStateChanged()) this.mainpanel.getBtnCadastro().changeState();
+                        this.cmbBoxResponsavel.setSelectedItem("<NOME>");
                     }
+
+                    System.out.println(this.mainpanel.getResposavel().getNome());
 
                 } catch (NullPointerException ex){
                     LoggerManager.getClassLog(CadastroResponsavelCmbBoxes.class).error(": Item inválido, tente novamente.");
@@ -183,5 +186,9 @@ public class CadastroResponsavelCmbBoxes {
 
     public void setLocked(boolean lock) {
         this.lock = lock;
+    }
+
+    public CadastroResponsavel getMainpanel() {
+        return this.mainpanel;
     }
 }

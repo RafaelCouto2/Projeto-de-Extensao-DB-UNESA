@@ -1,6 +1,8 @@
 package com.extensionproject.app.gui.main.contents.cadastroresponsavel.events.cmbox;
 
 import com.extensionproject.app.gui.main.contents.cadastroresponsavel.components.CadastroResponsavelCmbBoxes;
+import com.extensionproject.app.logger.LoggerManager;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -22,6 +24,13 @@ public class CmbResponsavelKeyListener implements KeyListener {
                     this.mainbxs.setLocked(false);
                 }
             }
+            try {
+                this.mainbxs.getMainpanel().getResposavel().setNome(this.mainbxs.getCmbBoxResponsavel().getEditor().getItem().toString().substring(this.mainbxs.getIddot() + 2));
+            } catch (StringIndexOutOfBoundsException ex){
+                LoggerManager.getClassLog(CmbResponsavelKeyListener.class).info(": Fim da linha, não é possível apagar o ID do responsável, em seu nome, enquanto edita.");
+            }
+        } else {
+            this.mainbxs.getMainpanel().getResposavel().setNome(this.mainbxs.getCmbBoxResponsavel().getEditor().getItem().toString());
         }
     }
 

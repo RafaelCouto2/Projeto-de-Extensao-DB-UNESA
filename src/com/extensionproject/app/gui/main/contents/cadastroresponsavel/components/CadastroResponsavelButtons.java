@@ -66,8 +66,10 @@ public class CadastroResponsavelButtons {
     }
 
     private void btnDeletarActionEvent(){
-        this.mainpanel.getResponsavelDAO().deleteResponsavel(this.mainpanel.getResposavel().getId_responsavel());
-        this.mainpanel.getResponsavelTable().reloadTable();
+        if(this.mainpanel.getResposavel().getId_responsavel() != null && this.mainpanel.getResposavel().getNome() != null) {
+            this.mainpanel.getResponsavelDAO().deleteResponsavel(this.mainpanel.getResposavel().getId_responsavel());
+            this.mainpanel.reloadComponentsProperties();
+        }
     }
 
     private void btnRegistrarActionEvent(){
@@ -103,8 +105,10 @@ public class CadastroResponsavelButtons {
         if(bool){
             this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().setBackground(Utils.cmbGreen);
             this.mainpanel.getTxtFields().getTxtFields()[0].setText(String.valueOf(this.mainpanel.getResponsavelTable().getActualId() + 1));
+            this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().addItem("<Cadastrar novo responsável>");
         } else {
             this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().setBackground(Utils.cmbRed);
+            this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().removeItem("<Cadastrar novo responsável>");
         }
 
     }
