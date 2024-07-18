@@ -23,7 +23,6 @@ public class LoggerPanel extends JPanel implements Runnable {
         Dimension size = new Dimension(LoginGui.WIDTH + 200, LoginGui.HEIGHT + 150);
         log = LoggerManager.getClassLog(LoggerPanel.class);
         this.setLayout(new GridLayout(1,0));
-        log.info("CREATED MAIN LOGGER PANEL!\n");
         this.iniFile();
         this.iniTxtArea();
         this.iniPnArea();
@@ -60,14 +59,14 @@ public class LoggerPanel extends JPanel implements Runnable {
         if(this.lastModified != this.file.lastModified()) {
             this.file = new File("./logs/app.log");
             this.logtemp = new RandomAccessFile("./logs/app.log", "r");
-            this.txtLog.setText("\n");
+            this.txtLog.setText("");
             try{
-                while (!this.logtemp.readLine().equals("\0")) {
+                while (this.logtemp.read() > 1) {
                     this.txtLog.append("\n" + this.logtemp.readLine().toUpperCase() + "");
                 }
                 //this.logsaved.write(this.logtemp.readByte());
             } catch (NullPointerException e){
-                log.info(e.getMessage());
+
             }
             this.lastModified = this.file.lastModified();
         }
@@ -81,7 +80,7 @@ public class LoggerPanel extends JPanel implements Runnable {
             this.logtemp = new RandomAccessFile("./logs/app.log", "rw");
             this.logsaved = new RandomAccessFile("./logs/app_all.log", "rw");
         } catch (IOException e) {
-            log.info(e.getMessage());
+            LoggerManager.getClassLog(LoggerPanel.class).error(": Aquivo de log não encontrado.");
         }
 
     }
@@ -99,13 +98,42 @@ public class LoggerPanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
+        double timePerUpdate = 1000000000.0 / 2;
+        double timePerFrame = 1000000000.0 / 30;
+        long lastCheck = System.currentTimeMillis();
+        long previousTime = System.nanoTime();
+        double deltaU = 0;
+        double deltaF = 0;
+        int updates = 0;
+        int frames = 0;
 
         try {
             do {
-                this.updateLog();
+                long currentTime = System.nanoTime();
+                deltaU += (currentTime - previousTime) / timePerUpdate;
+                deltaF += (currentTime - previousTime) / timePerFrame;
+                previousTime = currentTime;
+                if(deltaU >= 1){
+                    //UPDATES LOG
+                    this.updateLog();
+                    updates++;
+                    deltaU--;
+                }
+                if(deltaF >= 1){
+                    //FRAMES
+                    frames++;
+                    deltaF--;
+                }
+                if(System.currentTimeMillis() - lastCheck >= 1000){
+                    lastCheck = System.currentTimeMillis();
+                    System.out.println("FPS: " + frames + " | UPS: " + updates);
+                    frames = 0;
+                    updates = 0;
+                }
+
             } while (true);
         } catch (IOException e) {
-            //log.info(e.getMessage());
+
         }
 
     }

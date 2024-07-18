@@ -89,7 +89,9 @@ public class CadastroResponsavelCmbBoxes {
             if(source instanceof JComboBox<?>){
                 try {
                     if(Character.isDigit(Objects.requireNonNull(this.cmbBoxResponsavel.getSelectedItem()).toString().charAt(0)) && !lock) {
-                        this.lock = true; this.editing = true; this.mainpanel.getTxtFields().getTxtFields()[0].setEnabled(false);
+                        this.lock = true;
+                        this.editing = true;
+                        this.mainpanel.getTxtFields().getTxtFields()[0].setEnabled(false);
                         if(!this.mainpanel.getBtnCadastro().isStateChanged()) this.mainpanel.getBtnCadastro().changeState();
                         StringBuilder bf = new StringBuilder(Objects.requireNonNull(this.cmbBoxResponsavel.getSelectedItem()).toString());
                         int id = bf.indexOf(":");
@@ -144,10 +146,9 @@ public class CadastroResponsavelCmbBoxes {
 
                     if(this.cmbBoxResponsavel.getSelectedItem().equals("<Cadastrar novo responsável>") || this.cmbBoxResponsavel.getEditor().getItem().equals("")){
                         if(this.mainpanel.getBtnCadastro().isStateChanged()) this.mainpanel.getBtnCadastro().changeState();
+                        this.mainpanel.getTxtFields().changeToActualId();
                         this.cmbBoxResponsavel.setSelectedItem("<NOME>");
                     }
-
-                    //System.out.println(this.mainpanel.getResposavel().getNome());
 
                 } catch (NullPointerException ex){
                     LoggerManager.getClassLog(CadastroResponsavelCmbBoxes.class).error(": Item inválido, tente novamente.");
