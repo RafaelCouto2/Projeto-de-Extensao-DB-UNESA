@@ -15,7 +15,7 @@ import java.util.Vector;
 
 public class CadastroResponsavelCmbBoxes {
 
-    private CadastroResponsavel mainpanel;
+    private final CadastroResponsavel mainpanel;
     private JComboBox<Object> cmbBoxResponsavel, cmbBoxSexo;
     private boolean lock = false, first = true, editing = false, reload = false;
     private int iddot;

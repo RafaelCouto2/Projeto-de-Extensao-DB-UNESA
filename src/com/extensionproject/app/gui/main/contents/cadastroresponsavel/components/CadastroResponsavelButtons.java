@@ -4,12 +4,9 @@ import com.extensionproject.app.general.Utils;
 import com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui.CadastroResponsavel;
 
 import javax.swing.*;
-import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public class CadastroResponsavelButtons {
     private final CadastroResponsavel mainpanel;
@@ -53,9 +50,7 @@ public class CadastroResponsavelButtons {
         this.btnSwitch.setCursor(Utils.handcursor);
         this.btnSwitch.setText("<html>CADASTRAR OU EDITAR<br>RESPONSÁVEL?</html>");
         this.btnSwitch.addActionListener(e -> {
-            if(btnSwitch.isSelected()) {
-                btnSwitchActionEvent(true);
-            } else btnSwitchActionEvent(false);
+            btnSwitchActionEvent(btnSwitch.isSelected());
         });
 
         this.mainpanel.getMainpanel().add(this.btnCadastro[0], this.mainpanel.getComponentsGrid()[3]);
@@ -127,9 +122,7 @@ public class CadastroResponsavelButtons {
 
         this.btnCadastro[2].setEnabled(!this.btnCadastro[2].isEnabled());
         this.btnCadastro[3].setEnabled(!this.btnCadastro[3].isEnabled());
-        if(this.stateChanged){
-            this.stateChanged = false;
-        } else this.stateChanged = true;
+        this.stateChanged = !this.stateChanged;
 
     }
 

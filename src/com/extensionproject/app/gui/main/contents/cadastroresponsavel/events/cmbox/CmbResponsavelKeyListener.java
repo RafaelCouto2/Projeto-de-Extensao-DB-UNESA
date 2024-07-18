@@ -8,7 +8,7 @@ import java.awt.event.KeyListener;
 
 public class CmbResponsavelKeyListener implements KeyListener {
 
-    private CadastroResponsavelCmbBoxes mainbxs;
+    private final CadastroResponsavelCmbBoxes mainbxs;
     public CmbResponsavelKeyListener(CadastroResponsavelCmbBoxes mainbxs){
         this.mainbxs = mainbxs;
     }
