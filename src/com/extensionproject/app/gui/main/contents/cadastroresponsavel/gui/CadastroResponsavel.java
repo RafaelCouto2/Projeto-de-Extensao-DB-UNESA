@@ -89,6 +89,9 @@ public class CadastroResponsavel {
     public void reloadComponentsProperties(){
         this.getResponsavelTable().reloadTable();
         this.getCmbBoxes().reloadReponsavelCombox();
+        this.getCmbBoxes().getCmbBoxSexo().setSelectedItem(null);
+        this.getTxtFields().reloadTxtFields();
+        this.getSpnData().reloadDt();
     }
 
     private void setMainPanelLayout(){

@@ -24,8 +24,21 @@ public class ResponsavelDAO {
                 "'%d/%m/%Y') as `dt_nascimento`, `telefone` from `extpj`.`responsavel`;"});
     }
 
-    public void insertResponsavel(){
-
+    public void insertResponsavel(String[] dados){
+        try(Statement stmt = StatementsManager.createStatement()){
+            if (stmt == null){
+                throw new IllegalStateException("Falha ao criar o Statement.");
+            }
+            stmt.executeUpdate("insert into `extpj`.`responsavel` values (" +
+                             dados[0] +
+                    ", '"  + dados[1] +
+                    "', '" + dados[2] +
+                    "', "  + "STR_TO_DATE('" + dados[3] + "', '%d/%m/%Y')" +
+                    ", "   + dados[4] +
+                    ");");
+        } catch (SQLException e) {
+            LoggerManager.getClassLog(PagamentoDAO.class).error(e.getMessage()+ ": NÃO FOI POSSÍVEL REGISTRAR O CADASTRO DO RESPONSÁVEL.");
+        }
     }
 
     public void deleteResponsavel(String id){

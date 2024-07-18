@@ -21,6 +21,15 @@ public class CadastroResponsavelTxtFields {
 
     }
 
+    public void reloadTxtFields(){
+        this.changeToActualId();
+        this.txtFields[1].setText(null);
+    }
+
+    public void changeToActualId(){
+        this.txtFields[0].setText(String.valueOf(this.mainpanel.getResponsavelTable().getActualId() + 1));
+    }
+
     public void startNumberTxtFields(){
         this.txtFields = new JFormattedTextField[3];
         DecimalFormat df = new DecimalFormat();

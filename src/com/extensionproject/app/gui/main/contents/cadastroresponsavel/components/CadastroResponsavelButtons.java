@@ -6,6 +6,7 @@ import com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui.Cadast
 import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -73,6 +74,14 @@ public class CadastroResponsavelButtons {
     }
 
     private void btnRegistrarActionEvent(){
+        System.out.println(this.mainpanel.getResposavel().hasValues());
+        if(this.mainpanel.getResposavel().hasValues()){
+            System.out.println(Arrays.toString(this.mainpanel.getResposavel().getValues()));
+            this.mainpanel.getResponsavelDAO().insertResponsavel(this.mainpanel.getResposavel().getValues());
+            this.mainpanel.getResposavel().resetValues();
+            this.mainpanel.reloadComponentsProperties();
+        }
+
 
     }
 
@@ -105,7 +114,8 @@ public class CadastroResponsavelButtons {
         if(bool){
             this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().setBackground(Utils.cmbGreen);
             this.mainpanel.getTxtFields().getTxtFields()[0].setText(String.valueOf(this.mainpanel.getResponsavelTable().getActualId() + 1));
-            this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().addItem("<Cadastrar novo responsável>");
+            //this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().addItem("<Cadastrar novo responsável>");
+            this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().insertItemAt("<Cadastrar novo responsável>", 0);
         } else {
             this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().setBackground(Utils.cmbRed);
             this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().removeItem("<Cadastrar novo responsável>");

@@ -1,10 +1,49 @@
 package com.extensionproject.app.domain.responsavel;
 
+import com.extensionproject.app.logger.LoggerManager;
+
 public class Responsavel {
     private String id_responsavel, nome, sexo, dt_nascimento, telefone;
-    public Responsavel(){
 
+    public Responsavel() {
+        this.id_responsavel = "DEFAULT";
+        this.telefone = "DEFAULT";
     }
+
+    public boolean hasValues() {
+        try {
+            return (!this.getNome().isBlank() &&
+                    !this.getTelefone().isBlank() &&
+                    !this.getId_responsavel().isBlank() &&
+                    !this.getSexo().isBlank() &&
+                    !this.getDt_nascimento().isBlank());
+        } catch (NullPointerException ex) {
+            LoggerManager.getClassLog(Responsavel.class).error(": HÁ VALORES EM BRANCO / NULOS!");
+            return false;
+        }
+    }
+
+    public void resetValues() {
+        this.id_responsavel = "DEFAULT";
+        this.nome = null;
+        this.sexo = null;
+        this.telefone = "DEFAULT";
+        this.dt_nascimento = null;
+        LoggerManager.getClassLog(Responsavel.class).info(": Dados do objeto de responsável resetados.");
+    }
+
+    public String[] getValues() {
+        if (this.hasValues()) {
+            return new String[]{
+                        this.id_responsavel,
+                        this.nome,
+                        this.sexo,
+                        this.dt_nascimento,
+                        this.telefone
+                    };
+        } else throw new RuntimeException();
+    }
+
 
     public String getId_responsavel() {
         return id_responsavel;

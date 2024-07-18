@@ -17,7 +17,7 @@ public class CadastroResponsavelCmbBoxes {
 
     private CadastroResponsavel mainpanel;
     private JComboBox<Object> cmbBoxResponsavel, cmbBoxSexo;
-    private boolean lock = false, first = true, editing = false;
+    private boolean lock = false, first = true, editing = false, reload = false;
     private int iddot;
     public CadastroResponsavelCmbBoxes(CadastroResponsavel mainpanel){
         this.mainpanel = mainpanel;
@@ -59,20 +59,32 @@ public class CadastroResponsavelCmbBoxes {
     }
 
     public void reloadReponsavelCombox() {
-        this.first = true;
+        this.reload = true;
         this.cmbBoxResponsavel.removeAllItems();
-        //if(this.mainpanel.getBtnCadastro().isStateChanged()) this.cmbBoxResponsavel.addItem("<Cadastrar novo responsável>");
         Vector<Vector<Object>> request0 = this.mainpanel.getResponsavelDAO().getTableRequests().getResultsSetData()[0];
         for (int i = 0; i < request0.size(); i++) {
             if (request0.get(i).get(0) != null) {
                 this.cmbBoxResponsavel.addItem(request0.get(i).get(0) + ": " + request0.get(i).get(1));
             }
         }
-        this.first = false;
+        if(!this.mainpanel.getBtnCadastro().isStateChanged()) {
+            for (int i = 0; i < this.cmbBoxResponsavel.getItemCount(); i++) {
+                if(!this.cmbBoxResponsavel.getItemAt(i).toString().startsWith("<")){
+                    //this.cmbBoxResponsavel.addItem("<Cadastrar novo responsável>");
+                    this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().insertItemAt("<Cadastrar novo responsável>", 0);
+                    this.cmbBoxResponsavel.setSelectedItem("<NOME>");
+                    break;
+                }
+            }
+        } else {
+            this.cmbBoxResponsavel.setSelectedItem(null);
+        }
+
+        this.reload = false;
     }
 
     private void cmbBoxResponsavelItemEvent(ItemEvent e) {
-        if(e.getStateChange() == ItemEvent.SELECTED && !first){
+        if(e.getStateChange() == ItemEvent.SELECTED && !first && !reload){
             Object source = e.getSource();
             if(source instanceof JComboBox<?>){
                 try {
@@ -124,7 +136,6 @@ public class CadastroResponsavelCmbBoxes {
 
                         }
 
-
                     } else {
                         this.mainpanel.getTxtFields().getTxtFields()[0].setEnabled(true);
                         this.editing = false;
@@ -136,7 +147,7 @@ public class CadastroResponsavelCmbBoxes {
                         this.cmbBoxResponsavel.setSelectedItem("<NOME>");
                     }
 
-                    System.out.println(this.mainpanel.getResposavel().getNome());
+                    //System.out.println(this.mainpanel.getResposavel().getNome());
 
                 } catch (NullPointerException ex){
                     LoggerManager.getClassLog(CadastroResponsavelCmbBoxes.class).error(": Item inválido, tente novamente.");
@@ -149,8 +160,8 @@ public class CadastroResponsavelCmbBoxes {
                 }
             }
         }
-        this.first = false;
         this.lock = false;
+        this.first = false;
     }
 
     private void cmbBoxSexoItemEvent(ItemEvent e){
