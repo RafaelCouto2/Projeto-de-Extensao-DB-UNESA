@@ -34,7 +34,7 @@ public class PagamentoPanelCmbBoxes {
                     //setEnabled(false); //THOSE OPTIONS CHANGES THE BACKGROUND.
                     //setBackground(Color.LIGHT_GRAY.brighter());
                     setBackground(Utils.cmbRed);
-                    setFont(Utils.jetmono);
+                    setFont(Utils.jetmono13);
                     setCursor(new Cursor(Cursor.HAND_CURSOR));
                 }
             }};

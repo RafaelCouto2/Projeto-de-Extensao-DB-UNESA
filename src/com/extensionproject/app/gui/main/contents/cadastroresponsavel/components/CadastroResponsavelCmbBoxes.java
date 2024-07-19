@@ -29,8 +29,8 @@ public class CadastroResponsavelCmbBoxes {
 
         this.cmbBoxResponsavel.setCursor(Utils.handcursor);
         this.cmbBoxSexo.setCursor(Utils.handcursor);
-        this.cmbBoxResponsavel.setFont(Utils.jetmono);
-        this.cmbBoxSexo.setFont(Utils.jetmono);
+        this.cmbBoxResponsavel.setFont(Utils.jetmono13);
+        this.cmbBoxSexo.setFont(Utils.jetmono13);
 
         this.cmbBoxResponsavel.setBackground(Utils.cmbRed);
         this.cmbBoxSexo.setBackground(Color.white);

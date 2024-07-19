@@ -17,6 +17,7 @@ public class CadastroResponsavel {
     private CadastroResponsavelButtons btnCadastro;
     private CadastroResponsavelCmbBoxes cmbBoxes;
     private CadastroResponsavelSpinner spnData;
+    private CadastroResponsavelLabels lblInfo;
     private Responsavel resposavel;
 
     private void initComponents (){
@@ -35,6 +36,8 @@ public class CadastroResponsavel {
         this.cmbBoxes.starCmbx();
         this.spnData = new CadastroResponsavelSpinner(this);
         this.spnData.startSpnData();
+        this.lblInfo = new CadastroResponsavelLabels(this);
+        this.lblInfo.startLbls();
 
     }
     public CadastroResponsavel(JPanel mainpanel) {
@@ -58,29 +61,40 @@ public class CadastroResponsavel {
         this.cadastrogrid.weighty = 1.0;
         this.cadastrogrid.insets = new Insets(5,5,10,18);
 
-        this.componentsGrid = new GridBagConstraints[11];
-        for(int i = 0; i < 11; i++){
+        this.componentsGrid = new GridBagConstraints[17];
+        for(int i = 0; i < 17; i++){
             this.componentsGrid[i] = new GridBagConstraints();
             this.componentsGrid[i].fill = GridBagConstraints.HORIZONTAL;
             this.componentsGrid[i].gridx = 0;
-            this.componentsGrid[i].gridy = (i == 1) || (i == 2) || (i == 3) || (i == 6) || (i == 8) || (i == 9) || (i == 10)? 2: 1;
+            this.componentsGrid[i].gridy = (i == 1) || (i == 2) ||
+                                           (i == 3) || (i == 6) ||
+                                           (i == 8) || (i == 9) ||
+                                          (i == 10) || (i == 14)||
+                                          (i == 15) || (i == 16)? 2: 1;
         }
-        this.componentsGrid[6].fill = GridBagConstraints.BOTH;
+        this.componentsGrid[6].fill = GridBagConstraints.HORIZONTAL;
         int[][] insets = {
-                {1,5,15,713}, // ID FIELD
-                {5,110,40,545}, // TELEFONE FIELD
-                {5,60,40,660}, // TELEFONE DDD FIELD
-                {1,5,40,710}, // BTN RELOAD
-                {1,60,15,415}, // CMBOX NOMES(RESPONSÁVEIS)
-                {1,360,15,300}, // CMBOX SEXO (RESPONSÁVEIS)
-                {5,226,40,438}, // SPNDATA
-                {1,480,15,100}, // SWITCH
-                {1,340,40,290}, // BTN DELETAR
-                {1,340,40,290}, // BTN REGISTRAR
-                {1,480,40,148} //BTN EDITAR
+                {1,5,-16,713}, // ID FIELD
+                {5,110,20,545}, // TELEFONE FIELD
+                {5,60,20,660}, // TELEFONE DDD FIELD
+                {1,5,16,710}, // BTN RELOAD
+                {1,60,-20,415}, // CMBOX NOMES(RESPONSÁVEIS)
+                {1,360,-20,300}, // CMBOX SEXO (RESPONSÁVEIS)
+                {0,226,13,410}, // SPNDATA
+                {1,480,-10,100}, // SWITCH
+                {1,370,10,260}, // BTN DELETAR
+                {1,370,10,260}, // BTN REGISTRAR
+                {1,510,10,120}, //BTN EDITAR
+
+                {2,7,29,713}, // LBL ID
+                {2,60,29,415}, // LBL NOME
+                {2,360,29,300}, // LBL SEXO
+                {5,60,60,660}, // LBL DDD
+                {5,110,60,545}, // LBL TEL
+                {5,226,60,400} // LBL DATA
         };
 
-        for(int g = 0; g < 11; g++){
+        for(int g = 0; g < 17; g++){
             this.componentsGrid[g].insets = new Insets(insets[g][0], insets[g][1],insets[g][2],insets[g][3]);
         }
 

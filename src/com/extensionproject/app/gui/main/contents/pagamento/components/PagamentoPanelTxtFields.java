@@ -1,7 +1,6 @@
 package com.extensionproject.app.gui.main.contents.pagamento.components;
 
 import com.extensionproject.app.general.Utils;
-import com.extensionproject.app.gui.main.contents.pagamento.events.FieldsKeyListener;
 import com.extensionproject.app.gui.main.contents.pagamento.gui.PagamentoPanel;
 
 import javax.swing.*;
@@ -23,7 +22,7 @@ public class PagamentoPanelTxtFields {
         this.txtFields = new JTextField[5];
         for (int i = 0; i < 5; i++){
             this.txtFields[i] = new JTextField();
-            this.txtFields[i].setFont(Utils.jetmono);
+            this.txtFields[i].setFont(Utils.jetmono13);
             this.txtFields[i].setEditable(false);
             this.txtFields[i].setBackground(Color.gray.brighter());
         }

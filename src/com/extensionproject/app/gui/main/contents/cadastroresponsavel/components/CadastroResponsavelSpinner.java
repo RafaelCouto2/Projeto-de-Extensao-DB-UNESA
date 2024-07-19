@@ -7,9 +7,6 @@ import com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui.Cadast
 import javax.swing.*;
 import javax.swing.text.DefaultFormatter;
 import java.awt.*;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class CadastroResponsavelSpinner {
 
@@ -23,7 +20,7 @@ public class CadastroResponsavelSpinner {
         this.spnDate = new JSpinner(new SpinnerDateModel());
         this.spnDate.setEditor(new JSpinner.DateEditor(spnDate, "dd/MM/yyyy"));
         this.spnDate.setBackground(Color.gray.brighter());
-        this.spnDate.setFont(Utils.jetmono);
+        this.spnDate.setFont(Utils.jetmono13);
         this.spnDate.setCursor(Utils.handcursor);
         this.spnDate.setEnabled(false);
         JFormattedTextField childcomp = (JFormattedTextField) this.spnDate.getEditor().getComponent(0);

@@ -38,7 +38,7 @@ public class PagamentoPanelTable {
         this.setActualPgId.accept(1);
         this.pagamentoTable.setDragEnabled(false);
         this.pagamentoTable.setBackground(Color.white);
-        this.pagamentoTable.setFont(Utils.jetmono);
+        this.pagamentoTable.setFont(Utils.jetmono13);
         this.pagamentoTable.setCursor(Utils.handcursor);
         this.pagamentoTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.pagamentoTable.getColumn("ID PG").setMaxWidth(55);
@@ -49,7 +49,7 @@ public class PagamentoPanelTable {
         this.pagamentoTable.setForeground(Utils.tableForeground);
         this.pagamentoTable.setGridColor(Utils.tableGrid);
         this.pagamentoTable.setRowHeight(20);
-        this.pagamentoTable.getTableHeader().setFont(Utils.jetmono);
+        this.pagamentoTable.getTableHeader().setFont(Utils.jetmono13);
         this.pagamentoTable.getTableHeader().setForeground(Color.white);
         this.pagamentoTable.getTableHeader().setBackground(Utils.tableHeader);
         JTextField NonEditabletxtfield = new JTextField(){{this.setEditable(false);}};

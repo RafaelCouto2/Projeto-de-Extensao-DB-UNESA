@@ -19,7 +19,7 @@ public class PagamentoPanelLabels {
         for(int i = 0; i < 6; i++){
             int swapI = i;
             this.lblInfo[i] = new JLabel(){{
-                setFont(Utils.jetmono);
+                setFont(Utils.jetmono12);
                 switch(swapI){
                     case 3:
                         setForeground(new Color(37, 105, 21));

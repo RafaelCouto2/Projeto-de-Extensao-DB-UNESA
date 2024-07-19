@@ -33,8 +33,8 @@ public class CadastroResponsavelTable {
         this.resptable.setDragEnabled(false);
         this.resptable.setCursor(Utils.handcursor);
         this.resptable.setBackground(Color.white);
-        this.resptable.setFont(Utils.jetmono);
-        this.resptable.getTableHeader().setFont(Utils.jetmono);
+        this.resptable.setFont(Utils.jetmono13);
+        this.resptable.getTableHeader().setFont(Utils.jetmono13);
         this.resptable.getTableHeader().setForeground(Color.white);
         this.resptable.getTableHeader().setBackground(Utils.tableHeader);
         this.resptable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
