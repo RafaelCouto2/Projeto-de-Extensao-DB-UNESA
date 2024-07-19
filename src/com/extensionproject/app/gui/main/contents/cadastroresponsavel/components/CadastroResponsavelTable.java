@@ -44,7 +44,7 @@ public class CadastroResponsavelTable {
         this.resptable.getColumn("NOME").setMaxWidth(262);
         this.resptable.getColumn("SEXO").setMaxWidth(100);
         this.resptable.getColumn("DATA DE NASCIMENTO").setMaxWidth(155);
-        this.resptable.getColumn("TELEFONE").setMaxWidth(120);
+        this.resptable.getColumn("TELEFONE").setMaxWidth(148);
         this.resptable.setRowHeight(20);
         JTextField NonEditabletxtfield = new JTextField(){{this.setEditable(false);}};
         DefaultCellEditor nonEditCell = new DefaultCellEditor(NonEditabletxtfield);

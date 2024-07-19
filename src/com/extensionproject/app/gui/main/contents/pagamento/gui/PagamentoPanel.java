@@ -54,7 +54,7 @@ public class PagamentoPanel {
     private void startDefaultGridBagConstraints() {
         this.tableGrid = new GridBagConstraints();
         this.tableGrid.fill = GridBagConstraints.BOTH;
-        this.tableGrid.insets = new Insets(5,5,10,18);
+        this.tableGrid.insets = new Insets(5,5,10,14);
         this.componentsGrid = new GridBagConstraints[17];
         for (int i = 0; i < 17; i++){
             this.componentsGrid[i] = new GridBagConstraints();

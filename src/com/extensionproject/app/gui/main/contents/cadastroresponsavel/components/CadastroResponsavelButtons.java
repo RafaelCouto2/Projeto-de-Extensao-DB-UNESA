@@ -69,15 +69,11 @@ public class CadastroResponsavelButtons {
     }
 
     private void btnRegistrarActionEvent(){
-        System.out.println(this.mainpanel.getResposavel().hasValues());
         if(this.mainpanel.getResposavel().hasValues()){
-            System.out.println(Arrays.toString(this.mainpanel.getResposavel().getValues()));
             this.mainpanel.getResponsavelDAO().insertResponsavel(this.mainpanel.getResposavel().getValues());
             this.mainpanel.getResposavel().resetValues();
             this.mainpanel.reloadComponentsProperties();
         }
-
-
     }
 
     private void btnEditarActionEvent(){

@@ -18,7 +18,8 @@ public class LoginEventsPanel {
             //JOptionPane.showInputDialog("HEHEHE!");
             ConnectionManager.createConnection(gui.getTxtLogin(), gui.getTxtSenha());
             GuiLinker.getMainGui().setVisible(true);
-            GuiLinker.getLoginGui().setVisible(false);
+            //GuiLinker.getLoginGui().setVisible(false);
+            GuiLinker.getLoginGui().dispose();
         });
 
 

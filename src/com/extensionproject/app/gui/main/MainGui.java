@@ -2,6 +2,7 @@ package com.extensionproject.app.gui.main;
 
 import com.extensionproject.app.GuiLinker;
 import com.extensionproject.app.connect.factoryconnection.ConnectionManager;
+import com.extensionproject.app.gui.main.events.MainGuiBtnLogActionListener;
 import com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui.CadastroResponsavel;
 import com.extensionproject.app.gui.main.contents.pagamento.gui.PagamentoPanel;
 
@@ -18,6 +19,7 @@ public class MainGui extends JFrame {
     private JLabel lblMenu;
     private JButton btnAlunos;
     private JButton btnResp;
+    private JCheckBox btnLog;
     public boolean canUpdate;
     private static final int WIDTH = 900, HEIGHT = 640;
 
@@ -29,8 +31,8 @@ public class MainGui extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
+        this.btnLog.addActionListener(new MainGuiBtnLogActionListener(this));
         this.setTitle("Escolinha da Tia Celeusa ");
-
         this.setVisible(true);
     }
 
@@ -75,11 +77,12 @@ public class MainGui extends JFrame {
         this.drawTexts(g);
         this.lblMenu.setOpaque(true);
         this.lblMenu.setBackground(new Color(255, 255, 255));
-        this.lblMenu.setForeground(new Color(30, 31, 34));
-        this.btnPagamento.repaint(10);
-        this.btnAlunos.repaint(10);
-        this.btnResp.repaint(10);
-        this.lblMenu.repaint(10);
+        //this.lblMenu.setForeground(new Color(30, 31, 34));
+        this.btnPagamento.repaint(20);
+        this.btnAlunos.repaint(20);
+        this.btnResp.repaint(20);
+        this.lblMenu.repaint(20);
+        this.btnLog.repaint(20);
 
     }
 
@@ -101,23 +104,28 @@ public class MainGui extends JFrame {
 
     private void drawTexts(Graphics g){
         g.setColor(new Color(66,66,66));
-        g.setFont(new Font("Arial",Font.BOLD,12));
+        g.setFont(new Font("JetBrains Mono",Font.BOLD,13));
 
         switch (this.panelid){
-            case -1:
-                g.drawString("<-- SELECIONE ALGUMA INTERFACE NO MENU",this.getWidth() - 550, 50);
-                break;
             case 1:
-                g.drawString("TABELA DE PAGAMENTOS DOS RESPONSÁVEIS DE CADA ALUNO",this.getWidth() - 600, 50);
+                g.drawString("{ TABELA DE PAGAMENTOS }",this.getWidth() - 500, 45);
                 break;
             case 2:
 
+                break;
+
+            case 3:
+                g.drawString("{ TABELA DE RESPONSÁVEIS }",this.getWidth() - 500, 45);
                 break;
         }
     }
 
     public void updateScreen () {
 
+    }
+
+    public JCheckBox getBtnLog() {
+        return this.btnLog;
     }
 }
 

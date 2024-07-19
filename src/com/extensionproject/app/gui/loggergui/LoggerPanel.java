@@ -20,7 +20,7 @@ public class LoggerPanel extends JPanel implements Runnable {
     private long lastModified = -1;
     private final int UPS = 30;
     public LoggerPanel(){
-        Dimension size = new Dimension(LoginGui.WIDTH + 200, LoginGui.HEIGHT + 150);
+        Dimension size = new Dimension(LoginGui.WIDTH + 400, LoginGui.HEIGHT + 300);
         log = LoggerManager.getClassLog(LoggerPanel.class);
         this.setLayout(new GridLayout(1,0));
         this.iniFile();
@@ -28,7 +28,7 @@ public class LoggerPanel extends JPanel implements Runnable {
         this.iniPnArea();
         this.startLogThread();
         this.setMaximumSize(size);
-        this.setMinimumSize(size);
+        this.setMinimumSize(new Dimension(200, 100));
         this.setPreferredSize(size);
     }
 
@@ -42,7 +42,9 @@ public class LoggerPanel extends JPanel implements Runnable {
         this.txtLog.setForeground(Color.lightGray);
         this.txtLog.setLineWrap(true);
         this.txtLog.setEditable(false);
+        this.txtLog.setEnabled(false);
         this.txtLog.setEditable(false);
+        this.txtLog.addMouseListener(new Resize(this));
 
     }
 
@@ -64,7 +66,6 @@ public class LoggerPanel extends JPanel implements Runnable {
                 while (this.logtemp.read() > 1) {
                     this.txtLog.append("\n" + this.logtemp.readLine().toUpperCase() + "");
                 }
-                //this.logsaved.write(this.logtemp.readByte());
             } catch (NullPointerException e){
 
             }
@@ -80,7 +81,7 @@ public class LoggerPanel extends JPanel implements Runnable {
             this.logtemp = new RandomAccessFile("./logs/app.log", "rw");
             this.logsaved = new RandomAccessFile("./logs/app_all.log", "rw");
         } catch (IOException e) {
-            LoggerManager.getClassLog(LoggerPanel.class).error(": Aquivo de log não encontrado.");
+            LoggerManager.getClassLog(LoggerPanel.class).error(": Arquivo de log não encontrado.");
         }
 
     }
@@ -126,16 +127,32 @@ public class LoggerPanel extends JPanel implements Runnable {
                 }
                 if(System.currentTimeMillis() - lastCheck >= 1000){
                     lastCheck = System.currentTimeMillis();
-                    System.out.println("FPS: " + frames + " | UPS: " + updates);
+                    //System.out.println("FPS: " + frames + " | UPS: " + updates);
                     frames = 0;
                     updates = 0;
                 }
 
             } while (true);
+
         } catch (IOException e) {
 
         }
+    }
 
+    public File getFile() {
+        return this.file;
+    }
+
+    public JTextArea getTxtLog() {
+        return this.txtLog;
+    }
+
+    public RandomAccessFile getLogsaved() {
+        return this.logsaved;
+    }
+
+    public RandomAccessFile getLogtemp() {
+        return this.logtemp;
     }
 }
 

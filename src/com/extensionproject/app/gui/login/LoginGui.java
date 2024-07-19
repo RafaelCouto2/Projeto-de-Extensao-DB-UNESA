@@ -17,6 +17,7 @@ public class LoginGui extends JFrame {
     private JPasswordField txtSenha;
     private JLabel spacementLabel;
     private final LoginEventsPanel evtpanel;
+    private LoggerGui logger;
 
     public static final int WIDTH = 425;
     public static final int HEIGHT = 190;
@@ -31,7 +32,7 @@ public class LoginGui extends JFrame {
         this.setSize(WIDTH,HEIGHT);
         this.setVisible(true);
         this.evtsCall();
-        new LoggerGui();
+        this.logger = new LoggerGui();
         this.requestFocus();
     }
     public void evtsCall(){
@@ -44,7 +45,6 @@ public class LoginGui extends JFrame {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            LoggerManager.getClassLog(LoginGui.class).info("LOG4J2!");
             LoggerManager.getClassLog(MainGui.class).info("STARTED MAIN WINDOW!");
         }
     }
@@ -59,5 +59,9 @@ public class LoginGui extends JFrame {
 
     public String getTxtSenha() {
         return this.txtSenha.getText().toLowerCase();
+    }
+
+    public LoggerGui getLogger() {
+        return this.logger;
     }
 }
