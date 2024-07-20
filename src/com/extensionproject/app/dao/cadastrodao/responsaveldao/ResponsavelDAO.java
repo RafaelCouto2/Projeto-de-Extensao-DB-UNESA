@@ -36,6 +36,7 @@ public class ResponsavelDAO {
                     "', "  + "STR_TO_DATE('" + dados[3] + "', '%d/%m/%Y')" +
                     ", "   + dados[4] +
                     ");");
+            LoggerManager.getClassLog(PagamentoDAO.class).info(": RESPONSÁVEL CADASTRADO COM SUCESSO!");
         } catch (SQLException e) {
             LoggerManager.getClassLog(PagamentoDAO.class).error(e.getMessage()+ ": NÃO FOI POSSÍVEL REGISTRAR O CADASTRO DO RESPONSÁVEL.");
         }

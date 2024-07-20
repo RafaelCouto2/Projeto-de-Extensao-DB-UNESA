@@ -66,7 +66,7 @@ public class Pagamento {
                 return false;
             }
         } catch (NullPointerException e) {
-            LoggerManager.getClassLog(Pagamento.class).error(": VALORES VAZIOS. COMPLETE TODOS OS CAMPOS.");
+            LoggerManager.getClassLog(Pagamento.class).error(": HÁ VALORES VAZIOS. COMPLETE TODOS OS CAMPOS.");
             return false;
         }
     }

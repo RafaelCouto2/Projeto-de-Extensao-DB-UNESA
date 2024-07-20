@@ -18,7 +18,7 @@ public class Responsavel {
                     !this.getSexo().isBlank() &&
                     !this.getDt_nascimento().isBlank());
         } catch (NullPointerException ex) {
-            LoggerManager.getClassLog(Responsavel.class).error(": HÁ VALORES EM BRANCO / NULOS!");
+            LoggerManager.getClassLog(Responsavel.class).error(": HÁ VALORES VAZIOS. COMPLETE TODOS OS CAMPOS.");
             return false;
         }
     }
@@ -29,7 +29,6 @@ public class Responsavel {
         this.sexo = null;
         this.telefone = "DEFAULT";
         this.dt_nascimento = null;
-        LoggerManager.getClassLog(Responsavel.class).info(": Dados do objeto de responsável resetados.");
     }
 
     public String[] getValues() {

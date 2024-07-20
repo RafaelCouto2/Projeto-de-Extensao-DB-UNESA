@@ -5,9 +5,15 @@ import com.extensionproject.app.connect.factoryconnection.ConnectionManager;
 import com.extensionproject.app.gui.main.events.MainGuiBtnLogActionListener;
 import com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui.CadastroResponsavel;
 import com.extensionproject.app.gui.main.contents.pagamento.gui.PagamentoPanel;
+import com.extensionproject.app.gui.main.events.MainGuiWindowEvent;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 
 public class MainGui extends JFrame {
     private JPanel mainGui;
@@ -21,9 +27,13 @@ public class MainGui extends JFrame {
     private JButton btnResp;
     private JCheckBox btnLog;
     public boolean canUpdate;
+    private BufferedImage backGround;
     private static final int WIDTH = 900, HEIGHT = 640;
 
-    public void initComponents(){
+    private void initComponents(){
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("imgs/icon.png")));
+        this.setIconImage(icon.getImage());
+
         this.btnEvnts();
         this.setContentPane(mainGui);
         this.mainGui.setBackground(new Color(241, 239, 249));
@@ -33,7 +43,19 @@ public class MainGui extends JFrame {
         this.setResizable(false);
         this.btnLog.addActionListener(new MainGuiBtnLogActionListener(this));
         this.setTitle("Escolinha da Tia Celeusa ");
+        this.addWindowListener(new MainGuiWindowEvent());
+        this.backGround();
+        this.lblMenu.setOpaque(true);
+        this.lblMenu.setBackground(new Color(255, 255, 255));
         this.setVisible(true);
+    }
+
+    private void backGround(){
+        try {
+            this.backGround = ImageIO.read(new File(Objects.requireNonNull(getClass().getClassLoader().getResource("imgs/school_background.png")).getPath()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public MainGui(){
@@ -42,18 +64,11 @@ public class MainGui extends JFrame {
 
     private void btnEvnts() {
 
-        this.tempButton.addActionListener(e -> {
-            GuiLinker.getMainGui().setVisible(false);
-            GuiLinker.getLoginGui().setVisible(true);
-        });
-
         this.btnPagamento.addActionListener(e -> {
             if (panelid != 1 && ConnectionManager.hasConnection()) {
                 panelid = 1;
                 canUpdate = true;
                 new PagamentoPanel(this.windowField);
-//                windowField.revalidate();
-//                windowField.repaint();
                 this.repaint();
             }
         });
@@ -63,8 +78,6 @@ public class MainGui extends JFrame {
                 panelid = 3;
                 canUpdate = true;
                 new CadastroResponsavel(this.windowField);
-//                windowField.revalidate();
-//                windowField.repaint();
                 this.repaint();
             }
         });
@@ -75,19 +88,11 @@ public class MainGui extends JFrame {
         super.paint(g);
         this.drawRects(g);
         this.drawTexts(g);
-        this.lblMenu.setOpaque(true);
-        this.lblMenu.setBackground(new Color(255, 255, 255));
-        //this.lblMenu.setForeground(new Color(30, 31, 34));
-        this.btnPagamento.repaint(20);
-        this.btnAlunos.repaint(20);
-        this.btnResp.repaint(20);
-        this.lblMenu.repaint(20);
-        this.btnLog.repaint(20);
-
+        this.drawImages(g);
+        this.refresh();
     }
 
     private void drawRects(Graphics g){
-
         g.setColor(new Color(255, 255, 255));
         //FAIXA ESQUERDA
         g.fillRect(10, 30, this.lblMenu.getWidth() + 65, this.getHeight() - 40);
@@ -98,8 +103,6 @@ public class MainGui extends JFrame {
         //LINHAS
         g.fillRect(this.lblMenu.getX() + 130, 60 , 2, this.getHeight() - 40);
         g.fillRect(this.lblMenu.getX() + 130,60,this.getWidth(),2);
-
-
     }
 
     private void drawTexts(Graphics g){
@@ -113,15 +116,27 @@ public class MainGui extends JFrame {
             case 2:
 
                 break;
-
             case 3:
                 g.drawString("{ TABELA DE RESPONSÁVEIS }",this.getWidth() - 500, 45);
                 break;
         }
     }
 
-    public void updateScreen () {
+    private void drawImages(Graphics g){
+        switch (this.panelid){
+            case -1:
+                g.drawImage(backGround, 480, 360, null);
+                break;
+        }
 
+    }
+
+    private void refresh() {
+        this.btnPagamento.repaint(20);
+        this.btnAlunos.repaint(20);
+        this.btnResp.repaint(20);
+        this.lblMenu.repaint(20);
+        this.btnLog.repaint(20);
     }
 
     public JCheckBox getBtnLog() {

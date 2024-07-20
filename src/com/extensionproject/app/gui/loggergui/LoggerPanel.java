@@ -19,6 +19,7 @@ public class LoggerPanel extends JPanel implements Runnable {
     private Logger log;
     private long lastModified = -1;
     private final int UPS = 30;
+
     public LoggerPanel(){
         Dimension size = new Dimension(LoginGui.WIDTH + 400, LoginGui.HEIGHT + 300);
         log = LoggerManager.getClassLog(LoggerPanel.class);

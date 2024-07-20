@@ -22,6 +22,7 @@ public class ConnectionManager {
             LoggerManager.getClassLog(ConnectionManager.class).info("CONECTADO AO BANCO DE DADOS!");
         } catch (SQLException e) {
             LoggerManager.getClassLog(ConnectionManager.class).error("NÃO FOI POSSÍVEL SE CONECTAR.");
+            LoggerManager.getClassLog(ConnectionManager.class).error(e);
             throw new RuntimeException(e);
         }
 

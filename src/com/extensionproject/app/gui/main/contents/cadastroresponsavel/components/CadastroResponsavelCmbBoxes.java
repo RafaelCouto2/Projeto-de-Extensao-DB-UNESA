@@ -172,7 +172,11 @@ public class CadastroResponsavelCmbBoxes {
                 //Quando se sentir inútil, pense nesse método.
                 //Aplica o sexo do respectivo responsável ao objeto do responsável.
                 this.mainpanel.getResposavel().setSexo(Objects.requireNonNull(this.cmbBoxSexo.getSelectedItem()).toString().substring(0,1).toLowerCase());
+
             }
+        }
+        if(this.getCmbBoxSexo().getSelectedItem() == null){
+            this.mainpanel.getResposavel().setSexo(null);
         }
     }
 

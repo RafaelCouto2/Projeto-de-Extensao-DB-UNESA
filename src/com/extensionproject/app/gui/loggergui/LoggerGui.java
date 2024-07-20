@@ -4,23 +4,28 @@ package com.extensionproject.app.gui.loggergui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.util.Objects;
 
 public class LoggerGui extends JFrame {
 
-    private final LoggerPanel logpanel;
-    public LoggerGui() {
+    private LoggerPanel logpanel;
 
-        logpanel = new LoggerPanel();
+    private void initComponents(){
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("imgs/log_icon.png")));
+        this.setIconImage(icon.getImage());
         this.setTitle("LOG");
         this.setUndecorated(false);
+        this.logpanel = new LoggerPanel();
         this.add(logpanel);
         this.pack();
         this.setResizable(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        this.setVisible(false);
         this.addWindowListener(new LoggerWindowEvent(this));
-
+        this.setVisible(true);
+    }
+    public LoggerGui() {
+        this.initComponents();
     }
 
     public LoggerPanel getLogpanel() {
