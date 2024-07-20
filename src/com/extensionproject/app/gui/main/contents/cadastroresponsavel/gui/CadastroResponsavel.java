@@ -105,7 +105,7 @@ public class CadastroResponsavel {
         this.getCmbBoxes().reloadReponsavelCombox();
         this.getCmbBoxes().getCmbBoxSexo().setSelectedItem(null);
         this.getTxtFields().reloadTxtFields();
-        this.getSpnData().reloadDt();
+        //this.getSpnData().todayDate();
     }
 
     private void setMainPanelLayout(){

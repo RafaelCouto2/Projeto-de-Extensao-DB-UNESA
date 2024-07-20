@@ -8,6 +8,7 @@ import com.extensionproject.app.logger.LoggerManager;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 
 public class ResponsavelDAO {
 
@@ -26,19 +27,53 @@ public class ResponsavelDAO {
 
     public void insertResponsavel(String[] dados){
         try(Statement stmt = StatementsManager.createStatement()){
+            String dt_nasc = "";
             if (stmt == null){
                 throw new IllegalStateException("Falha ao criar o Statement.");
             }
+            if(dados[3].equals("DEFAULT")){
+                dt_nasc = "DEFAULT";
+            } else dt_nasc = "STR_TO_DATE('" + dados[3] + "', '%d/%m/%Y')";
+
             stmt.executeUpdate("insert into `extpj`.`responsavel` values (" +
                              dados[0] +
                     ", '"  + dados[1] +
                     "', '" + dados[2] +
-                    "', "  + "STR_TO_DATE('" + dados[3] + "', '%d/%m/%Y')" +
+                    "', "  + dt_nasc +
                     ", "   + dados[4] +
                     ");");
+            // "STR_TO_DATE('" + dados[3] + "', '%d/%m/%Y')"
             LoggerManager.getClassLog(PagamentoDAO.class).info(": RESPONSÁVEL CADASTRADO COM SUCESSO!");
         } catch (SQLException e) {
             LoggerManager.getClassLog(PagamentoDAO.class).error(e.getMessage()+ ": NÃO FOI POSSÍVEL REGISTRAR O CADASTRO DO RESPONSÁVEL.");
+        }
+    }
+
+    public void updateResponsavel(String[] dados){
+        try(Statement stmt = StatementsManager.createStatement()){
+            String dt_nasc = "";
+            String tel = "";
+            if (stmt == null){
+                throw new IllegalStateException("Falha ao criar o Statement.");
+            }
+            if(dados[3].equals("DEFAULT")){
+                dt_nasc = "DEFAULT";
+            } else dt_nasc = "STR_TO_DATE('" + dados[3] + "', '%d/%m/%Y')";
+            if(!dados[4].equals("DEFAULT")){
+                StringBuilder bf = new StringBuilder(dados[4]);
+                tel = bf.insert(0, "'").toString();
+                tel = bf.insert(bf.length(), "'").toString();
+            } else tel = "DEFAULT";
+            stmt.executeUpdate("update `extpj`.`responsavel` set `nome` = '" + dados[1] +
+                    "', `sexo` = '"                + dados[2] +
+                    "', `dt_nascimento` = "       + dt_nasc +
+                    ", `telefone` = "            + tel +
+                    " where `id_responsavel` = " + dados[0] + ";");
+
+            LoggerManager.getClassLog(PagamentoDAO.class).info(": CADASTRO DO RESPONSÁVEL EDITADO COM SUCESSO!");
+
+        } catch (SQLException e) {
+            LoggerManager.getClassLog(PagamentoDAO.class).error(e.getMessage()+ ": NÃO FOI POSSÍVEL EDITAR O CADASTRO DO RESPONSÁVEL.");
         }
     }
 
@@ -67,6 +102,9 @@ public class ResponsavelDAO {
 
             for (int i = 0; i < this.tableRequests.getResultsSetData()[0].size(); i++) {
                 StringBuilder builder = new StringBuilder(String.valueOf(this.tableRequests.getResultsSetData()[0].get(i).get(4)));
+                if(this.tableRequests.getResultsSetData()[0].get(i).get(3) == null){
+                    this.tableRequests.getResultsSetData()[0].get(i).set(3, "--/--/----");
+                }
                 try {
                     for (int l = 0; l < this.tableRequests.getResultsSetData()[0].get(i).get(4).toString().length(); l++) {
                         switch (l) {
@@ -81,6 +119,7 @@ public class ResponsavelDAO {
                                 break;
                         }
                     }
+
                 } catch (NullPointerException e) {
                     this.tableRequests.getResultsSetData()[0].get(i).set(4, "(00)00000-0000");
                     continue;

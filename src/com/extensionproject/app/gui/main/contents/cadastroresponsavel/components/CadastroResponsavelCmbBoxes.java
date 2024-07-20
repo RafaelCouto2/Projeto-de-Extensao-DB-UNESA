@@ -67,12 +67,12 @@ public class CadastroResponsavelCmbBoxes {
                 this.cmbBoxResponsavel.addItem(request0.get(i).get(0) + ": " + request0.get(i).get(1));
             }
         }
-        if(!this.mainpanel.getBtnCadastro().isStateChanged()) {
+        if(this.mainpanel.getBtnCadastro().getBtnSwitch().isSelected()) {
             for (int i = 0; i < this.cmbBoxResponsavel.getItemCount(); i++) {
                 if(!this.cmbBoxResponsavel.getItemAt(i).toString().startsWith("<")){
                     //this.cmbBoxResponsavel.addItem("<Cadastrar novo responsável>");
                     this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().insertItemAt("<Cadastrar novo responsável>", 0);
-                    this.cmbBoxResponsavel.setSelectedItem("<NOME>");
+                    this.cmbBoxResponsavel.setSelectedItem("");
                     break;
                 }
             }
@@ -147,6 +147,7 @@ public class CadastroResponsavelCmbBoxes {
                     if(this.cmbBoxResponsavel.getSelectedItem().equals("<Cadastrar novo responsável>") || this.cmbBoxResponsavel.getEditor().getItem().equals("")){
                         if(this.mainpanel.getBtnCadastro().isStateChanged()) this.mainpanel.getBtnCadastro().changeState();
                         this.mainpanel.getTxtFields().changeToActualId();
+                        this.mainpanel.getSpnData().todayDate();
                         this.cmbBoxResponsavel.setSelectedItem("<NOME>");
                     }
 
@@ -155,10 +156,29 @@ public class CadastroResponsavelCmbBoxes {
                     throw new RuntimeException(ex);
                 } catch (ParseException ex) {
                     LoggerManager.getClassLog(CadastroResponsavelCmbBoxes.class).error(": Não foi possível converter a data.");
-                    throw new RuntimeException(ex);
+                    this.mainpanel.getSpnData().setNullValue(true);
+                    try {
+                        this.mainpanel.getSpnData().getSpnDate().setValue(new SimpleDateFormat("dd/MM/yyyy")
+                                .parse("01/01/0001"));
+                    } catch (ParseException exc) {
+                        throw new RuntimeException(exc);
+                    }
+                    this.mainpanel.getSpnData().todayDate();
+
+                    //throw new RuntimeException(ex);
                 } catch (StringIndexOutOfBoundsException ex){
                     this.mainpanel.getTxtFields().getTxtFields()[0].setEnabled(true);
                 }
+            }
+        }
+        if(reload){
+            if(Objects.equals(this.cmbBoxResponsavel.getSelectedItem(), "<Cadastrar novo responsável>") || this.cmbBoxResponsavel.getEditor().getItem().equals("")){
+                if(this.mainpanel.getBtnCadastro().isStateChanged()) this.mainpanel.getBtnCadastro().changeState();
+                this.mainpanel.getTxtFields().getTxtFields()[0].setEnabled(true);
+                this.editing = false;
+                this.mainpanel.getResposavel().setNome(null);
+                this.mainpanel.getTxtFields().changeToActualId();
+                this.cmbBoxResponsavel.setSelectedItem("<NOME>");
             }
         }
         this.lock = false;
@@ -172,7 +192,6 @@ public class CadastroResponsavelCmbBoxes {
                 //Quando se sentir inútil, pense nesse método.
                 //Aplica o sexo do respectivo responsável ao objeto do responsável.
                 this.mainpanel.getResposavel().setSexo(Objects.requireNonNull(this.cmbBoxSexo.getSelectedItem()).toString().substring(0,1).toLowerCase());
-
             }
         }
         if(this.getCmbBoxSexo().getSelectedItem() == null){

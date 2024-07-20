@@ -2,6 +2,8 @@ package com.extensionproject.app.domain.responsavel;
 
 import com.extensionproject.app.logger.LoggerManager;
 
+import java.util.Arrays;
+
 public class Responsavel {
     private String id_responsavel, nome, sexo, dt_nascimento, telefone;
 
@@ -19,6 +21,7 @@ public class Responsavel {
                     !this.getDt_nascimento().isBlank());
         } catch (NullPointerException ex) {
             LoggerManager.getClassLog(Responsavel.class).error(": HÁ VALORES VAZIOS. COMPLETE TODOS OS CAMPOS.");
+            System.out.println(Arrays.toString(this.getValues()));
             return false;
         }
     }

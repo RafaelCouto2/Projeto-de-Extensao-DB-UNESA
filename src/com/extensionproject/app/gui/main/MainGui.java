@@ -125,7 +125,7 @@ public class MainGui extends JFrame {
     private void drawImages(Graphics g){
         switch (this.panelid){
             case -1:
-                g.drawImage(backGround, 480, 360, null);
+                g.drawImage(backGround, 430, 340, null);
                 break;
         }
 

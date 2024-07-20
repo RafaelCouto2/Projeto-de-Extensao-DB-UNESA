@@ -77,7 +77,12 @@ public class CadastroResponsavelButtons {
     }
 
     private void btnEditarActionEvent(){
-
+        if(this.mainpanel.getResposavel().hasValues()){
+            this.mainpanel.getResponsavelDAO().updateResponsavel(this.mainpanel.getResposavel().getValues());
+            this.mainpanel.getResposavel().resetValues();
+            this.mainpanel.reloadComponentsProperties();
+            this.mainpanel.getSpnData().todayDate();
+        }
     }
 
     private void btnSwitchActionEvent(boolean bool) {
@@ -89,7 +94,10 @@ public class CadastroResponsavelButtons {
         this.mainpanel.getCmbBoxes().getCmbBoxSexo().setEnabled(bool);
         this.mainpanel.getCmbBoxes().getCmbBoxSexo().setSelectedItem(null);
         this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().setSelectedItem(null);
-        this.mainpanel.getSpnData().getSpnDate().setValue(new SimpleDateFormat(){{this.setCalendar(Utils.calendar);}}.getCalendar().getTime());
+        //this.mainpanel.getSpnData().getSpnDate().setValue(new SimpleDateFormat(){{this.setCalendar(Utils.calendar);}}.getCalendar().getTime());
+        //this.mainpanel.getSpnData().getChildComponent().setText(null);
+        this.mainpanel.getSpnData().todayDate();
+        //this.mainpanel.getSpnData().reloadDt();
         this.mainpanel.getSpnData().getSpnDate().setEnabled(bool);
 
         if(this.stateChanged){
@@ -107,6 +115,7 @@ public class CadastroResponsavelButtons {
             this.mainpanel.getTxtFields().getTxtFields()[0].setText(String.valueOf(this.mainpanel.getResponsavelTable().getActualId() + 1));
             //this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().addItem("<Cadastrar novo responsável>");
             this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().insertItemAt("<Cadastrar novo responsável>", 0);
+            this.mainpanel.getResposavel().setDt_nascimento("DEFAULT");
         } else {
             this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().setBackground(Utils.cmbRed);
             this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().removeItem("<Cadastrar novo responsável>");

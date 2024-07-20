@@ -1,4 +1,6 @@
-package com.extensionproject.app.gui.loggergui;
+package com.extensionproject.app.gui.loggergui.events;
+
+import com.extensionproject.app.gui.loggergui.LoggerGui;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

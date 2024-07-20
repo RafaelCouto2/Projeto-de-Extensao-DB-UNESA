@@ -1,9 +1,9 @@
 package com.extensionproject.app.gui.loggergui;
 
 
+import com.extensionproject.app.gui.loggergui.events.LoggerWindowEvent;
+
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowEvent;
 import java.util.Objects;
 
 public class LoggerGui extends JFrame {

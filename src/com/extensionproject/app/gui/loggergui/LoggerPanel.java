@@ -1,5 +1,6 @@
 package com.extensionproject.app.gui.loggergui;
 
+import com.extensionproject.app.gui.loggergui.events.Resize;
 import com.extensionproject.app.gui.login.LoginGui;
 import com.extensionproject.app.logger.LoggerManager;
 import org.apache.logging.log4j.core.Logger;

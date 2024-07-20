@@ -1,5 +1,6 @@
 package com.extensionproject.app.gui.main.contents.cadastroresponsavel.events.dataspinner;
 
+import com.extensionproject.app.general.Utils;
 import com.extensionproject.app.gui.main.contents.cadastroresponsavel.components.CadastroResponsavelSpinner;
 
 import javax.swing.*;
@@ -23,7 +24,18 @@ public class SpnDateChangeListener implements ChangeListener {
                 this.main.getMainpanel().getResposavel().setDt_nascimento(
                         new SimpleDateFormat("dd/MM/yyyy")
                                 .format(this.main.getMainpanel().getSpnData().getSpnDate().getValue()));
+
+                if(this.main.getNullValue()){
+                    this.main.getMainpanel().getResposavel().setDt_nascimento("DEFAULT");
+                    this.main.setNullValue(false);
+                }
             }
         }
+
+        if(this.main.getSpnDate().getModel().getValue().equals(Utils.calendar.getTime())){
+            this.main.getMainpanel().getResposavel().setDt_nascimento("DEFAULT");
+            System.out.println("É ELE MESMO!");
+        }
+
     }
 }
