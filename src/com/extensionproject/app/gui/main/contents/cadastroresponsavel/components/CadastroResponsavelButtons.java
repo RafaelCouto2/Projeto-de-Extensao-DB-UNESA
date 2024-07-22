@@ -73,6 +73,8 @@ public class CadastroResponsavelButtons {
             this.mainpanel.getResponsavelDAO().insertResponsavel(this.mainpanel.getResposavel().getValues());
             this.mainpanel.getResposavel().resetValues();
             this.mainpanel.reloadComponentsProperties();
+            this.mainpanel.getSpnData().todayDate();
+            this.mainpanel.getResposavel().setDt_nascimento("DEFAULT");
         }
     }
 
@@ -116,6 +118,7 @@ public class CadastroResponsavelButtons {
             //this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().addItem("<Cadastrar novo responsável>");
             this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().insertItemAt("<Cadastrar novo responsável>", 0);
             this.mainpanel.getResposavel().setDt_nascimento("DEFAULT");
+            this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().setSelectedIndex(0);
         } else {
             this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().setBackground(Utils.cmbRed);
             this.mainpanel.getCmbBoxes().getCmbBoxResponsavel().removeItem("<Cadastrar novo responsável>");

@@ -21,7 +21,6 @@ public class Responsavel {
                     !this.getDt_nascimento().isBlank());
         } catch (NullPointerException ex) {
             LoggerManager.getClassLog(Responsavel.class).error(": HÁ VALORES VAZIOS. COMPLETE TODOS OS CAMPOS.");
-            System.out.println(Arrays.toString(this.getValues()));
             return false;
         }
     }
@@ -31,7 +30,7 @@ public class Responsavel {
         this.nome = null;
         this.sexo = null;
         this.telefone = "DEFAULT";
-        this.dt_nascimento = null;
+        this.dt_nascimento = "DEFAULT";
     }
 
     public String[] getValues() {

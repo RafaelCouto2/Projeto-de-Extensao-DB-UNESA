@@ -148,6 +148,7 @@ public class CadastroResponsavelCmbBoxes {
                         if(this.mainpanel.getBtnCadastro().isStateChanged()) this.mainpanel.getBtnCadastro().changeState();
                         this.mainpanel.getTxtFields().changeToActualId();
                         this.mainpanel.getSpnData().todayDate();
+                        this.mainpanel.getSpnData().reloadDt(); // Gambiarrinha para sumir com a data padrãokkkkkk
                         this.cmbBoxResponsavel.setSelectedItem("<NOME>");
                     }
 
@@ -178,6 +179,8 @@ public class CadastroResponsavelCmbBoxes {
                 this.editing = false;
                 this.mainpanel.getResposavel().setNome(null);
                 this.mainpanel.getTxtFields().changeToActualId();
+                this.mainpanel.getSpnData().todayDate();
+                this.mainpanel.getSpnData().reloadDt();
                 this.cmbBoxResponsavel.setSelectedItem("<NOME>");
             }
         }
