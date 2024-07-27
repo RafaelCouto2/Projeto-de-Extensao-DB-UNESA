@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 public class MainGui extends JFrame {
@@ -52,7 +53,9 @@ public class MainGui extends JFrame {
 
     private void backGround(){
         try {
-            this.backGround = ImageIO.read(new File(Objects.requireNonNull(getClass().getClassLoader().getResource("imgs/school_background.png")).getPath()));
+            InputStream is = getClass().getClassLoader().getResourceAsStream("imgs/school_background.png");
+            //this.backGround = ImageIO.read(new File(Objects.requireNonNull(getClass().getClassLoader().getResource("imgs/school_background.png").getPath())));
+            this.backGround = ImageIO.read(is);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

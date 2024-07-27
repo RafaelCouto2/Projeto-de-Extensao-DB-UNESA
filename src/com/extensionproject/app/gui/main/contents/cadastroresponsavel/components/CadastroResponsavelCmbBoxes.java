@@ -156,7 +156,7 @@ public class CadastroResponsavelCmbBoxes {
                     LoggerManager.getClassLog(CadastroResponsavelCmbBoxes.class).error(": Item inválido, tente novamente.");
                     throw new RuntimeException(ex);
                 } catch (ParseException ex) {
-                    LoggerManager.getClassLog(CadastroResponsavelCmbBoxes.class).error(": Não foi possível converter a data.");
+                    //LoggerManager.getClassLog(CadastroResponsavelCmbBoxes.class).error(": Não foi possível converter a data.");
                     this.mainpanel.getSpnData().setNullValue(true);
                     try {
                         this.mainpanel.getSpnData().getSpnDate().setValue(new SimpleDateFormat("dd/MM/yyyy")

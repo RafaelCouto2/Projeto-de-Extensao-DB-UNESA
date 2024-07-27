@@ -65,10 +65,10 @@ public class PagamentoPanel {
         this.componentsGrid[13].fill = GridBagConstraints.BOTH;
 
         int[][] insets = {
-                {6, 3, -18, 713}, // TXTID GRID
-                {6, 55, -18, 415}, // CMBRESPONSAVEL GRID
-                {1, 55, 15, 415}, // CMBALUNO GRID
-                {6, 395, -18, 320}, // TXTVALOR PAGAMENTO GRID REAIS
+                {6, 5, -18, 713}, // TXTID GRID
+                {6, 60, -18, 415}, // CMBRESPONSAVEL GRID
+                {1, 60, 15, 415}, // CMBALUNO GRID
+                {6, 395, -18, 325}, // TXTVALOR PAGAMENTO GRID REAIS
                 {20, 486, 16, 148}, // BTNREGISTRAR GRID
                 {6, 444, -18, 280}, // TXTVALOR PAGAMENTO GRID CENTAVOS
                 {1, 5, 20, 710}, // ID LABEL GRID
@@ -80,7 +80,7 @@ public class PagamentoPanel {
                 {20, 486, 16, 28}, // BTNDELETAR GRID
                 {25, 390, 25, 280}, //DATA GRID
                 {25, 350, 25, 320}, //DATA LABEL GRID
-                {1, 1, 15, 710}, //BTNREFRESH GRID
+                {1, 5, 15, 710}, //BTNREFRESH GRID
                 {20, 620, 16, 18} //BTNATUALIZAR
         };
 

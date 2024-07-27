@@ -92,6 +92,7 @@ public class PagamentoPanelButtons {
                 } else {
                     b.accept(false);
                 }
+                mainpanel.getPcmbFields().getCmbFields()[1].setEnabled(false);
             });
             setCursor(new Cursor(Cursor.HAND_CURSOR));
         }};

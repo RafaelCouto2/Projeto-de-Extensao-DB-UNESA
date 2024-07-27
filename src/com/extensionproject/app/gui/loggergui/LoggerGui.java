@@ -22,7 +22,7 @@ public class LoggerGui extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new LoggerWindowEvent(this));
-        this.setVisible(true);
+        this.setVisible(false);
     }
     public LoggerGui() {
         this.initComponents();

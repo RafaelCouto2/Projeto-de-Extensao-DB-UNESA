@@ -54,6 +54,7 @@ public class PagamentoPanelCmbBoxes {
             };
             this.mainpanel.getMainpanel().add(this.cmbFields[cmbIndx], this.mainpanel.getComponentsGrid()[cmbIndx+1]);
         }
+        this.cmbFields[1].setEnabled(false);
         this.cmbFields[0].addItemListener(this::cmbResponsavelItemListener);
         this.cmbFields[1].addItemListener(this::cmbAlunoItemListener);
     }
@@ -95,6 +96,7 @@ public class PagamentoPanelCmbBoxes {
                         }
                     }
                 }
+                this.cmbFields[1].setEnabled(true);
             }
             this.mainpanel.getPpagamentoTable().getTableMouseListenerEvents().setIgnoreTableClick(false);
             //TableMouseListenerEvents.ignoreTableClick = false;

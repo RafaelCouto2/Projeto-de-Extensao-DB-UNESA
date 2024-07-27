@@ -34,7 +34,6 @@ public class SpnDateChangeListener implements ChangeListener {
 
         if(this.main.getSpnDate().getModel().getValue().equals(Utils.calendar.getTime())){
             this.main.getMainpanel().getResposavel().setDt_nascimento("DEFAULT");
-            System.out.println("É ELE MESMO!");
         }
 
     }
