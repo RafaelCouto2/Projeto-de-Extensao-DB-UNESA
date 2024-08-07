@@ -2,6 +2,7 @@ package com.extensionproject.app.gui.main;
 
 import com.extensionproject.app.GuiLinker;
 import com.extensionproject.app.connect.factoryconnection.ConnectionManager;
+import com.extensionproject.app.gui.main.contents.cadastroaluno.gui.CadastroAluno;
 import com.extensionproject.app.gui.main.events.MainGuiBtnLogActionListener;
 import com.extensionproject.app.gui.main.contents.cadastroresponsavel.gui.CadastroResponsavel;
 import com.extensionproject.app.gui.main.contents.pagamento.gui.PagamentoPanel;
@@ -76,6 +77,15 @@ public class MainGui extends JFrame {
             }
         });
 
+        this.btnAlunos.addActionListener(e -> {
+            if(panelid != 2 && ConnectionManager.hasConnection()){
+                panelid = 2;
+                canUpdate = true;
+                new CadastroAluno(this.windowField);
+                this.repaint();
+            }
+        });
+
         this.btnResp.addActionListener(e -> {
             if (panelid != 3 && ConnectionManager.hasConnection()){
                 panelid = 3;
@@ -117,7 +127,7 @@ public class MainGui extends JFrame {
                 g.drawString("{ TABELA DE PAGAMENTOS }",this.getWidth() - 500, 45);
                 break;
             case 2:
-
+                g.drawString("{ TABELA DE ALUNOS }",this.getWidth() - 500, 45);
                 break;
             case 3:
                 g.drawString("{ TABELA DE RESPONSÁVEIS }",this.getWidth() - 500, 45);
