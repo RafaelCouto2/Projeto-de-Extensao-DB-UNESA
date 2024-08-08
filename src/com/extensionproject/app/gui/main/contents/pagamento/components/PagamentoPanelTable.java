@@ -31,7 +31,7 @@ public class PagamentoPanelTable {
     public void startTable() {
         this.pagamentoDAO.iniTableData();
         this.pagamentoTable = new JTable(this.getPagamentoDAO().getTablerequest().getResultsSetData(0),
-                new Vector<>(Arrays.asList("ID PG", "RESPONSÁVEL", "ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO")));
+                new Vector<>(Arrays.asList("ID PG", "NOME DO RESPONSÁVEL", "NOME DO ALUNO REFERENTE", "VALOR", "DATA DO PAGAMENTO")));
 
         this.addEmptyRow.accept(1); //AUTO ADD ROW.
         this.setActualRow.accept(1);
@@ -44,8 +44,8 @@ public class PagamentoPanelTable {
         this.pagamentoTable.getColumn("ID PG").setMaxWidth(55);
         this.pagamentoTable.getColumn("VALOR").setMaxWidth(65);
         this.pagamentoTable.getColumn("DATA DO PAGAMENTO").setMaxWidth(147);
-        this.pagamentoTable.getColumn("RESPONSÁVEL").setMaxWidth(230);
-        this.pagamentoTable.getColumn("ALUNO REFERENTE").setMaxWidth(230);
+        this.pagamentoTable.getColumn("NOME DO RESPONSÁVEL").setMaxWidth(230);
+        this.pagamentoTable.getColumn("NOME DO ALUNO REFERENTE").setMaxWidth(230);
         this.pagamentoTable.setForeground(Utils.tableForeground);
         this.pagamentoTable.setGridColor(Utils.tableGrid);
         this.pagamentoTable.setRowHeight(20);

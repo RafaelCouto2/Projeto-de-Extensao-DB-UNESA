@@ -24,7 +24,7 @@ public class CadastroAlunoTable {
     public void startTable(){
         this.mainpanel.getAlunoDAO().iniTableData();
         this.alunosTable = new JTable(this.mainpanel.getAlunoDAO().getTableRequests().getResultsSetData()[0],
-                new Vector<>(Arrays.asList("ID", "NOME", "RESPONSÁVEL", "SEXO", "DATA DE NASCIMENTO", "TAPA BURACO")));
+                new Vector<>(Arrays.asList("ID", "NOME DO ALUNO", "NOME DO RESPONSÁVEL", "SEXO", "DATA DE NASCIMENTO", "ENDEREÇO")));
         this.addEmptyRow.accept(1);
         this.setActualId.accept(1);
         this.alunosTable.setDragEnabled(false);
@@ -38,11 +38,11 @@ public class CadastroAlunoTable {
         this.alunosTable.setForeground(Utils.tableForeground);
         this.alunosTable.setGridColor(Utils.tableGrid);
         this.alunosTable.getColumn("ID").setMaxWidth(55);
-        this.alunosTable.getColumn("NOME").setMaxWidth(262);
-        this.alunosTable.getColumn("RESPONSÁVEL").setMaxWidth(262);
+        this.alunosTable.getColumn("NOME DO ALUNO").setMaxWidth(262);
+        this.alunosTable.getColumn("NOME DO RESPONSÁVEL").setMaxWidth(262);
         this.alunosTable.getColumn("SEXO").setMaxWidth(100);
         this.alunosTable.getColumn("DATA DE NASCIMENTO").setMaxWidth(155);
-        this.alunosTable.getColumn("TAPA BURACO").setMaxWidth(10);
+        this.alunosTable.getColumn("ENDEREÇO").setMaxWidth(10);
 
         this.alunosTable.setRowHeight(20);
         JTextField NonEditabletxtfield = new JTextField(){{this.setEditable(false);}};

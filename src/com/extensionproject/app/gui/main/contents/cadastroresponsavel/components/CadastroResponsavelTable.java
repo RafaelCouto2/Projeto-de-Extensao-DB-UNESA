@@ -26,7 +26,7 @@ public class CadastroResponsavelTable {
     public void startTable(){
         this.mainpanel.getResponsavelDAO().iniTableData();
         this.resptable = new JTable(this.mainpanel.getResponsavelDAO().getTableRequests().getResultsSetData(0),
-                new Vector<>(Arrays.asList("ID", "NOME", "SEXO", "DATA DE NASCIMENTO", "TELEFONE")));
+                new Vector<>(Arrays.asList("ID", "NOME DO RESPONSÁVEL", "SEXO", "DATA DE NASCIMENTO", "TELEFONE")));
 
         this.addEmptyRow.accept(1);
         this.setActualId.accept(1);
@@ -41,7 +41,7 @@ public class CadastroResponsavelTable {
         this.resptable.setForeground(Utils.tableForeground);
         this.resptable.setGridColor(Utils.tableGrid);
         this.resptable.getColumn("ID").setMaxWidth(55);
-        this.resptable.getColumn("NOME").setMaxWidth(262);
+        this.resptable.getColumn("NOME DO RESPONSÁVEL").setMaxWidth(262);
         this.resptable.getColumn("SEXO").setMaxWidth(100);
         this.resptable.getColumn("DATA DE NASCIMENTO").setMaxWidth(155);
         this.resptable.getColumn("TELEFONE").setMaxWidth(148);
