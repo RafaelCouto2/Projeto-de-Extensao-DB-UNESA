@@ -1,13 +1,17 @@
 package com.extensionproject.app.gui.main.contents.cadastroaluno.gui;
 
 import com.extensionproject.app.dao.cadastrodao.alunodao.AlunoDAO;
+import com.extensionproject.app.domain.alunos.Aluno;
 import com.extensionproject.app.gui.main.contents.cadastroaluno.components.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Vector;
 
 public class CadastroAluno extends JPanel {
 
+    private Aluno aluno;
     private GridBagConstraints[] componentsGrid;
     private GridBagConstraints cadastrogrid;
     private JPanel mainpanel;
@@ -21,20 +25,21 @@ public class CadastroAluno extends JPanel {
     private void iniComponents(){
         this.setMainPanelLayout();
         this.startComponentsGrid();
+        this.aluno = new Aluno();
         this.alunoDAO = new AlunoDAO(this);
         this.alunoTable = new CadastroAlunoTable(this);
         this.alunoTable.startTable();
         this.alunoTable.iniPn();
         this.btnCadastros = new CadastroAlunoButtons(this);
         this.btnCadastros.startBtns();
+        this.spnDate = new CadastroAlunoSpinner(this);
+        this.spnDate.startSpinner();
+        this.txtFields = new CadastroAlunoTxtFields(this);
+        this.txtFields.startTxtfields();
         this.cmbBoxes = new CadastroAlunoCmbBoxes(this);
         this.cmbBoxes.startCmbx();
         this.lblsInfo = new CadastroAlunoLabels(this);
         this.lblsInfo.startLbls();
-        this.txtFields = new CadastroAlunoTxtFields(this);
-        this.txtFields.startTxtfields();
-        this.spnDate = new CadastroAlunoSpinner(this);
-        this.spnDate.startSpinner();
     }
     public CadastroAluno(JPanel mainpanel){
         this.mainpanel = mainpanel;
@@ -131,5 +136,13 @@ public class CadastroAluno extends JPanel {
 
     public CadastroAlunoSpinner getSpnDate() {
         return this.spnDate;
+    }
+
+    public Aluno getAluno() {
+        return this.aluno;
+    }
+
+    public CadastroAlunoButtons getBtnCadastros() {
+        return this.btnCadastros;
     }
 }

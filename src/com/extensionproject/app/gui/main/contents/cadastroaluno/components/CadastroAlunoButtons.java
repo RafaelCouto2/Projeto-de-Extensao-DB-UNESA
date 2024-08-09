@@ -10,6 +10,7 @@ public class CadastroAlunoButtons {
     private CadastroAluno mainpanel;
     private JButton[] btnCadastro;
     private JCheckBox btnSwitch;
+    private boolean stateChanged = false;
     public CadastroAlunoButtons(CadastroAluno mainpanel){
         this.mainpanel = mainpanel;
     }
@@ -85,6 +86,11 @@ public class CadastroAlunoButtons {
         this.mainpanel.getCmbBoxes().getCmbAluno().setSelectedItem(null);
         this.mainpanel.getTxtFields().getTxtField().setEnabled(bool);
         this.mainpanel.getSpnDate().getSpnDate().setEnabled(bool);
+        this.mainpanel.getCmbBoxes().getCmbAluno().setEnabled(!bool);
+
+
+        this.changeState();
+
 
         if(bool){
 
@@ -95,4 +101,13 @@ public class CadastroAlunoButtons {
 
     }
 
+    public void changeState(){
+        this.stateChanged = !this.stateChanged;
+        //this.btnCadastro[2].setEnabled(!this.btnCadastro[2].isEnabled());
+        //this.btnCadastro[3].setEnabled(!this.btnCadastro[3].isEnabled());
+    }
+
+    public boolean isStateChanged() {
+        return this.stateChanged;
+    }
 }

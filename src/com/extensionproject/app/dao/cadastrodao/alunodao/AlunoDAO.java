@@ -27,13 +27,14 @@ public class AlunoDAO {
         for(int i = 0; i < this.tableRequests.getResultsSetData()[0].size(); i++) {
             for (int l = 0; l < responsavelrequest.size(); l++) {
                 if(alunorequest.get(i).get(2).equals(responsavelrequest.get(l).get(1))){
-                    alunorequest.get(i).set(2, alunorequest.get(i).get(2) + ": " + responsavelrequest.get(l).get(0));
+                    alunorequest.get(i).add(1, alunorequest.get(i).get(2));
+                    alunorequest.get(i).set(3, /* alunorequest.get(i).get(2) + ": " + */ responsavelrequest.get(l).get(0));
                 }
             }
 
-            if (alunorequest.get(i).get(3).equals("m")) {
-                alunorequest.get(i).set(3, "Masculino");
-            } else alunorequest.get(i).set(3, "Feminino");
+            if (alunorequest.get(i).get(4).equals("m")) {
+                alunorequest.get(i).set(4, "Masculino");
+            } else alunorequest.get(i).set(4, "Feminino");
 
         }
     }

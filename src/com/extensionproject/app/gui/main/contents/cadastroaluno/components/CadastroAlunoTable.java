@@ -2,6 +2,7 @@ package com.extensionproject.app.gui.main.contents.cadastroaluno.components;
 
 import com.extensionproject.app.dao.cadastrodao.alunodao.AlunoDAO;
 import com.extensionproject.app.general.Utils;
+import com.extensionproject.app.gui.main.contents.cadastroaluno.events.table.AlunoTableMouseListener;
 import com.extensionproject.app.gui.main.contents.cadastroaluno.gui.CadastroAluno;
 
 import javax.swing.*;
@@ -17,6 +18,7 @@ public class CadastroAlunoTable {
     private JTable alunosTable;
     private JScrollPane scrollPane;
     private int actualId;
+    private AlunoTableMouseListener mouseListener;
     public CadastroAlunoTable(CadastroAluno mainpanel){
         this.mainpanel = mainpanel;
     }
@@ -24,7 +26,7 @@ public class CadastroAlunoTable {
     public void startTable(){
         this.mainpanel.getAlunoDAO().iniTableData();
         this.alunosTable = new JTable(this.mainpanel.getAlunoDAO().getTableRequests().getResultsSetData()[0],
-                new Vector<>(Arrays.asList("ID", "NOME DO ALUNO", "NOME DO RESPONSÁVEL", "SEXO", "DATA DE NASCIMENTO", "ENDEREÇO")));
+                new Vector<>(Arrays.asList("ID ALUNO", "ID RESPONSÁVEL", "NOME DO ALUNO", "NOME DO RESPONSÁVEL", "SEXO", "DATA DE NASCIMENTO", "ENDEREÇO")));
         this.addEmptyRow.accept(1);
         this.setActualId.accept(1);
         this.alunosTable.setDragEnabled(false);
@@ -37,19 +39,20 @@ public class CadastroAlunoTable {
         this.alunosTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.alunosTable.setForeground(Utils.tableForeground);
         this.alunosTable.setGridColor(Utils.tableGrid);
-        this.alunosTable.getColumn("ID").setMaxWidth(55);
+        this.alunosTable.getColumn("ID ALUNO").setMaxWidth(55);
+        this.alunosTable.getColumn("ID RESPONSÁVEL").setMaxWidth(55);
         this.alunosTable.getColumn("NOME DO ALUNO").setMaxWidth(262);
         this.alunosTable.getColumn("NOME DO RESPONSÁVEL").setMaxWidth(262);
         this.alunosTable.getColumn("SEXO").setMaxWidth(100);
         this.alunosTable.getColumn("DATA DE NASCIMENTO").setMaxWidth(155);
         this.alunosTable.getColumn("ENDEREÇO").setMaxWidth(10);
-
         this.alunosTable.setRowHeight(20);
         JTextField NonEditabletxtfield = new JTextField(){{this.setEditable(false);}};
         DefaultCellEditor nonEditCell = new DefaultCellEditor(NonEditabletxtfield);
         for(int c = 0; c < this.alunosTable.getColumnCount(); c++) {
             this.alunosTable.getColumnModel().getColumn(c).setCellEditor(nonEditCell);
         }
+        this.alunoTableMouseListener();
     }
 
     public void iniPn(){
@@ -63,7 +66,7 @@ public class CadastroAlunoTable {
     Consumer<Integer> addEmptyRow = lamb -> { //AUTO ROW ADDER IF ROWS < 20.
         if(this.alunosTable.getModel().getRowCount() < 20){
             for(int i = this.alunosTable.getModel().getRowCount(); i < 20; i++) {
-                ((DefaultTableModel) this.alunosTable.getModel()).addRow(new Object[]{null, "", null, null, null, null});
+                ((DefaultTableModel) this.alunosTable.getModel()).addRow(new Object[]{null, null, null, null, null, null});
             }
         }
     };
@@ -79,6 +82,11 @@ public class CadastroAlunoTable {
         }
     };
 
+    private void alunoTableMouseListener(){
+        this.mouseListener = new AlunoTableMouseListener(this);
+        this.alunosTable.addMouseListener(mouseListener);
+    }
+
     public void reloadTable(){
         this.startTable();
         this.scrollPane.add(this.alunosTable);
@@ -90,4 +98,15 @@ public class CadastroAlunoTable {
         return this.actualId;
     }
 
+    public JTable getAlunosTable() {
+        return this.alunosTable;
+    }
+
+    public CadastroAluno getMainpanel() {
+        return this.mainpanel;
+    }
+
+    public AlunoTableMouseListener getMouseListener() {
+        return this.mouseListener;
+    }
 }
