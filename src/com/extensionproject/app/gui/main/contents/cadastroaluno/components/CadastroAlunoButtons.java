@@ -10,7 +10,7 @@ public class CadastroAlunoButtons {
     private CadastroAluno mainpanel;
     private JButton[] btnCadastro;
     private JCheckBox btnSwitch;
-    private boolean stateChanged = false;
+    private boolean stateChanged = false, switched = false;
     public CadastroAlunoButtons(CadastroAluno mainpanel){
         this.mainpanel = mainpanel;
     }
@@ -87,10 +87,11 @@ public class CadastroAlunoButtons {
         this.mainpanel.getTxtFields().getTxtField().setEnabled(bool);
         this.mainpanel.getSpnDate().getSpnDate().setEnabled(bool);
         this.mainpanel.getCmbBoxes().getCmbAluno().setEnabled(!bool);
-
-
         this.changeState();
 
+        this.mainpanel.getCmbBoxes().setForeignReload(true);
+        this.mainpanel.getCmbBoxes().reloadAlunoComboBox();
+        this.mainpanel.getCmbBoxes().setForeignReload(false);
 
         if(bool){
 
@@ -98,6 +99,10 @@ public class CadastroAlunoButtons {
 
         }
 
+        if(switched){
+            this.switchCadastrarEditar();
+            this.mainpanel.getCmbBoxes().setEditing(false);
+        }
 
     }
 
@@ -105,6 +110,15 @@ public class CadastroAlunoButtons {
         this.stateChanged = !this.stateChanged;
         //this.btnCadastro[2].setEnabled(!this.btnCadastro[2].isEnabled());
         //this.btnCadastro[3].setEnabled(!this.btnCadastro[3].isEnabled());
+    }
+
+    public void switchCadastrarEditar(){
+        this.btnCadastro[2].setEnabled(this.btnCadastro[3].isEnabled());
+        this.btnCadastro[3].setEnabled(!this.btnCadastro[2].isEnabled());
+        this.switched = !btnCadastro[2].isEnabled();
+    }
+    public boolean isSwitched(){
+        return switched;
     }
 
     public boolean isStateChanged() {
