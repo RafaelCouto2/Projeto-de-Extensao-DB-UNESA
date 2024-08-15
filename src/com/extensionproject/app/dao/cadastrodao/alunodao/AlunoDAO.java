@@ -60,6 +60,28 @@ public class AlunoDAO {
         }
     }
 
+    public void updateAluno(String[] dados, boolean trocando){
+        try(Statement stmt = StatementsManager.createStatement()){
+            String dt_nasc = "";
+            if (stmt == null){
+                throw new IllegalStateException("Falha ao criar o Statement.");
+            }
+            if(dados[4].equals("DEFAULT")){
+                dt_nasc = "DEFAULT";
+            } else dt_nasc = "STR_TO_DATE('" + dados[4] + "', '%d/%m/%Y')";
+
+            stmt.executeUpdate("update `extpj`.`aluno` set `nome` = '" + dados[2] +
+                    "', `sexo` = '"                + dados[3] +
+                    "', `dt_nascimento` = "       + dt_nasc +
+                    " where `id_responsavel` = " + dados[0] + " and `id_alunoreferente` = " + dados[1] + ";");
+
+            LoggerManager.getClassLog(PagamentoDAO.class).info(": CADASTRO DO RESPONSÁVEL EDITADO COM SUCESSO!");
+
+        } catch (SQLException e) {
+            LoggerManager.getClassLog(PagamentoDAO.class).error(e.getMessage()+ ": NÃO FOI POSSÍVEL EDITAR O CADASTRO DO RESPONSÁVEL.");
+        }
+    }
+
 
     private void alunoTableRequest(String[] sql){
         this.tableRequests.tableRequest(sql);

@@ -78,7 +78,13 @@ public class CadastroAlunoButtons {
     }
 
     private void btnEditarActionEvent(){
-
+        if(this.mainpanel.getAluno().hasValues()){
+            boolean trocando = false;
+            trocando = this.mainpanel.getAluno().isChangingResp();
+            this.mainpanel.getAlunoDAO().updateAluno(this.mainpanel.getAluno().getValues(), trocando);
+            this.mainpanel.reloadComponentsProperties();
+            this.mainpanel.getAluno().nullifer();
+        }
     }
 
     private void btnReloadActionEvent(){
