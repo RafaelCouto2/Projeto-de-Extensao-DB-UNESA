@@ -102,6 +102,14 @@ public class CadastroAluno extends JPanel {
 
     }
 
+    public void reloadComponentsProperties(){
+        this.alunoTable.reloadTable();
+        this.cmbBoxes.reloadAlunoComboBox();
+        this.cmbBoxes.getCmbSexo().setSelectedItem(null);
+        this.cmbBoxes.getCmbResponsavel().setSelectedItem(null);
+        this.txtFields.reloadTxtField();
+    }
+
     private void setMainPanelLayout(){
         this.mainpanel.setLayout(new GridBagLayout());
     }

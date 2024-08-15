@@ -1,14 +1,12 @@
 package com.extensionproject.app.gui.main.contents.cadastroaluno.components;
 
-import com.extensionproject.app.gui.main.contents.cadastroaluno.events.id.IdTxtFieldsListener;
+import com.extensionproject.app.gui.main.contents.cadastroaluno.events.id.IdDocumentListener;
 import com.extensionproject.app.gui.main.contents.cadastroaluno.gui.CadastroAluno;
 
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Formatter;
 
 public class CadastroAlunoTxtFields {
     private CadastroAluno mainpanel;
@@ -29,9 +27,13 @@ public class CadastroAlunoTxtFields {
         this.txtField = new JFormattedTextField(nformat);
         this.txtField.setFont(new Font("Arial", Font.BOLD, 13));
         this.txtField.setEnabled(false);
-        this.txtField.getDocument().addDocumentListener(new IdTxtFieldsListener(this));
+        this.txtField.getDocument().addDocumentListener(new IdDocumentListener(this));
         this.mainpanel.getMainpanel().add(this.txtField, this.mainpanel.getComponentsGrid()[0]);
 
+    }
+
+    public void reloadTxtField(){
+        this.txtField.setText("");
     }
 
     public CadastroAluno getMainpanel() {
@@ -41,4 +43,6 @@ public class CadastroAlunoTxtFields {
     public JFormattedTextField getTxtField() {
         return this.txtField;
     }
+
 }
+

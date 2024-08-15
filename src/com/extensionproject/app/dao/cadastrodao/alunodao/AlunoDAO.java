@@ -1,8 +1,13 @@
 package com.extensionproject.app.dao.cadastrodao.alunodao;
 
+import com.extensionproject.app.connect.statements.StatementsManager;
+import com.extensionproject.app.dao.pagamentodao.PagamentoDAO;
 import com.extensionproject.app.dao.tablerequestsdao.TableRequests;
 import com.extensionproject.app.gui.main.contents.cadastroaluno.gui.CadastroAluno;
+import com.extensionproject.app.logger.LoggerManager;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Vector;
 
 public class AlunoDAO {
@@ -19,6 +24,43 @@ public class AlunoDAO {
                 "select `nome`, `id_responsavel` from `responsavel`;"});
     }
 
+    public void deletarAluno(String[] ids){
+        try(Statement stmt = StatementsManager.createStatement()){
+            if (stmt == null) {
+                throw new IllegalStateException("Falha ao criar o Statement.");
+            }
+            stmt.executeUpdate("delete from `extpj`.`aluno` where id_responsavel = " + ids[1] + " and id_alunoreferente = "+ ids[0] + ";");
+            LoggerManager.getClassLog(PagamentoDAO.class).info(": CADASTRO DO ALUNO DELETADO COM SUCESSO!");
+        } catch (SQLException e) {
+            LoggerManager.getClassLog(AlunoDAO.class).error(e.getMessage()+ ": NÃO FOI POSSÍVEL DELETAR O CADASTRO DO ALUNO.");
+        }
+    }
+
+    public void insertAluno(String[] dados){
+        try(Statement stmt = StatementsManager.createStatement()){
+            String dt_nasc = "";
+            if (stmt == null){
+                throw new IllegalStateException("Falha ao criar o Statement.");
+            }
+            if(dados[4].equals("DEFAULT")){
+                dt_nasc = "DEFAULT";
+            } else dt_nasc = "STR_TO_DATE('" + dados[4] + "', '%d/%m/%Y')";
+
+            stmt.executeUpdate("insert into `extpj`.`aluno` values (" +
+                    dados[0] +
+                    ", '"  + dados[1] +
+                    "', '" + dados[2] +
+                    "', '"  + dados[3] +
+                    "', "   + dt_nasc +
+                    ", NULL" +
+                    ");");
+            LoggerManager.getClassLog(PagamentoDAO.class).info(": ALUNO CADASTRADO COM SUCESSO!");
+        } catch (SQLException e) {
+            LoggerManager.getClassLog(PagamentoDAO.class).error(e.getMessage()+ ": NÃO FOI POSSÍVEL CADASTRAR DO ALUNO.");
+        }
+    }
+
+
     private void alunoTableRequest(String[] sql){
         this.tableRequests.tableRequest(sql);
         Vector<Vector<Object>> alunorequest = this.tableRequests.getResultsSetData()[0];
@@ -26,9 +68,13 @@ public class AlunoDAO {
 
         for(int i = 0; i < this.tableRequests.getResultsSetData()[0].size(); i++) {
             for (int l = 0; l < responsavelrequest.size(); l++) {
-                if(alunorequest.get(i).get(2).equals(responsavelrequest.get(l).get(1))){
+                if(alunorequest.get(i).get(2).equals(responsavelrequest.get(l).get(1))) {
                     alunorequest.get(i).add(1, alunorequest.get(i).get(2));
                     alunorequest.get(i).set(3, /* alunorequest.get(i).get(2) + ": " + */ responsavelrequest.get(l).get(0));
+                    if(alunorequest.get(i).get(5) == null){
+                        alunorequest.get(i).set(5, "--/--/----");
+                    }
+
                 }
             }
 

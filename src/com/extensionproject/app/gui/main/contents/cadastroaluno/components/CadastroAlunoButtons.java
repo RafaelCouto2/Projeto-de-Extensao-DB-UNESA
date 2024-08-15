@@ -4,6 +4,7 @@ import com.extensionproject.app.general.Utils;
 import com.extensionproject.app.gui.main.contents.cadastroaluno.gui.CadastroAluno;
 
 import javax.swing.*;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class CadastroAlunoButtons {
@@ -24,7 +25,7 @@ public class CadastroAlunoButtons {
         }
 
         this.btnCadastro[0].setIcon(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("imgs/refresh_icon.png"))));
-        this.btnCadastro[0].addActionListener(e -> this.mainpanel.getAlunoTable().reloadTable());
+        this.btnCadastro[0].addActionListener(e -> btnReloadActionEvent());
         this.btnCadastro[0].setCursor(Utils.handcursor);
 
         this.btnCadastro[1].setFont(Utils.unibold);
@@ -61,15 +62,29 @@ public class CadastroAlunoButtons {
     }
 
     private void btnDeletarActionEvent(){
-
+        if(this.mainpanel.getAluno().getId_responsavel() != null && this.mainpanel.getAluno().getId_aluno() != null) {
+            this.mainpanel.getAlunoDAO().deletarAluno(new String[]{this.mainpanel.getAluno().getId_aluno(), this.mainpanel.getAluno().getId_responsavel()});
+            this.mainpanel.reloadComponentsProperties();
+            this.mainpanel.getAluno().nullifer();
+        }
     }
 
     private void btnRegistrarActionEvent(){
-
+        if(this.mainpanel.getAluno().hasValues()){
+            this.mainpanel.getAlunoDAO().insertAluno(this.mainpanel.getAluno().getValues());
+            this.mainpanel.reloadComponentsProperties();
+            this.mainpanel.getAluno().nullifer();
+        }
     }
 
     private void btnEditarActionEvent(){
 
+    }
+
+    private void btnReloadActionEvent(){
+        //this.mainpanel.reloadComponentsProperties();
+        //this.mainpanel.getAluno().nullifer();
+        System.out.println(Arrays.toString(this.mainpanel.getAluno().getValues()));
     }
 
     private void btnSwitchActionEvent(boolean bool){
@@ -103,6 +118,7 @@ public class CadastroAlunoButtons {
             this.switchCadastrarEditar();
             this.mainpanel.getCmbBoxes().setEditing(false);
         }
+        this.mainpanel.getAluno().nullifer();
 
     }
 
@@ -123,5 +139,9 @@ public class CadastroAlunoButtons {
 
     public boolean isStateChanged() {
         return this.stateChanged;
+    }
+
+    public JCheckBox getBtnSwitch() {
+        return this.btnSwitch;
     }
 }

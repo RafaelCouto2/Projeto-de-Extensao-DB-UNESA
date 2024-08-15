@@ -1,6 +1,7 @@
 package com.extensionproject.app.gui.main.contents.cadastroaluno.components;
 
 import com.extensionproject.app.general.Utils;
+import com.extensionproject.app.gui.main.contents.cadastroaluno.events.dataspinner.SpnDateComponentListener;
 import com.extensionproject.app.gui.main.contents.cadastroaluno.gui.CadastroAluno;
 
 import javax.swing.*;
@@ -29,6 +30,7 @@ public class CadastroAlunoSpinner {
         df.setCommitsOnValidEdit(false);
         childcomp.setText(null);
         this.childcomp = childcomp;
+        this.childcomp.addKeyListener(new SpnDateComponentListener(this));
 
         this.mainpanel.getMainpanel().add(this.spnDate, this.mainpanel.getComponentsGrid()[6]);
 
@@ -40,5 +42,9 @@ public class CadastroAlunoSpinner {
 
     public JFormattedTextField getChildcomp() {
         return this.childcomp;
+    }
+
+    public CadastroAluno getMainpanel() {
+        return this.mainpanel;
     }
 }

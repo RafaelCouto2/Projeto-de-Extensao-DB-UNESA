@@ -24,13 +24,22 @@ public class CmbAlunoKeyListener implements KeyListener {
                         throw new StringIndexOutOfBoundsException();
                     }
                 }
+                this.main.getMainpanel().getAluno().setNome(this.main.getCmbAluno().getEditor().getItem().toString().substring(this.main.getAludotindx() + 2));
             } catch (StringIndexOutOfBoundsException ex){
                 LoggerManager.getClassLog(CmbResponsavelKeyListener.class).info(": Não é possível apagar o ID do responsável, em seu nome, enquanto o edita.");
                 this.main.setLock(true);
                 this.main.getCmbAluno().getEditor().setItem(this.main.getMainpanel().getTxtFields().getTxtField().getText() + ": ");
                 this.main.setLock(false);
             }
+        } else {
+            if(!this.main.getCmbAluno().getEditor().getItem().toString().startsWith("<") && !this.main.isEditing()) {
+                this.main.getMainpanel().getAluno().setNome(this.main.getCmbAluno().getEditor().getItem().toString());
+            } else {
+                this.main.getMainpanel().getAluno().nullifer();
+                //this.main.getMainpanel().getAluno().setNome(null);
+            }
         }
+        System.out.println(this.main.getMainpanel().getAluno().getNome());
     }
 
     @Override

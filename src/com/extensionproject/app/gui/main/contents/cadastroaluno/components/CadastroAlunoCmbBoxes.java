@@ -84,44 +84,83 @@ public class CadastroAlunoCmbBoxes {
         if(e.getStateChange() == ItemEvent.SELECTED && !first && !this.foreignReload){
             Object source = e.getSource();
             if(source instanceof JComboBox<?>) {
+                this.isEditing = Character.isDigit(this.cmbAluno.getSelectedItem().toString().charAt(0));
+                if(this.mainpanel.getAlunoTable().getMouseListener().isSelected()) this.firenext = true;
+                if(this.cmbAluno.getSelectedIndex() != 0 && this.isEditing){
+                    StringBuilder bf = new StringBuilder(this.cmbAluno.getSelectedItem().toString());
+                    int dot = bf.indexOf(":");
+                    this.aludotindx = dot;
+                    this.mainpanel.getAluno().setNome(this.cmbAluno.getSelectedItem().toString().substring(dot + 2));
+                }
+                //if (!this.cmbAluno.getEditor().getItem().toString().startsWith("<") && !this.isEditing) this.mainpanel.getAluno().setNome(this.cmbAluno.getEditor().getItem().toString());
                 if (alunoevt && !this.mainpanel.getAlunoTable().getMouseListener().isSelected()) {
                     this.selectedAluno = this.cmbAluno.getSelectedItem().toString();
                     this.alunoevt = false;
                 }
-                if(this.mainpanel.getAlunoTable().getMouseListener().isSelected()) this.firenext = true;
-                this.isEditing = Character.isDigit(this.cmbAluno.getSelectedItem().toString().charAt(0));
+
+                //String resp = null;
                 if (this.isEditing && !lock) {
                     this.lock = true;
                     if (this.mainpanel.getAlunoTable().getMouseListener().isSelected()) this.cmbAluno.setEnabled(true);
-                    if(!this.mainpanel.getBtnCadastros().isSwitched()) this.mainpanel.getBtnCadastros().switchCadastrarEditar();
+                    if (!this.mainpanel.getBtnCadastros().isSwitched()) this.mainpanel.getBtnCadastros().switchCadastrarEditar();
                     Vector<Vector<Object>> aluRequest = this.mainpanel.getAlunoDAO().getTableRequests().getResultsSetData()[0];
                     StringBuilder abf = new StringBuilder(this.cmbAluno.getSelectedItem().toString());
                     this.aludotindx = abf.indexOf(":");
-
                     for (int i = 0; i < aluRequest.size(); i++) {
                         if (Objects.equals(this.cmbAluno.getSelectedItem(), aluRequest.get(i).get(0) + ": " + aluRequest.get(i).get(2))) {
                             this.cmbResponsavel.setSelectedItem(aluRequest.get(i).get(1) + ": " + aluRequest.get(i).get(3));
+                            //resp = aluRequest.get(i).get(1).toString();
+                            //this.mainpanel.getAluno().setId_responsavel(aluRequest.get(i).get(1).toString());
+
                             this.cmbSexo.setSelectedItem(aluRequest.get(i).get(4));
                             this.mainpanel.getTxtFields().getTxtField().setText(aluRequest.get(i).get(0).toString());
-                            this.mainpanel.getAluno().setId_aluno(Integer.parseInt(aluRequest.get(i).get(0).toString()));
+                            //this.mainpanel.getAluno().setId_aluno(aluRequest.get(i).get(0).toString());
                             //System.out.println("ALUNOCMB: " + this.mainpanel.getAluno().getId_aluno());
                             try {
-                                this.mainpanel.getSpnDate().getSpnDate().setValue(new SimpleDateFormat("dd/MM/yyyy").parse(aluRequest.get(i).get(5).toString()));
+                                if(!aluRequest.get(i).get(5).toString().equals("--/--/----")) {
+                                    this.mainpanel.getSpnDate().getSpnDate().setValue(new SimpleDateFormat("dd/MM/yyyy").parse(aluRequest.get(i).get(5).toString()));
+                                    this.mainpanel.getAluno().setDt_nascimento(aluRequest.get(i).get(5).toString());
+                                } else {
+                                    this.mainpanel.getSpnDate().getSpnDate().getModel().setValue(Utils.calendar.getTime());
+                                    this.mainpanel.getAluno().setDt_nascimento("DEFAULT");
+                                }
+
                             } catch (ParseException ex) {
                                 throw new RuntimeException(ex);
+                            } catch (RuntimeException ex){
+
                             }
                             break;
                         }
                     }
+                    this.mainpanel.getAluno().setId_aluno(this.mainpanel.getTxtFields().getTxtField().getValue().toString());
 
                 } else {
                     if(this.mainpanel.getBtnCadastros().isSwitched()) this.mainpanel.getBtnCadastros().switchCadastrarEditar();
                     if(this.cmbAluno.getSelectedIndex() == 0){
                         this.setMaiorId();
+                        //this.mainpanel.getAluno().setId_responsavel(String.valueOf(this.actualrespid));
+                        ///System.out.println(this);
+
                     }
+                    if (!this.cmbAluno.getEditor().getItem().toString().startsWith("<") &&
+                            !this.isEditing){
+                        this.mainpanel.getAluno().setNome(this.cmbAluno.getEditor().getItem().toString());
+                        this.mainpanel.getAluno().setId_aluno(this.mainpanel.getTxtFields().getTxtField().getValue().toString());
+                        //this.mainpanel.getAluno().setId_responsavel(resp);
+                    }
+
                 }
                 this.actualrespid = Integer.parseInt(this.cmbResponsavel.getSelectedItem().toString().substring(0, this.cmbResponsavel.getSelectedItem().toString().indexOf(":")));
             }
+            try {
+                StringBuilder rbf1 = new StringBuilder(this.cmbResponsavel.getSelectedItem().toString());
+                int respdotindx__ = rbf1.indexOf(":");
+                this.mainpanel.getAluno().setId_responsavel(this.cmbResponsavel.getEditor().getItem().toString().substring(0, respdotindx__));
+            } catch (StringIndexOutOfBoundsException ex){
+
+            }
+
         } else {
             lock = false;
             first = false;
@@ -134,10 +173,18 @@ public class CadastroAlunoCmbBoxes {
             Object source = e.getSource();
             if(this.foreignReload) hasForeign = true;
             if(source instanceof JComboBox<?> && !hasForeign) {
+                StringBuilder rbf1 = new StringBuilder(this.cmbResponsavel.getSelectedItem().toString());
+                int respdotindx__ = rbf1.indexOf(":");
                 int respdotindx_ = Integer.parseInt(this.cmbResponsavel.getSelectedItem().toString().substring(0, this.cmbResponsavel.getSelectedItem().toString().indexOf(":")));
+                //this.mainpanel.getAluno().setId_responsavel(this.cmbResponsavel.getSelectedItem().toString().substring(0, respdotindx__));
+
+                //System.out.println(this.mainpanel.getAluno().getId_responsavel());
+
                 if (!this.isEditing) {
                     StringBuilder rbf = new StringBuilder(this.cmbResponsavel.getSelectedItem().toString());
-                    int respdotindx = rbf.indexOf(":"); respdotindx_ = respdotindx;
+                    int respdotindx = rbf.indexOf(":");
+                    respdotindx_ = respdotindx;
+
                     if (this.mainpanel.getBtnCadastros().isStateChanged() && !this.mainpanel.getAlunoTable().getMouseListener().isSelected()) {
                         this.cmbAluno.setEnabled(true);
                         Vector<Vector<Object>> aluRequest = this.mainpanel.getAlunoDAO().getTableRequests().getResultsSetData()[0];
@@ -154,14 +201,12 @@ public class CadastroAlunoCmbBoxes {
                             } catch (NullPointerException ex) {
                                 //this.cmbAluno.setSelectedItem("<Cadastrar novo aluno>");
                             }
-
                         }
                         this.cmbAluno.removeAllItems();
                         this.cmbAluno.addItem("<Cadastrar aluno>");
                         for (String items : alunosPertencentesAoResp) {
                             this.cmbAluno.addItem(items);
                         }
-
 //                    int maior = 0;
 //                    Vector<Integer> ids = new Vector<>();
 //                    System.out.println(this.cmbAluno.getItemCount());
@@ -186,26 +231,49 @@ public class CadastroAlunoCmbBoxes {
                     this.setAlunoNextSelectedItem();
 
                 } else {
-                    Vector<Integer> items = new Vector<>();
-                    int actResp = 0;
-                    int maior = 1;
-                    for(Vector<Object> array : this.mainpanel.getAlunoDAO().getTableRequests().getResultsSetData()[0]){
-                        if(array.get(1) == null) break;
-                        if(Integer.parseInt(array.get(1).toString()) == respdotindx_){
-                            items.add(Integer.parseInt(array.get(0).toString()));
-                            actResp = Integer.parseInt(array.get(1).toString());
+                    if (this.mainpanel.getBtnCadastros().getBtnSwitch().isSelected()) {
+                        Vector<Integer> items = new Vector<>();
+                        int actResp = 0;
+                        int maior = 1;
+                        for (Vector<Object> array : this.mainpanel.getAlunoDAO().getTableRequests().getResultsSetData()[0]) {
+                            if (array.get(1) == null) break;
+                            if (Integer.parseInt(array.get(1).toString()) == respdotindx_) {
+                                items.add(Integer.parseInt(array.get(0).toString()));
+                                actResp = Integer.parseInt(array.get(1).toString());
+                            }
                         }
-                    }
-                    try {
-                        maior = Collections.max(items) + 1;
-                    } catch (NoSuchElementException ex){
-                        maior = 1;
-                    } finally {
-                        this.mainpanel.getTxtFields().getTxtField().setText(String.valueOf(maior));
-                        if(actResp == actualrespid){
-                            this.mainpanel.getTxtFields().getTxtField().setText(this.cmbAluno.getSelectedItem().toString().substring(0, this.cmbAluno.getSelectedItem().toString().indexOf(":")));
+                        try {
+                            maior = Collections.max(items) + 1;
+                        } catch (NoSuchElementException ex) {
+                            maior = 1;
+                        } finally {
+                            this.mainpanel.getTxtFields().getTxtField().setText(String.valueOf(maior));
+
+                            this.mainpanel.getAluno().setId_responsavel_if_changing(this.cmbResponsavel.getSelectedItem().toString().substring(0, respdotindx__));
+
+                            if (actResp == actualrespid) {
+                                this.mainpanel.getTxtFields().getTxtField().setText(this.cmbAluno.getSelectedItem().toString().substring(0, this.cmbAluno.getSelectedItem().toString().indexOf(":")));
+                            }
+                            try {
+                                if (this.mainpanel.getAluno().getId_responsavel().equals(this.mainpanel.getAluno().getId_responsavel_if_changing())) {
+                                    this.mainpanel.getAluno().setChangingResp(false);
+                                } else if (!this.mainpanel.getAlunoTable().getMouseListener().isSelected())
+                                    this.mainpanel.getAluno().setChangingResp(true);
+                            } catch (NullPointerException ex) {
+
+                            }
+                            if (!this.mainpanel.getBtnCadastros().getBtnSwitch().isSelected()) {
+                                this.mainpanel.getAluno().setChangingResp(false);
+                            }
                         }
+                    } else {
+                        this.mainpanel.getAluno().setId_responsavel(this.cmbResponsavel.getEditor().getItem().toString().substring(0, respdotindx__));
                     }
+                }
+                try {
+                    this.mainpanel.getAluno().setId_responsavel(this.cmbResponsavel.getEditor().getItem().toString().substring(0, respdotindx__));
+                } catch (StringIndexOutOfBoundsException ex){
+
                 }
             }
         }
@@ -231,7 +299,7 @@ public class CadastroAlunoCmbBoxes {
 
 
     private void setAlunoNextSelectedItem() {
-        if(this.firenext) {
+        if (this.firenext) {
             if (this.cmbAluno.getSelectedItem().equals("<Cadastrar aluno>") && this.cmbAluno.getItemCount() >= 1) {
                 this.cmbAluno.setSelectedItem(this.selectedAluno);
                 this.alunoevt = true;
@@ -241,7 +309,14 @@ public class CadastroAlunoCmbBoxes {
     }
 
     private void cmbBoxSexoItemListener(ItemEvent e){
-
+        if(e.getStateChange() == ItemEvent.SELECTED){
+            Object obj = e.getSource();
+            if(obj instanceof JComboBox<?>){
+                if(this.cmbSexo.getSelectedItem().toString().equals("Masculino")){
+                    this.mainpanel.getAluno().setSexo("m");
+                } else this.mainpanel.getAluno().setSexo("f");
+            }
+        }
     }
 
     public CadastroAluno getMainpanel() {
