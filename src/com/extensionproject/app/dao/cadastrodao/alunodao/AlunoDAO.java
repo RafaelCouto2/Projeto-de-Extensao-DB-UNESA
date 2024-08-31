@@ -52,7 +52,6 @@ public class AlunoDAO {
                     "', '" + dados[2] +
                     "', '"  + dados[3] +
                     "', "   + dt_nasc +
-                    ", NULL" +
                     ");");
             LoggerManager.getClassLog(PagamentoDAO.class).info(": ALUNO CADASTRADO COM SUCESSO!");
         } catch (SQLException e) {
